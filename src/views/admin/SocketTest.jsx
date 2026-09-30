@@ -178,7 +178,17 @@ const SocketTest = () => {
       if (!paraMi && !esMio && !esTodos) return; // DM ajeno: se ignora
       ver(fuente, { alias: p.alias, visto: Date.now() });
       setMensajes((prev) => {
-        if (prev.some((m) => m.id === p.id)) return prev; // eco propio
+        const idx = prev.findIndex((m) => m.id === p.id);
+        if (idx !== -1) {
+          // Eco del server de mi propio mensaje: confirma que llegó al canal.
+          // Sin este eco en ~3s, el mensaje murió en mi WS (no es bug de UI).
+          if (esMio && prev[idx].estado === "enviado") {
+            const sig = [...prev];
+            sig[idx] = { ...sig[idx], estado: "confirmado" };
+            return sig;
+          }
+          return prev;
+        }
         return [
           ...prev.slice(-99),
           {
@@ -262,9 +272,18 @@ const SocketTest = () => {
 
   const Tick = ({ estado: e }) => (
     <span
-      className={`text-[11px] ml-1 ${e === "leido" ? "text-sky-500" : "text-black/40"}`}
+      className={`text-[11px] ml-1 ${e === "leido" ? "text-sky-500" : e === "confirmado" ? "text-white" : e === "recibido" ? "text-white/70" : "text-white/50"}`}
+      title={
+        e === "enviado"
+          ? "Salió de tu navegador (sin eco del server aún)"
+          : e === "confirmado"
+            ? "El server lo recibió y lo emitió al canal"
+            : e === "recibido"
+              ? "Le llegó al destinatario"
+              : "El destinatario lo vio"
+      }
     >
-      {e === "leido" ? "✓✓" : e === "recibido" ? "✓✓" : "✓"}
+      {e === "leido" ? "✓✓" : e === "enviado" ? "✓" : "✓✓"}
     </span>
   );
 
