@@ -172,7 +172,6 @@ export const rutasFrontend = [
   {
     seccion: "Superadmin",
     items: [
-      { path: "/admin", nombre: "Panel admin general", auth: "superadmin" },
       {
         path: "/admin/organizaciones",
         nombre: "Aprobar / suspender / dominios",
