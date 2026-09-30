@@ -1,0 +1,45 @@
+"use client";
+// Layout de /inmuebles/[slug] (vitrina pública sin dominio propio).
+// Adapta LayoutPublicoResolver.jsx de Vite a layout App Router.
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import useOrganizaciones from "@/hooks/useOrganizaciones.js";
+import { OrgShell } from "@/views/organizacion/paginas/OrgShell.jsx";
+import Loading from "@/views/organizacion/temas/loading/Loading";
+
+export default function SlugLayout({ children }) {
+  const { slug } = useParams();
+  const { cargarOrganizacionPorSlug } = useOrganizaciones();
+  const [organizacion, setOrganizacion] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    const cargar = async () => {
+      setLoading(true);
+      setNotFound(false);
+      const res = await cargarOrganizacionPorSlug(slug);
+      if (res.success) setOrganizacion(res.data);
+      else setNotFound(true);
+      setLoading(false);
+    };
+    cargar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
+
+  if (loading) return <Loading logo="/logo/logo-hor.png" type="opcion2" />;
+
+  if (notFound) {
+    return (
+      <div className="max-w-md mx-auto py-20 text-center">
+        <h1 className="text-xl font-bold mb-2">Organización no encontrada</h1>
+      </div>
+    );
+  }
+
+  return (
+    <OrgShell organizacion={organizacion} basePath={`/inmobiliarias/${slug}`}>
+      {children}
+    </OrgShell>
+  );
+}
