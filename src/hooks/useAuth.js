@@ -110,12 +110,8 @@ const useAuth = () => {
 
       toast.success("¡Inicio de sesión exitoso!", { position: "bottom-right" });
 
-      // Redirigir según rol
-      if (res.data.usuario.rol === "superadmin") {
-        router.push("/admin");
-      } else {
-        router.push("/");
-      }
+      // Redirigir tras login (el panel "/admin" general se eliminó por obsoleto)
+      router.push("/");
     } catch (error) {
       toast.error("Error inesperado", { position: "bottom-right" });
       console.error("❌ Error en login:", error);
