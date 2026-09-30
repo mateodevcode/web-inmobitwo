@@ -1,0 +1,20 @@
+# web-inmobitwo en VPS: /srv/infra/inmobitwo/web-inmobitwo
+# Las NEXT_PUBLIC_* se hornean en build: el workflow las exporta desde
+# .env.production (manual, gitignored) como build-args antes del up.
+services:
+  web:
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+        - NEXT_PUBLIC_MAIN_HOSTS=${NEXT_PUBLIC_MAIN_HOSTS}
+    container_name: inmobitwo-web
+    ports:
+      - "127.0.0.1:3000:3000"
+    restart: unless-stopped
+    networks:
+      - central_network
+
+networks:
+  central_network:
+    external: true

@@ -1,0 +1,75 @@
+# .github/workflows/deploy-web.yml — Web Next.js → VPS /srv/infra/inmobitwo/web-inmobitwo
+name: Deploy Web Inmobitwo
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: SSH Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 50m
+          script: |
+            set -e
+
+            echo "🚀 Despliegue Web (Next.js) → inmobitwo.seventwo.tech"
+
+            # 0. Asegurar repo en /srv/infra/inmobitwo/web-inmobitwo
+            if [ ! -d /srv/infra/inmobitwo/web-inmobitwo/.git ]; then
+              echo "→ Clonando repo por primera vez..."
+              mkdir -p /srv/infra/inmobitwo
+              git clone ${{ github.server_url }}/${{ github.repository }}.git /srv/infra/inmobitwo/web-inmobitwo
+            fi
+            cd /srv/infra/inmobitwo/web-inmobitwo
+
+            echo "→ Preservando .env.production..."
+            cp .env.production /tmp/inmobitwo-web.env.bak 2>/dev/null || true
+
+            echo "→ Actualizando código..."
+            git fetch origin main
+            git reset --hard origin/main
+            git clean -fd -e .env.production
+
+            cp /tmp/inmobitwo-web.env.bak .env.production 2>/dev/null || true
+            rm -f /tmp/inmobitwo-web.env.bak
+
+            if [ ! -f .env.production ]; then
+              echo "❌ Falta .env.production — créalo desde .env.example en el VPS y vuelve a deployar"
+              exit 1
+            fi
+
+            echo "→ Build y levantada (NEXT_PUBLIC_* se hornean desde .env.production)..."
+            set -a; . ./.env.production; set +a
+            docker compose up -d --build --remove-orphans
+
+            echo "→ SSL (certbot, reutiliza el cert existente del dominio)..."
+            if [ ! -f /etc/letsencrypt/live/inmobitwo.seventwo.tech/fullchain.pem ]; then
+              echo "→ Certificado no existe — generándolo con plugin nginx (cero downtime)..."
+              sudo certbot certonly --nginx -d inmobitwo.seventwo.tech --non-interactive --agree-tos -m admin@seventwo.tech
+            else
+              echo "→ Certificado ya existe — renovando si es necesario..."
+              sudo certbot renew --quiet
+            fi
+
+            echo "→ Nginx (inmobitwo.seventwo.tech → Next :3000)..."
+            sudo cp nginx/inmobitwo.conf /etc/nginx/sites-available/inmobitwo
+            sudo ln -sf ../sites-available/inmobitwo /etc/nginx/sites-enabled/inmobitwo
+            sudo nginx -t && sudo systemctl reload nginx
+
+            echo "→ Limpieza imágenes viejas..."
+            docker image prune -f
+
+            echo "→ Estado..."
+            sleep 8
+            docker compose ps
+            docker compose ps | grep -q "Up" || (echo "❌ El contenedor no está corriendo" && exit 1)
+            curl -sf https://inmobitwo.seventwo.tech/ || echo "⚠️ la web no responde aún (revisa: docker logs inmobitwo-web)"
+            echo "✅ Deploy Web OK"
