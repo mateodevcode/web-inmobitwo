@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  // Imagen autocontenida para Docker (solo lo necesario en runtime).
+  output: "standalone",
 };
 
 export default nextConfig;
