@@ -99,6 +99,16 @@ y el lint no suma errores nuevos respecto al baseline.
   `CardBody`, `CardActions`, `cardLabels`) y `api.js` → `src/lib/geoApi.js`.
   Fixes: 4× `refs-en-render` (map como estado), `console.log` debug fuera;
   1 request menos al resolver región/depto (mismo resultado).
+- [x] `password recovery` (feature, desde `password-recovery/`) — Backend:
+  `controllers/password.recovery.controllers.js` + `routes/password.recovery.routes.js`
+  (PATCH generar-codigo, POST validar-codigo, PATCH reset-password, con rate-limit;
+  NULL en vez de '' por columna INTEGER; comparación con String(); marca Inmobitwo).
+  Frontend con estilos login: `views/olvidaste-tu-password/` (SolicitarForm +
+  useSolicitarCodigo) y nueva ruta `/restablecer-contrasena`
+  (`ValidarCodigo` + OtpInput simple, `FormRestablecer` con PasswordInput general
+  + checklist vía `getPasswordChecklist`, `MensajeConfirmacion` → `/login?email=`).
+  Sin hardcode ("Tu Empresa"→Inmobitwo, `/iniciar-sesion`→`/login`);
+  reutiliza `apiBackend`, `validatePasswordRegistro` y sonner del proyecto.
 - [x] `src/views/logs` + `src/views/leads` — Rutas de prueba movidas a sus
   carpetas (`Logs` 119→~35 + `useLogsAutoRefresh`, `logFormat`, `LogsHeader`,
   `LogLine`; `Leads` 179→~60 + `useLeadsFilter`, `lib/estados`, `EstadoFilter`,
