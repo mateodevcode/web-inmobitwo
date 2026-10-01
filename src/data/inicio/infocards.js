@@ -9,7 +9,7 @@ export const cards = [
   },
   {
     id: "publicar",
-    image: "/inicio/put-property-large.jpg",
+    image: "/inicio/publicar-un-anuncio.png",
     title: "Publicar tu inmueble",
     description:
       "Tus 2 primeros anuncios son gratis. Casas, habitaciones, oficinas... ¡Todo cabe!",

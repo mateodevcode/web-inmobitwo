@@ -3,6 +3,7 @@ import { getInitials } from "@/lib/getInitials";
 import { getColorForOrg } from "@/lib/getRandomTailwindColors";
 import { formatFirstTwoNames } from "@/lib/formatFirstTwoNames";
 import { getUsernameFromEmail } from "@/lib/getUsernameFromEmail";
+import Image from "next/image";
 
 const TAMANOS = {
   sm: "w-7 h-7 text-xs",
@@ -24,14 +25,16 @@ const BotonUsuario = ({
   const sizeClass = TAMANOS[tamano] || TAMANOS.md;
 
   const avatar = usuario.image_url ? (
-    <img
+    <Image
       src={usuario.image_url}
       alt={name}
-      className={`${sizeClass} rounded-full object-cover border-2 border-white shadow-sm shrink-0`}
+      width={500}
+      height={500}
+      className={`${sizeClass} rounded-full object-cover border-2 border-primero shadow-sm shrink-0`}
     />
   ) : (
     <div
-      className={`${sizeClass} p-4 rounded-full font-semibold flex items-center justify-center hover:shadow shadow-black/10 active:scale-95 duration-75 transition shrink-0`}
+      className={`${sizeClass} p-4 rounded-full font-semibold flex items-center justify-center hover:shadow shadow-segundo/10 active:scale-95 duration-75 transition shrink-0`}
       style={color}
     >
       {getInitials(name)}
@@ -47,7 +50,7 @@ const BotonUsuario = ({
       {avatar}
       {mostrarNombre && (
         <div className="flex flex-col">
-          <p className="font-semibold text-black text-sm">
+          <p className="font-semibold text-segundo text-sm">
             {formatFirstTwoNames(name)}
           </p>
           <p className="text-xs -mt-1">{getUsernameFromEmail(email)}</p>

@@ -7,7 +7,7 @@ export function AnuncioStatus({ estado, onToggle }) {
   return (
     <div className="h-full w-full flex flex-col items-center bg-stone-100">
       <div className="flex items-center justify-center p-4 gap-2">
-        <p className="font-bold text-xl md:text-2xl">
+        <p className="font-bold text-xl md:text-xl">
           {publicado ? "Activo" : "Desactivado"}
         </p>
         {publicado ? (
@@ -16,7 +16,7 @@ export function AnuncioStatus({ estado, onToggle }) {
           <IoAlertCircle className="text-xl md:text-2xl text-blue-900" />
         )}
       </div>
-      <p className="text-center px-4">
+      <p className="text-center px-4 text-base">
         {publicado
           ? "Ahora se ve en inmobitwo, pero puedes desactivarlo cuando quieras."
           : "Ahora no se ve en inmobitwo, pero puedes reactivarlo gratis."}

@@ -3,16 +3,16 @@ export function ZoomControl({ map }) {
   if (!map) return null;
 
   return (
-    <div className="flex flex-col overflow-hidden shadow-lg border-2 border-black/80 rounded w-min justify-end items-end">
+    <div className="flex flex-col overflow-hidden shadow-lg border-2 border-segundo/80 rounded w-min justify-end items-end">
       <button
-        className="w-10 h-10 flex items-center justify-center bg-white hover:bg-gray-100 font-semibold text-gray-700 cursor-pointer text-xl"
+        className="w-10 h-10 flex items-center justify-center bg-primero hover:bg-gray-100 font-semibold text-gray-700 cursor-pointer text-xl"
         title="Acercar"
         onClick={() => map.zoomIn()}
       >
         +
       </button>
       <button
-        className="w-10 h-10 flex items-center justify-center bg-white hover:bg-gray-100 text-xl font-semibold text-gray-700 cursor-pointer border-t-2 border-black/80"
+        className="w-10 h-10 flex items-center justify-center bg-primero hover:bg-gray-100 text-xl font-semibold text-gray-700 cursor-pointer border-t-2 border-segundo/80"
         title="Alejar"
         onClick={() => map.zoomOut()}
       >
@@ -26,9 +26,9 @@ export function LocationControl({ map }) {
   if (!map) return null;
 
   return (
-    <div className="rounded overflow-hidden shadow-lg border-2 border-black/80 bg-white">
+    <div className="rounded overflow-hidden shadow-lg border-2 border-segundo/80 bg-primero">
       <button
-        className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 cursor-pointer text-sm text-black/80 font-poppins font-semibold hover:bg-white"
+        className="flex items-center gap-2 px-4 py-2.5 bg-primero cursor-pointer text-sm text-segundo/80 font-poppins font-semibold hover:bg-gray-100"
         title="Tu ubicacion"
         onClick={() => {
           if (!navigator.geolocation) return;

@@ -21,7 +21,7 @@ export function PublishAnuncioButton({ hasAnuncios, fullWidth = false }) {
     <button
       type="button"
       onClick={go}
-      className={`rounded-md bg-tercero px-6 py-2.5 text-sm font-semibold text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none md:mt-0 mt-4 font-poppins ${
+      className={`rounded-md bg-tercero px-6 py-3 md:py-2 text-base font-semibold text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none md:mt-0 mt-4 font-montserrat ${
         fullWidth ? "w-full md:w-64" : ""
       }`}
     >

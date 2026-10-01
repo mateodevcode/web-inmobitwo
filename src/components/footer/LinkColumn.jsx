@@ -1,18 +1,20 @@
+import Link from "next/link";
+
 export function LinkColumn({ title, links }) {
   return (
     <div>
-      <h3 className="mb-4 text-base md:text-xl font-bold text-slate-900">
+      <h3 className="mb-4 text-base md:text-xl font-semibold text-segundo">
         {title}
       </h3>
       <ul className="flex flex-col gap-3">
         {links.map((label) => (
           <li key={label}>
-            <a
+            <Link
               href="#"
-              className="text-base md:text-lg text-blue-600 hover:underline"
+              className="text-base md:text-lg text-decimo hover:underline"
             >
               {label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

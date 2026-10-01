@@ -78,8 +78,8 @@ export default function InputSearchZona({
 
   return (
     <div ref={containerRef} className={`relative ${className || "max-w-md"}`}>
-      <div className="flex items-center gap-2 border-black py-2.5 px-4 rounded-sm bg-white">
-        <FiSearch className="text-black/60 shrink-0" />
+      <div className="flex items-center gap-2 border-2 border-segundo py-2.5 px-4 rounded-sm bg-primero">
+        <FiSearch className="text-segundo/60 shrink-0" />
         <input
           type="text"
           value={query}
@@ -91,12 +91,12 @@ export default function InputSearchZona({
           }}
           onKeyDown={handleKeyDown}
           placeholder="Barrio, ciudad, municipio"
-          className="w-full text-sm bg-transparent outline-none placeholder:text-black/60"
+          className="w-full text-sm bg-transparent outline-none placeholder:text-segundo/60"
         />
         {showX && query && (
           <button
             onClick={handleClear}
-            className="shrink-0 text-white bg-black rounded-full hover:bg-black/80 cursor-pointer absolute right-3 p-0.5"
+            className="shrink-0 text-primero bg-segundo rounded-full hover:bg-segundo/80 cursor-pointer absolute right-3 p-0.5"
             title="Limpiar"
           >
             <FiX />

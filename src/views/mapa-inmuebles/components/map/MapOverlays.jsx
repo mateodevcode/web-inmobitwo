@@ -34,7 +34,7 @@ export function MapOverlays({
           onSelectZone={(zone) => onSelectZone(zone, operation, tipoInmueble)}
           operation={operation}
           tipoInmueble={tipoInmueble}
-          className="w-80 border-2"
+          className="w-80"
           showX={true}
         />
       </div>

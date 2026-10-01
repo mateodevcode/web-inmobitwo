@@ -4,12 +4,12 @@ import { TfiMapAlt } from "react-icons/tfi";
 export function DrawToolbar({ drawMode, hasPolygon, onToggle, onDelete }) {
   return (
     <div className="absolute top-3 md:top-4 right-3 md:right-4 z-50 flex flex-col gap-2">
-      <div className="rounded-md overflow-hidden shadow-lg border-2 border-black/80 bg-white">
+      <div className="rounded-md overflow-hidden shadow-lg border-2 border-segundo/80 bg-primero">
         <button
-          className={`flex items-center gap-2 px-5 py-2.5 cursor-pointer text-sm font-poppins font-semibold transition-colors ${
+          className={`flex items-center gap-2 px-5 py-2.5 cursor-pointer text-sm font-montserrat font-semibold transition-colors ${
             drawMode
-              ? "bg-[#e6007a] text-white"
-              : "bg-gray-50 text-black/80 hover:bg-white"
+              ? "bg-tercero text-primero hover:bg-tercero/90"
+              : "bg-primero text-segundo/80 hover:bg-primero/80"
           }`}
           title={drawMode ? "Modo seleccion" : "Dibujar tu zona"}
           onClick={onToggle}
@@ -28,9 +28,9 @@ export function DrawToolbar({ drawMode, hasPolygon, onToggle, onDelete }) {
         </button>
       </div>
       {drawMode && hasPolygon && (
-        <div className="rounded-md overflow-hidden shadow-lg border-2 border-black/80 bg-white">
+        <div className="rounded-md overflow-hidden shadow-lg border-2 border-segundo/80 bg-primero">
           <button
-            className="flex items-center gap-2 px-5 py-2.5 bg-gray-50 cursor-pointer text-sm text-black/80 font-poppins font-semibold hover:bg-white w-full"
+            className="flex items-center gap-2 px-5 py-2.5 bg-gray-50 cursor-pointer text-sm text-segundo/80 font-poppins font-semibold hover:bg-primero w-full"
             title="Borrar polígono"
             onClick={onDelete}
           >

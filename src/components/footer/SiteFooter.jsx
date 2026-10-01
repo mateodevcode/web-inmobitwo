@@ -13,7 +13,7 @@ const FOOTER_GROUPS = [
 
 export function SiteFooter() {
   return (
-    <footer className="bg-rose-50 md:py-12 py-8">
+    <footer className="bg-tercero/5 md:py-12 py-8">
       <div className="mx-auto w-10/12">
         <div className="mb-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div className="w-11/12">
@@ -26,7 +26,7 @@ export function SiteFooter() {
           <FooterLinkColumns groups={FOOTER_GROUPS} />
 
           <div>
-            <h3 className="mb-4 text-xl font-bold text-slate-900">
+            <h3 className="mb-4 text-xl font-semibold text-segundo">
               En tu móvil o tablet
             </h3>
             <AppStoreButtons />

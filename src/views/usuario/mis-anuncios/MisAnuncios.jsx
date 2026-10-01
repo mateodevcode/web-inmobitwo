@@ -25,7 +25,7 @@ const MisAnuncios = () => {
   }, []);
 
   return (
-    <div className="flex flex-col font-montserrat relative bg-gray-50">
+    <div className="flex flex-col font-montserrat relative bg-septimo">
       <HeaderInmobitwo />
       <div className="flex md:flex-row flex-col md:items-center justify-between py-4 mx-auto w-11/12 md:w-10/12">
         <h3 className="text-2xl font-bold text-black">Mis anuncios</h3>

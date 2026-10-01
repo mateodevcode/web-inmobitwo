@@ -21,7 +21,7 @@ export function AppStoreButtons() {
       {STORE_BUTTONS.map(({ id, icon: Icon, topLine, store }) => (
         <button
           key={id}
-          className="flex items-center gap-2 rounded-md bg-slate-900 px-3 py-2 text-white"
+          className="flex items-center gap-2 rounded-md bg-segundo px-3 py-2 text-primero"
         >
           <Icon className="h-6 w-6" />
           <span className="text-left text-xs leading-tight">

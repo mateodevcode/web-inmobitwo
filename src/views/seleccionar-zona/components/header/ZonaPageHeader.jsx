@@ -12,11 +12,11 @@ export function ZonaPageHeader({
   onBack,
 }) {
   return (
-    <header className="flex items-center gap-5 px-4 md:px-6 py-4 border-b border-gray-200 bg-white z-1000 shrink-0 w-full justify-between">
+    <header className="flex items-center gap-5 px-4 md:px-6 py-4 border-b border-segundo/5 bg-primero z-1000 shrink-0 w-full justify-between">
       <div
         className={`items-center gap-6 ${mobileSearchOpen ? "hidden md:flex" : "flex"}`}
       >
-        <h1 className="text-base md:text-xl text-gray-800 m-0">
+        <h1 className="text-base md:text-xl text-segundo/80 m-0">
           {drawMode ? "Dibujar tu zona" : "Seleccionar zonas"}
         </h1>
         {!drawMode && (
@@ -24,7 +24,7 @@ export function ZonaPageHeader({
             className="flex items-center gap-2 md:hidden"
             onClick={onOpenMobileSearch}
           >
-            <FiSearch className="text-black/60 shrink-0" />
+            <FiSearch className="text-segundo/60 shrink-0" />
             <span>Buscar</span>
           </button>
         )}
@@ -38,11 +38,11 @@ export function ZonaPageHeader({
             onSelectZone={(zone) => onSelectZone(zone, operation, tipoInmueble)}
             operation={operation}
             tipoInmueble={tipoInmueble}
-            className={`border-2 ${mobileSearchOpen ? "w-full" : "w-100"}`}
+            className={`${mobileSearchOpen ? "w-full" : "w-100"}`}
             showX={true}
           />
           <button
-            className="md:hidden shrink-0 text-gray-500"
+            className="md:hidden shrink-0 text-segundo/50"
             onClick={onCloseMobileSearch}
           >
             <FiX size={20} />
@@ -51,7 +51,7 @@ export function ZonaPageHeader({
       )}
 
       <button
-        className={`py-2 md:px-4 border-none bg-transparent text-gray-500 cursor-pointer text-sm hover:text-noveno ${
+        className={`py-2 md:px-4 border-none bg-transparent text-segundo/50 cursor-pointer text-sm hover:text-tercero ${
           mobileSearchOpen ? "hidden md:block" : ""
         }`}
         onClick={onBack}
