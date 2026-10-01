@@ -22,6 +22,12 @@ export const useVerificacionEmail = () => {
     desactivarVerificacionEmail,
   } = useUsuarios();
 
+  // El id del usuario vive en la sesión (contexto, viene del login).
+  // `formDataUsuario` nunca trae `id`: el estado inicial no lo incluye y
+  // `mapearApiAFormDataUsuario` lo descarta al recargar. Usarlo directo
+  // mandaba las peticiones a /usuarios/undefined/... (404) y el correo
+  // nunca se enviaba.
+
   const cargarUsuario = async (usuarioId) => {
     try {
       iniciarCarga();
@@ -39,8 +45,11 @@ export const useVerificacionEmail = () => {
     }
   };
 
+  const usuarioId = usuario?.id ?? formDataUsuario?.id;
+
   const handleEnviarCodigo = async () => {
-    const res = await enviarCodigoVerificacion(formDataUsuario.id, setLoading);
+    if (!usuarioId) return;
+    const res = await enviarCodigoVerificacion(usuarioId, setLoading);
     if (res?.success) {
       setCodigoEnviado(true);
     }
@@ -49,9 +58,10 @@ export const useVerificacionEmail = () => {
   const handleConfirmarCodigo = async (e) => {
     e.preventDefault();
     if (codigoInput.trim().length !== 6) return;
+    if (!usuarioId) return;
 
     const res = await confirmarCodigoVerificacion(
-      formDataUsuario.id,
+      usuarioId,
       setLoading,
       codigoInput.trim(),
     );
@@ -64,10 +74,8 @@ export const useVerificacionEmail = () => {
   };
 
   const handleDesactivar = async () => {
-    const res = await desactivarVerificacionEmail(
-      formDataUsuario.id,
-      setLoading,
-    );
+    if (!usuarioId) return;
+    const res = await desactivarVerificacionEmail(usuarioId, setLoading);
     if (res?.success) {
       setFormDataUsuario((prev) => ({ ...prev, email_verificado: false }));
       setCodigoEnviado(false);

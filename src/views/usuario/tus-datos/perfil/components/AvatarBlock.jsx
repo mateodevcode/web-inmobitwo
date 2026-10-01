@@ -13,16 +13,16 @@ export function AvatarBlock({
         <PerfilAvatar usuario={usuario} />
         <div className="flex flex-col">
           {editarUsuario ? (
-            <p className="text-sm md:text-base text-black/60">
+            <p className="text-sm md:text-base text-segundo/60">
               Una buena foto transmite más confianza
             </p>
           ) : (
-            <p className="font-semibold text-black text-base md:text-lg">
+            <p className="font-semibold text-segundo text-base md:text-lg">
               {formDataUsuario.name}
             </p>
           )}
           {editarUsuario ? (
-            <div className="text-xl flex items-center gap-6">
+            <div className="text-xl flex items-center gap-6 font-montserrat">
               {!formDataUsuario.image_url && (
                 <PhotoUploadButton
                   label="Subir foto"
@@ -31,7 +31,7 @@ export function AvatarBlock({
               )}
               {formDataUsuario.image_url && (
                 <PhotoUploadButton
-                  label="Cambiar foto"
+                  label="Cambiar foto font-montserrat"
                   onFileChange={onFileChange}
                 />
               )}
@@ -40,7 +40,7 @@ export function AvatarBlock({
                 <button
                   type="button"
                   onClick={onEliminarFoto}
-                  className="text-blue-700 font-semibold hover:underline hover:text-blue-600 cursor-pointer select-none active:scale-95 duration-75 transition"
+                  className="text-decimo font-semibold hover:underline hover:text-decimo/80 cursor-pointer select-none active:scale-95 duration-75 transition"
                 >
                   Eliminar foto
                 </button>

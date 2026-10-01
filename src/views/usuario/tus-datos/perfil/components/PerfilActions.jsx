@@ -7,9 +7,9 @@ export function AccessLinkRow() {
 
   return (
     <div className="flex flex-col items-start mt-6">
-      <p className="text-lg font-semibold text-black">Tus datos de acceso</p>
+      <p className="text-lg font-semibold text-segundo">Tus datos de acceso</p>
       <button
-        className="text-lg text-blue-700 hover:text-blue-600 cursor-pointer select-none active:scale-95 duration-75 transition mt-2"
+        className="text-lg text-decimo hover:text-decimo/80 cursor-pointer select-none active:scale-95 duration-75 transition mt-2"
         onClick={() => {
           router.push("/usuario/tus-datos/acceso");
           irArriba();
@@ -25,14 +25,14 @@ export function SaveActions({ loading, onGuardar, onCancelar }) {
   return (
     <div className="flex items-center gap-4">
       <button
-        className="rounded-md bg-rose-600 px-6 py-3 md:py-2 text-sm md:text-lg font-semibold text-white hover:bg-rose-500 active:scale-[0.99] cursor-pointer select-none mt-8"
+        className="rounded-md bg-tercero px-6 py-3 md:py-2 text-sm md:text-lg font-semibold text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none mt-8 font-montserrat"
         type="button"
         onClick={onGuardar}
       >
         {loading ? "Cargando" : "Guardar cambios"}
       </button>
       <button
-        className="rounded-md bg-black px-6 py-3 md:py-2 text-sm md:text-lg font-semibold text-white hover:bg-black/80 active:scale-[0.99] cursor-pointer select-none mt-8"
+        className="font-montserrat rounded-md bg-segundo px-6 py-3 md:py-2 text-sm md:text-lg font-semibold text-primero hover:bg-segundo/80 active:scale-[0.99] cursor-pointer select-none mt-8"
         type="button"
         onClick={onCancelar}
       >
@@ -45,12 +45,14 @@ export function SaveActions({ loading, onGuardar, onCancelar }) {
 export function EditToggle({ onToggle }) {
   return (
     <button
-      className="flex items-center gap-2 text-blue-700 cursor-pointer select-none hover:text-blue-600 mt-4"
+      className="flex items-center gap-2 text-decimo cursor-pointer select-none hover:text-decimo/80 mt-4"
       type="button"
       onClick={onToggle}
     >
       <MdOutlineModeEdit className="text-base md:text-xl" />
-      <p className="font-semibold text-base md:text-lg">Editar datos</p>
+      <p className="font-semibold text-base md:text-lg font-montserrat">
+        Editar datos
+      </p>
     </button>
   );
 }

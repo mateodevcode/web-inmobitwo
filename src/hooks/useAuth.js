@@ -110,6 +110,20 @@ const useAuth = () => {
         return;
       }
 
+      // Segundo factor: el usuario tiene el email verificado. El backend
+      // envió un OTP al correo y aún no hay sesión: avanzar al paso OTP
+      // conservando ?next= para volver tras verificar.
+      if (res.data?.requiereOTP) {
+        const destino = getSafeNext(nextRaw);
+        const query = `/login?email=${encodeURIComponent(formDataUsuario.email)}&otp=1${destino ? `&next=${encodeURIComponent(destino)}` : ""}`;
+        toast.success(
+          res.message || "Te enviamos un código de verificación a tu correo.",
+          { position: "bottom-right" },
+        );
+        router.push(query);
+        return;
+      }
+
       guardarSesion(res.data.usuario, res.data.accessToken);
       // await cargarPropiedades();
       resetFormDataUsuario();
@@ -125,6 +139,81 @@ const useAuth = () => {
     } finally {
       terminarCarga();
       setLoadingAuth(false);
+    }
+  };
+
+  // ─────────────────────────────────────────────
+  // PASO 2b: Verificar OTP del segundo factor
+  // (solo usuarios con email verificado; el login devolvió requiereOTP)
+  // ─────────────────────────────────────────────
+  const handleVerificarOtp = async (codigo, nextRaw = null) => {
+    setLoadingAuth(true);
+
+    try {
+      iniciarCarga();
+
+      const codigoLimpio = String(codigo ?? "").trim();
+      if (!/^\d{6}$/.test(codigoLimpio)) {
+        toast.error("El código debe tener 6 dígitos numéricos.", {
+          position: "bottom-right",
+        });
+        setLoadingAuth(false);
+        return;
+      }
+
+      const res = await apiBackend("/auth/verificar-otp-login", "POST", {
+        email: formDataUsuario.email,
+        codigo: codigoLimpio,
+      });
+
+      if (!res.success) {
+        toast.error(res.error || "Código incorrecto o expirado", {
+          position: "bottom-right",
+        });
+        setLoadingAuth(false);
+        return;
+      }
+
+      guardarSesion(res.data.usuario, res.data.accessToken);
+      resetFormDataUsuario();
+
+      toast.success("¡Inicio de sesión exitoso!", { position: "bottom-right" });
+      router.push(getSafeNext(nextRaw) ?? "/");
+    } catch (error) {
+      toast.error("Error inesperado", { position: "bottom-right" });
+      console.error("❌ Error verificando OTP:", error);
+    } finally {
+      terminarCarga();
+      setLoadingAuth(false);
+    }
+  };
+
+  // ─────────────────────────────────────────────
+  // Reenviar OTP del segundo factor
+  // ─────────────────────────────────────────────
+  const handleReenviarOtp = async () => {
+    try {
+      const res = await apiBackend("/auth/reenviar-otp-login", "POST", {
+        email: formDataUsuario.email,
+      });
+
+      if (!res.success) {
+        toast.error(res.error || "No se pudo reenviar el código", {
+          position: "bottom-right",
+        });
+        return false;
+      }
+
+      toast.success("Te enviamos un nuevo código a tu correo.", {
+        position: "bottom-right",
+      });
+      return true;
+    } catch (error) {
+      toast.error("Error de conexión. Intenta nuevamente.", {
+        position: "bottom-right",
+      });
+      console.error("❌ Error reenviando OTP:", error);
+      return false;
     }
   };
 
@@ -199,6 +288,8 @@ const useAuth = () => {
     handleChange,
     handleValidateEmail,
     handleLogin,
+    handleVerificarOtp,
+    handleReenviarOtp,
     handleChangeEmail,
     handleRegistro,
     handleCerrarSesion,
