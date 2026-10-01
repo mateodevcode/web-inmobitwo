@@ -1,12 +1,12 @@
 import { useAppContext } from "@/context/AppContext";
 import useDatosBasicos from "@/hooks/useDatosBasicos";
-import LocationForm from "@/views/publicar-anuncio/paso-1/LoactionForm";
+import LocationForm from "@/views/publicar-anuncio/paso-1/ubicacion/LocationForm";
 import Informacion from "@/views/publicar-anuncio/informacion/Informacion";
-import ContactForm from "@/views/publicar-anuncio/paso-1/ContactForm";
-import TipoInmueble from "./components/TipoInmueble";
-import CheckPublicarPorInmobiliaria from "./components/CheckPublicarPorInmobiliaria";
-import Operacion from "./components/Operacion";
-import TipoAlquiler from "./components/TipoAlquiler";
+import ContactForm from "@/views/publicar-anuncio/paso-1/contacto/ContactForm";
+import TipoInmueble from "./tipo/TipoInmueble";
+import CheckPublicarPorInmobiliaria from "./tipo/CheckPublicarPorInmobiliaria";
+import Operacion from "./tipo/Operacion";
+import TipoAlquiler from "./tipo/TipoAlquiler";
 
 const DatosBasicos = () => {
   const { comprobarDireccion, formDataPropiedad } = useAppContext();

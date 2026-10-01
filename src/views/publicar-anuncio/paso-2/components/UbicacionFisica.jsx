@@ -1,6 +1,6 @@
-import Bloque from "@/views/publicar-anuncio/components/Bloque";
-import TipoSelect from "@/views/publicar-anuncio/components/TipoSelect";
-import InputField from "@/views/publicar-anuncio/components/InputField";
+import Bloque from "@/views/publicar-anuncio/components/ui/Bloque";
+import TipoSelect from "@/views/publicar-anuncio/components/ui/TipoSelect";
+import InputField from "@/views/publicar-anuncio/components/ui/InputField";
 import { ZONAS } from "@/data/zonas";
 import useDetalles from "@/hooks/useDetalles";
 

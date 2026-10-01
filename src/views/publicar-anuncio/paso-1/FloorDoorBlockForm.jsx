@@ -62,7 +62,7 @@ function SimpleSelect({
           <ListboxOptions
             anchor="bottom"
             transition
-            className="z-50 mt-1 max-h-72 overflow-y-auto rounded-md border border-slate-200 bg-white shadow-lg [--anchor-gap:4px] w-(--button-width)] transition duration-100 ease-out data-leave:opacity-0 data-closed:opacity-0"
+            className="z-50 mt-1 max-h-72 overflow-y-auto rounded-md border border-slate-200 bg-white shadow-lg [--anchor-gap:4px] w-(--button-width) transition duration-100 ease-out data-leave:opacity-0 data-closed:opacity-0"
           >
             {options.map((opt) => (
               <ListboxOption

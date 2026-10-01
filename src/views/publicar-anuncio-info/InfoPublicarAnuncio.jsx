@@ -1,17 +1,14 @@
-import { HowToPublishHero } from "@/views/publicar-anuncio-info/components/HowToPublishHero";
-import { PublishingGuideSection } from "@/views/publicar-anuncio-info/components/PublishingGuideSection";
-import { AdvantagesSection } from "@/views/publicar-anuncio-info/components/AdvantagesSection";
-import { ServicesSection } from "@/views/publicar-anuncio-info/components/ServicesSection";
-import { LinksGridSection } from "@/views/publicar-anuncio-info/components/LinkGridSection";
-import { SiteFooter } from "@/views/publicar-anuncio-info/components/SiteFooter";
+import { HowToPublishHero } from "./components/hero/HowToPublishHero";
+import { PublishingGuideSection } from "./components/guide/PublishingGuideSection";
+import { AdvantagesSection } from "./components/advantages/AdvantagesSection";
+import { ServicesSection } from "./components/services/ServicesSection";
+import { LinksGridSection } from "./components/links/LinkGridSection";
+import { SiteFooter } from "@/components/footer/SiteFooter";
 import { scrollbarStyles } from "@/data/data.styles.scrollbar";
-import HeaderInmobitwo from "@/views/publicar-anuncio-info/components/HeaderInmobitwo";
+import HeaderInmobitwo from "@/components/header-inmobitwo/HeaderInmobitwo";
 import BarraNavegacionTauri from "../../components/barra-navegacion/BarraNavegacionTauri";
-import ModalHamburguesa from "../inicio/components/modal-hamburguesa/ModalHamburguesa";
 
 const InfoPublicarAnuncio = () => {
-  AdvantagesSection;
-
   return (
     <div className="flex flex-col font-montserrat bg-primero">
       <HeaderInmobitwo />
@@ -21,7 +18,6 @@ const InfoPublicarAnuncio = () => {
       <ServicesSection />
       <LinksGridSection />
       <SiteFooter />
-      <ModalHamburguesa />
 
       <BarraNavegacionTauri />
       <style>{scrollbarStyles.default}</style>

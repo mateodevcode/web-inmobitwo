@@ -1,7 +1,7 @@
-import Bloque from "@/views/publicar-anuncio/components/Bloque";
-import InputField from "@/views/publicar-anuncio/components/InputField";
-import NumberStepper from "@/views/publicar-anuncio/components/NumberStepper";
-import TipoSelect from "@/views/publicar-anuncio/components/TipoSelect";
+import Bloque from "@/views/publicar-anuncio/components/ui/Bloque";
+import InputField from "@/views/publicar-anuncio/components/ui/InputField";
+import NumberStepper from "@/views/publicar-anuncio/components/ui/NumberStepper";
+import TipoSelect from "@/views/publicar-anuncio/components/ui/TipoSelect";
 import { ESTRATOS } from "@/data/estratos";
 import useDetalles from "@/hooks/useDetalles";
 

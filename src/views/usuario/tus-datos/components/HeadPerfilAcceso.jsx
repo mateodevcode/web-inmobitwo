@@ -1,9 +1,12 @@
+import { usePathname } from "next/navigation";
+import { TabLink } from "./TabLink";
 
-import { irArriba } from "@/utils/irArriba";
-import { usePathname, useRouter } from "next/navigation";
+const TABS = [
+  { id: "perfil", label: "Perfil", to: "/usuario/tus-datos/perfil" },
+  { id: "acceso", label: "Acceso y seguridad", to: "/usuario/tus-datos/acceso" },
+];
 
 const HeadPerfilAcceso = () => {
-  const router = useRouter();
   const pathname = usePathname();
   const segmento = pathname.split("/usuario/tus-datos/")[1];
 
@@ -15,32 +18,11 @@ const HeadPerfilAcceso = () => {
 
       {/* Menu */}
       <div className="w-11/12 md:w-10/12 gap-4 flex flex-row font-semibold">
-        <div
-          className={`relative cursor-pointer ${segmento === "perfil" ? 'after:content-[""] after:absolute after:-bottom-1.5 after:left-0 after:w-full after:h-0.5 after:bg-tercero after:rounded-md' : ""}`}
-          onClick={() => {
-            router.push("/usuario/tus-datos/perfil");
-            irArriba();
-          }}
-        >
-          <p
-            className={`${segmento === "perfil" ? "text-tercero" : "text-black/60"} select-none text-base`}
-          >
-            Perfil
-          </p>
-        </div>
-        <div
-          className={`relative cursor-pointer ${segmento === "acceso" ? 'after:content-[""] after:absolute after:-bottom-1.5 after:left-0 after:w-full after:h-0.5 after:bg-tercero after:rounded-md' : ""}`}
-          onClick={() => {
-            router.push("/usuario/tus-datos/acceso");
-            irArriba();
-          }}
-        >
-          <p
-            className={`${segmento === "acceso" ? "text-tercero" : "text-black/60"} select-none text-base`}
-          >
-            Acceso y seguridad
-          </p>
-        </div>
+        {TABS.map(({ id, label, to }) => (
+          <TabLink key={id} active={segmento === id} to={to}>
+            {label}
+          </TabLink>
+        ))}
       </div>
     </>
   );

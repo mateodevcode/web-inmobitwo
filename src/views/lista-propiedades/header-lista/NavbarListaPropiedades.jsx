@@ -2,13 +2,13 @@ import { HiOutlineUser } from "react-icons/hi2";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { TbMenu4 } from "react-icons/tb";
 import { useAppContext } from "@/context/AppContext";
-import BotonUsuario from "@/views/usuario/BotonUsuario";
+import BotonUsuario from "@/components/usuario/BotonUsuario";
 import ModalHamburguesa from "@/components/modales/modal-hamburguesa/ModalHamburguesa";
 import Logo from "@/components/logo/Logo";
 import { MENUS } from "@/data/menus";
-import Columna from "@/views/inicio/components/components/Columna";
+import Columna from "@/components/header-home/nav/Columna";
 import { useRouter } from "next/navigation";
-import EnlaceNav from "@/views/inicio/components/modales/EnlaceNav";
+import EnlaceNav from "@/components/header-home/nav/EnlaceNav";
 
 const NavbarListaPropiedades = () => {
   const {

@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useAppContext } from "@/context/AppContext";
-import ConLogin from "@/views/inicio/components/modal-hamburguesa/ConLogin";
-import SinLogin from "@/views/inicio/components/modal-hamburguesa/SinLogin";
-import DescargarApp from "@/views/inicio/components/modal-hamburguesa/DescargarApp";
+import ConLogin from "@/components/hamburger/ConLogin";
+import SinLogin from "@/components/hamburger/SinLogin";
+import DescargarApp from "@/components/hamburger/DescargarApp";
 
 const ModalUser = () => {
   const { openModalUser, setOpenModalUser, usuario } = useAppContext();

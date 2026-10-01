@@ -1,4 +1,4 @@
-import MiniMapaUbicacion from "@/views/seleccionar-zona/components/MiniMapaUbicacion";
+import MiniMapaUbicacion from "@/components/map/MiniMapaUbicacion";
 import FormFiltros from "./filtros/FormFiltros";
 
 const SidebarListaPropiedades = ({ locationInfo, operationSlug, typeSlug }) => {

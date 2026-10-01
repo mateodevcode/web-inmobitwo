@@ -1,16 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import AnimatedTitle from "./AnimatedTitle";
-import { MAPPING_OPERACIONES } from "@/data/mappings_busqueda";
-import { FRASES } from "@/data/inicio/frases.hero";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import SelectorTipo from "../modales/SelectorTipo";
-import InputSearchPrincipal from "../modales/InputSearchPrincipal";
 import Link from "next/link";
-
-const TIPO_DEFAULT = { label: "Casa", slug: "casa" };
+import { useRouter } from "next/navigation";
+import AnimatedTitle from "./AnimatedTitle";
+import HeroTabs from "./HeroTabs";
+import HeroSearchButton from "./HeroSearchButton";
+import SelectorTipo from "./type/SelectorTipo";
+import InputSearchPrincipal from "./search/InputSearchPrincipal";
+import { useResponsiveFrases } from "../../hooks/useResponsiveFrases";
+import { FRASES } from "@/data/inicio/frases.hero";
+import { buildGeoPath } from "../../lib/geoPath";
 
 const Hero = ({
   image = "/propiedades/chalet.jpg",
@@ -24,34 +25,21 @@ const Hero = ({
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [selectedGeo, setSelectedGeo] = useState(null);
-  const [frases, setFrases] = useState(FRASES.desktop);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
-    const update = () => setFrases(mq.matches ? FRASES.mobile : FRASES.desktop);
-
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
+  const frases = useResponsiveFrases();
 
   useEffect(() => {
     if (!selectedGeo) return;
-
-    const operationSlug = MAPPING_OPERACIONES[tab] || tab;
-    const firstSegment = `${operationSlug}-${tipo.slug}`;
-
-    let secondSegment;
-    if (selectedGeo.type === "region") {
-      secondSegment = selectedGeo.regionSlug;
-    } else if (selectedGeo.type === "departamento") {
-      secondSegment = selectedGeo.departmentSlug;
-    } else {
-      secondSegment = `${selectedGeo.citySlug}-${selectedGeo.departmentSlug}`;
-    }
-
-    router.push(`/${firstSegment}/${secondSegment}`);
+    const path = buildGeoPath(tab, tipo.slug, selectedGeo);
+    if (path) router.push(path);
   }, [selectedGeo]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const canSearch = selectedGeo && query.trim() !== "";
+
+  const handleManualSearch = () => {
+    if (!canSearch) return;
+    const path = buildGeoPath(tab, tipo.slug, selectedGeo);
+    if (path) router.push(path);
+  };
 
   return (
     <section className="w-full flex justify-center font-montserrat">
@@ -83,34 +71,7 @@ const Hero = ({
           />
 
           <div className="flex flex-col md:flex-row items-stretch gap-4 flex-wrap">
-            <div className="flex">
-              <button
-                onClick={() => {
-                  setTab("comprar");
-                  setTipo(TIPO_DEFAULT);
-                }}
-                className={`px-5 h-11 text-sm font-semibold border transition-colors cursor-pointer font-montserrat ${
-                  tab === "comprar"
-                    ? "bg-tercero/10 text-tercero border-tercero"
-                    : "bg-primero/60 text-segundo/70 border-segundo/10"
-                }`}
-              >
-                Comprar
-              </button>
-              <button
-                onClick={() => {
-                  setTab("alquilar");
-                  setTipo(TIPO_DEFAULT);
-                }}
-                className={`px-5 h-11 text-sm font-semibold border transition-colors cursor-pointer font-montserrat ${
-                  tab === "alquilar"
-                    ? "bg-tercero/10 text-tercero border-tercero"
-                    : "bg-primero/60 text-segundo/70 border-segundo/10"
-                }`}
-              >
-                Alquilar
-              </button>
-            </div>
+            <HeroTabs tab={tab} setTab={setTab} setTipo={setTipo} />
 
             <SelectorTipo tab={tab} value={tipo} onChange={setTipo} />
 
@@ -122,24 +83,10 @@ const Hero = ({
               tipo={tipo}
             />
 
-            <button
-              onClick={() => {
-                if (!selectedGeo || query.trim() === "") return;
-                router.push(
-                  `/${MAPPING_OPERACIONES[tab] || tab}-${tipo.slug}/${selectedGeo.type === "region" ? selectedGeo.regionSlug : selectedGeo.type === "departamento" ? selectedGeo.departmentSlug : `${selectedGeo.citySlug}-${selectedGeo.departmentSlug}`}`,
-                );
-              }}
-              disabled={!selectedGeo || query.trim() === ""}
-              className={`relative flex items-center justify-center gap-2 px-8 h-11 select-none overflow-hidden group before:absolute before:inset-0 before:bg-tercero before:w-0 hover:before:w-full before:transition-all before:duration-500 before:ease-in-out before:z-0 w-28 ${
-                !selectedGeo || query.trim() === ""
-                  ? "bg-segundo text-primero/90"
-                  : "bg-segundo text-primero cursor-pointer"
-              }`}
-            >
-              <p className="text-sm relative z-10 group-hover:text-primero transition-colors duration-300 font-semibold font-montserrat">
-                Buscar
-              </p>
-            </button>
+            <HeroSearchButton
+              disabled={!canSearch}
+              onSearch={handleManualSearch}
+            />
           </div>
         </div>
       </div>

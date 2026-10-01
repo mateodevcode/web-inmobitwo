@@ -3,7 +3,7 @@ import { useEffect, useRef, useCallback } from "react";
 import usePropiedades from "../../hooks/usePropiedades";
 import { useAppContext } from "@/context/AppContext.js";
 import useTracking from "@/hooks/useTracking";
-import NavbarHome from "../inicio/components/header/NavbarHome";
+import NavbarHome from "@/components/header-home/NavbarHome";
 import SmartLoader from "@/components/loader/SmartLoader";
 import BarraNavegacionTauri from "../../components/barra-navegacion/BarraNavegacionTauri";
 import { useParams, useRouter } from "next/navigation";

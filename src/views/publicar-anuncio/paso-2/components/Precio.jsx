@@ -1,5 +1,5 @@
-import Bloque from "@/views/publicar-anuncio/components/Bloque";
-import InputField from "@/views/publicar-anuncio/components/InputField";
+import Bloque from "@/views/publicar-anuncio/components/ui/Bloque";
+import InputField from "@/views/publicar-anuncio/components/ui/InputField";
 import useDetalles from "@/hooks/useDetalles";
 
 const COLORES_NIVEL = {
