@@ -1,15 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import Hero from "./components/hero/Hero";
-import InfoCards from "./components/cards/InfoCards";
-import NavbarHome from "./components/header/NavbarHome";
-
-const TIPO_DEFAULT = { label: "Casa", slug: "casa" };
+import InfoCards from "./components/info-cards/InfoCards";
+import NavbarHome from "@/components/header-home/NavbarHome";
+import { useInicioSearch } from "./hooks/useInicioSearch";
 
 const PageInicio = () => {
-  const [tab, setTab] = useState("comprar");
-  const [tipo, setTipo] = useState(TIPO_DEFAULT);
+  const { tab, setTab, tipo, setTipo } = useInicioSearch();
 
   return (
     <div>

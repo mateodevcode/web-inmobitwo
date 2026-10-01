@@ -19,7 +19,7 @@ import PropertyImage from "@/components/common/PropertyImage";
 import usePropiedades from "../../../hooks/usePropiedades";
 import { BsArrowsAngleExpand, BsArrowsAngleContract } from "react-icons/bs";
 import * as maplibregl from "maplibre-gl";
-import { ZoomControl } from "@/views/seleccionar-zona/components/MapControls";
+import { ZoomControl } from "@/components/map/MapControls";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 export default function FotoVisor() {

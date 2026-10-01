@@ -1,0 +1,82 @@
+"use client";
+
+import { useState, useRef, useEffect } from "react";
+import { motion } from "motion/react";
+
+export default function EnlaceNav({
+  title,
+  children,
+  panelWidth = "full",
+  panelClassName = "",
+  closeDelay = 150,
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const timeoutRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow =
+      isOpen && panelWidth === "full" ? "hidden" : "";
+  }, [isOpen, panelWidth]);
+
+  useEffect(() => () => clearTimeout(timeoutRef.current), []);
+
+  const open = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsOpen(true);
+  };
+
+  const close = () => setIsOpen(false);
+
+  const scheduleClose = () => {
+    timeoutRef.current = setTimeout(close, closeDelay);
+  };
+
+  const cancelClose = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  };
+
+  const basePanelClasses =
+    panelWidth === "sm"
+      ? "absolute top-full left-0 mt-2 w-64 rounded-md shadow-lg border border-segundo/10 bg-primero overflow-hidden"
+      : "fixed left-0 right-0 h-[50svh] bg-primero shadow-lg border-b overflow-hidden";
+
+  const panelStyle =
+    panelWidth === "full" ? { top: `calc(80px - ${scrollY}px)` } : {};
+
+  return (
+    <div className="relative inline-block">
+      <div
+        className="relative group cursor-pointer text-sm font-semibold text-segundo hover:text-segundo transition-colors font-montserrat"
+        onMouseEnter={open}
+        onMouseLeave={scheduleClose}
+      >
+        {title}
+        <span className="absolute left-0 -bottom-2 w-0 h-0.5 bg-tercero transition-all duration-300 group-hover:w-full" />
+      </div>
+
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.25 }}
+          onMouseEnter={cancelClose}
+          onMouseLeave={close}
+          className={`${basePanelClasses} z-50 ${panelClassName}`}
+          style={panelStyle}
+        >
+          <div className="w-full mx-auto flex items-center justify-center py-5">
+            <div className="w-9/12 flex gap-16">{children}</div>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}

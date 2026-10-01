@@ -1,18 +1,17 @@
 import { useEffect } from "react";
-
-import HeaderInmobitwo from "@/views/publicar-anuncio-info/components/HeaderInmobitwo";
+import HeaderInmobitwo from "@/components/header-inmobitwo/HeaderInmobitwo";
 import {
   useFavoritosLoadingStore,
   useFavoritosStore,
 } from "@/hooks/favoritosStore";
 import { scrollbarStyles } from "@/data/data.styles.scrollbar";
-import { SiteFooter } from "@/views/publicar-anuncio-info/components/SiteFooter";
+import { SiteFooter } from "@/components/footer/SiteFooter";
 import ModalHamburguesa from "@/components/modales/modal-hamburguesa/ModalHamburguesa";
 import useFavoritos from "@/hooks/useFavoritos";
-import ListaFavoritos from "./ListaFavoritos";
-import SinFavoritos from "./SinFavoritos";
-import Loading from "../../organizacion/temas/loading/Loading";
-import BarraNavegacionTauri from "../../../components/barra-navegacion/BarraNavegacionTauri";
+import ListaFavoritos from "./components/ListaFavoritos";
+import SinFavoritos from "./components/SinFavoritos";
+import Loading from "@/views/organizacion/temas/loading/Loading";
+import BarraNavegacionTauri from "@/components/barra-navegacion/BarraNavegacionTauri";
 import { useRouter } from "next/navigation";
 
 const MisFavoritos = () => {

@@ -1,6 +1,6 @@
-import Bloque from "@/views/publicar-anuncio/components/Bloque";
-import CheckBoxUnico from "@/views/publicar-anuncio/components/CheckBoxUnico";
-import CheckboxGroup from "@/views/publicar-anuncio/components/CheckboxGroup";
+import Bloque from "@/views/publicar-anuncio/components/ui/Bloque";
+import CheckBoxUnico from "@/views/publicar-anuncio/components/ui/CheckBoxUnico";
+import CheckboxGroup from "@/views/publicar-anuncio/components/ui/CheckboxGroup";
 import useDetalles from "@/hooks/useDetalles";
 
 const Caracteristicas = () => {

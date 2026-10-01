@@ -6,7 +6,7 @@ import ParqueaderoServicios from "@/views/publicar-anuncio/paso-2/components/Par
 import Caracteristicas from "@/views/publicar-anuncio/paso-2/components/Caracteristicas";
 import Documentacion from "@/views/publicar-anuncio/paso-2/components/Documentacion";
 import Precio from "@/views/publicar-anuncio/paso-2/components/Precio";
-import TituloDescripcion from "@/views/publicar-anuncio/paso-2/components/TituloDescripcion";
+import TituloDescripcion from "@/views/publicar-anuncio/paso-2/descripcion/TituloDescripcion";
 
 const Detalles = () => {
   return (

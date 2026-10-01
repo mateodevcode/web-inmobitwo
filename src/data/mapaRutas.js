@@ -15,11 +15,6 @@ export const rutasFrontend = [
     items: [
       { path: "/", nombre: "Inicio (landing page)", auth: "pública" },
       { path: "/feed", nombre: "Feed (home autenticado)", auth: "privada" },
-      {
-        path: "/lista-propiedades",
-        nombre: "Lista de propiedades (prueba)",
-        auth: "pública",
-      },
       { path: "/leads", nombre: "Leads", auth: "privada" },
       { path: "/logs", nombre: "Logs", auth: "privada" },
     ],

@@ -1,8 +1,8 @@
-import Bloque from "@/views/publicar-anuncio/components/Bloque";
-import RadioGroupInput from "@/views/publicar-anuncio/components/RadioGroupInput";
-import InputField from "@/views/publicar-anuncio/components/InputField";
-import NumberStepper from "@/views/publicar-anuncio/components/NumberStepper";
-import CheckBoxUnico from "@/views/publicar-anuncio/components/CheckBoxUnico";
+import Bloque from "@/views/publicar-anuncio/components/ui/Bloque";
+import RadioGroupInput from "@/views/publicar-anuncio/components/ui/RadioGroupInput";
+import InputField from "@/views/publicar-anuncio/components/ui/InputField";
+import NumberStepper from "@/views/publicar-anuncio/components/ui/NumberStepper";
+import CheckBoxUnico from "@/views/publicar-anuncio/components/ui/CheckBoxUnico";
 import useDetalles from "@/hooks/useDetalles";
 
 const EstadoAntiguedad = () => {

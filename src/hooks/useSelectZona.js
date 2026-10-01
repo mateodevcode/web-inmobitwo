@@ -1,6 +1,6 @@
 // src/hooks/useSelectZona.js
 import { useState, useCallback, useRef } from "react";
-import { fetchGeoCount } from "@/views/seleccionar-zona/api";
+import { fetchGeoCount } from "@/lib/geoApi";
 
 export function useSelectZona() {
   const [selectedZone, setSelectedZone] = useState(null);

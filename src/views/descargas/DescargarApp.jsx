@@ -1,10 +1,10 @@
-import { SiteNav } from "./components/SiteNav";
-import { DownloadHero } from "./components/DownloadHero";
-import { AllInstallers } from "./components/AllInstallers";
-import { CliInstall } from "./components/CliInstall";
-import { Audiences } from "./components/Audiences";
-import { MobileApp } from "./components/MobileApp";
-import { SiteFooter } from "./components/SiteFooter";
+import { SiteNav } from "./components/layout/SiteNav";
+import { DownloadHero } from "./components/hero/DownloadHero";
+import { AllInstallers } from "./components/installers/AllInstallers";
+import { CliInstall } from "./components/cli/CliInstall";
+import { Audiences } from "./components/audiences/Audiences";
+import { MobileApp } from "./components/mobile/MobileApp";
+import { SiteFooter } from "./components/layout/SiteFooter";
 import { scrollbarStyles } from "@/data/data.styles.scrollbar.js";
 
 export default function DescargarApp() {

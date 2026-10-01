@@ -17,7 +17,7 @@ export const items_sidebar = [
   {
     label: "propiedades",
     icon: <FaRegBuilding />,
-    url: "/lista-propiedades",
+    url: "/",
     name: "Propiedades",
   },
   {
