@@ -8,6 +8,7 @@ import { useEmailPrefill } from "./hooks/useEmailPrefill";
 import { EmailStep } from "./components/email-step/EmailStep";
 import { PasswordStep } from "./components/password-step/PasswordStep";
 import { ProfessionalFooter } from "./components/common/ProfessionalFooter";
+import { agregarNext } from "@/utils/authRedirect.js";
 
 const Login = () => {
   const {
@@ -20,6 +21,9 @@ const Login = () => {
   } = useAuth();
   const searchParams = useSearchParams();
   const emailActual = searchParams.get("email");
+  // Página de origen (?next=): a dónde volver tras un login exitoso.
+  // Se propaga por el paso de email y se consume en el paso de password.
+  const nextRaw = searchParams.get("next");
 
   useEmailPrefill(emailActual, formDataUsuario, setFormDataUsuario);
 
@@ -42,7 +46,8 @@ const Login = () => {
               <EmailStep
                 email={formDataUsuario.email}
                 onChange={handleChange}
-                onSubmit={handleValidateEmail}
+                onSubmit={(e) => handleValidateEmail(e, nextRaw)}
+                registerHref={agregarNext("/registro", nextRaw)}
               />
             )}
 
@@ -50,8 +55,8 @@ const Login = () => {
               <PasswordStep
                 password={formDataUsuario.password}
                 onChange={handleChange}
-                onSubmit={handleLogin}
-                onUseAnotherEmail={handleChangeEmail}
+                onSubmit={(e) => handleLogin(e, nextRaw)}
+                onUseAnotherEmail={() => handleChangeEmail(nextRaw)}
               />
             )}
           </div>

@@ -8,6 +8,7 @@ import useResetForm from "./useResetForm";
 import { validatePasswordRegistro } from "@/utils/validatePassword";
 import { useRouter } from "next/navigation";
 import { apiBackend } from "@/actions/apiBackend";
+import { buildLoginUrl, getSafeNext } from "@/utils/authRedirect.js";
 
 const useAuth = () => {
   const {
@@ -35,8 +36,10 @@ const useAuth = () => {
 
   // ─────────────────────────────────────────────
   // PASO 1: Validar email (sin password)
+  // `nextRaw` es el ?next= que traía la URL (página de origen). Se propaga
+  // al paso 2 para volver tras el login; si no hay, va al inicio.
   // ─────────────────────────────────────────────
-  const handleValidateEmail = async (e) => {
+  const handleValidateEmail = async (e, nextRaw = null) => {
     e.preventDefault();
     setLoadingAuth(true);
 
@@ -60,8 +63,10 @@ const useAuth = () => {
         return;
       }
 
-      // Email válido - agregar a URL y avanzar al paso 2
-      router.push(`/login?email=${encodeURIComponent(formDataUsuario.email)}`);
+      // Email válido - agregar a URL y avanzar al paso 2 (conservando ?next=)
+      const destino = getSafeNext(nextRaw);
+      const query = `/login?email=${encodeURIComponent(formDataUsuario.email)}${destino ? `&next=${encodeURIComponent(destino)}` : ""}`;
+      router.push(query);
     } catch (error) {
       toast.error("Error de conexión. Intenta nuevamente.", {
         position: "bottom-right",
@@ -74,8 +79,9 @@ const useAuth = () => {
 
   // ─────────────────────────────────────────────
   // PASO 2: Login con email + contraseña
+  // Tras el login vuelve a la página de origen (?next=) o al inicio.
   // ─────────────────────────────────────────────
-  const handleLogin = async (e) => {
+  const handleLogin = async (e, nextRaw = null) => {
     e.preventDefault();
     setLoadingAuth(true);
 
@@ -110,8 +116,9 @@ const useAuth = () => {
 
       toast.success("¡Inicio de sesión exitoso!", { position: "bottom-right" });
 
-      // Redirigir tras login (el panel "/admin" general se eliminó por obsoleto)
-      router.push("/");
+      // Redirigir tras login: a la página de origen (?next=) o al inicio.
+      // (el panel "/admin" general se eliminó por obsoleto)
+      router.push(getSafeNext(nextRaw) ?? "/");
     } catch (error) {
       toast.error("Error inesperado", { position: "bottom-right" });
       console.error("❌ Error en login:", error);
@@ -122,17 +129,17 @@ const useAuth = () => {
   };
 
   // ─────────────────────────────────────────────
-  // Cambiar de email (volver al paso 1)
+  // Cambiar de email (volver al paso 1, conservando ?next= si lo había)
   // ─────────────────────────────────────────────
-  const handleChangeEmail = () => {
+  const handleChangeEmail = (nextRaw = null) => {
     resetFormDataUsuario();
-    router.push("/login");
+    router.push(buildLoginUrl(getSafeNext(nextRaw)));
   };
 
   // ─────────────────────────────────────────────
-  // Registro de nuevo usuario
+  // Registro de nuevo usuario (vuelve al origen o al inicio)
   // ─────────────────────────────────────────────
-  const handleRegistro = async (e) => {
+  const handleRegistro = async (e, nextRaw = null) => {
     e.preventDefault();
 
     const erroresPassword = validatePasswordRegistro(formDataUsuario.password);
@@ -167,7 +174,7 @@ const useAuth = () => {
       toast.success("¡Cuenta creada correctamente!", {
         position: "bottom-right",
       });
-      router.push("/");
+      router.push(getSafeNext(nextRaw) ?? "/");
     } catch (error) {
       toast.error("Error inesperado", { position: "bottom-right" });
       console.error("❌ Error en registro:", error);
