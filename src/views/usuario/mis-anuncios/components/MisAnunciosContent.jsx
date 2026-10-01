@@ -5,7 +5,7 @@ import SinAnuncios from "./SinAnuncios";
 export function MisAnunciosContent({ loading, propiedades }) {
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[30svh]">
+      <div className="flex justify-center items-center min-h-[30svh] bg-tercero">
         <Loading type="opcion2" />
       </div>
     );

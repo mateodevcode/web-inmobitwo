@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const PhotoTips = () => (
   <>
     <ul className="mb-3 flex flex-col gap-2 pl-1">
@@ -7,8 +9,8 @@ const PhotoTips = () => (
           content: (
             <>
               <strong>Asegúrate de tener fotos de calidad a mano</strong>, al
-              publicar tu anuncio. Si no las tienes, podrás añadirlas más
-              tarde, pero recuerda, sin fotos no tendrás resultados.
+              publicar tu anuncio. Si no las tienes, podrás añadirlas más tarde,
+              pero recuerda, sin fotos no tendrás resultados.
             </>
           ),
         },
@@ -16,9 +18,9 @@ const PhotoTips = () => (
           id: "principal",
           content: (
             <>
-              <strong>La foto principal es crucial.</strong> Será la portada
-              de tu anuncio, la única que se enviará por mail a los
-              interesados y aparecerá en los listados de resultados.
+              <strong>La foto principal es crucial.</strong> Será la portada de
+              tu anuncio, la única que se enviará por mail a los interesados y
+              aparecerá en los listados de resultados.
             </>
           ),
         },
@@ -26,9 +28,9 @@ const PhotoTips = () => (
           id: "orden",
           content: (
             <>
-              <strong>Ordena tus fotos de forma lógica</strong> para crear
-              una historia atractiva, y opta por imágenes horizontales, que
-              lucen muy bien.
+              <strong>Ordena tus fotos de forma lógica</strong> para crear una
+              historia atractiva, y opta por imágenes horizontales, que lucen
+              muy bien.
             </>
           ),
         },
@@ -51,11 +53,11 @@ const PhotoTips = () => (
       ))}
     </ul>
     <p>
-      Si aún tienes dudas sobre cómo tomar las mejores fotos, puedes seguir
-      los trucos y consejos prácticos que compartimos en un video sobre{" "}
-      <a href="#" className="text-blue-600 hover:underline">
+      Si aún tienes dudas sobre cómo tomar las mejores fotos, puedes seguir los
+      trucos y consejos prácticos que compartimos en un video sobre{" "}
+      <Link href="#" className="text-decimo hover:underline">
         cómo fotografiar viviendas con tu móvil
-      </a>
+      </Link>
       .
     </p>
   </>
@@ -75,8 +77,7 @@ export const GUIDE_STEPS = [
     title: "Indicar la dirección exacta",
     body: (
       <p>
-        Para que las personas que buscan en la zona se enteren de tu anuncio,
-        es{" "}
+        Para que las personas que buscan en la zona se enteren de tu anuncio, es{" "}
         <strong>
           muy importante indicar la dirección correcta del inmueble
         </strong>
@@ -92,9 +93,9 @@ export const GUIDE_STEPS = [
     body: (
       <p>
         En caso de duda, puedes hacer una{" "}
-        <a href="#" className="text-blue-600 hover:underline">
+        <Link href="#" className="text-decimo hover:underline">
           valoración de tu inmueble gratis
-        </a>{" "}
+        </Link>{" "}
         desde nuestra página o consultar el precio medio en esa zona.
       </p>
     ),
@@ -107,16 +108,14 @@ export const GUIDE_STEPS = [
     body: (
       <>
         <p className="mb-4">
-          Incluye información sobre tu inmueble, como el número de
-          habitaciones, m2, los baños, etc. También menciona los extras
-          adicionales, como la presencia de un ascensor, una terraza, plaza
-          de garaje, trastero, etc. Al final,{" "}
+          Incluye información sobre tu inmueble, como el número de habitaciones,
+          m2, los baños, etc. También menciona los extras adicionales, como la
+          presencia de un ascensor, una terraza, plaza de garaje, trastero, etc.
+          Al final,{" "}
           <strong>todos estos detalles suman valor a tu inmueble</strong>.
         </p>
         <p>
-          <strong>
-            Destaca las características especiales de tu vivienda
-          </strong>
+          <strong>Destaca las características especiales de tu vivienda</strong>
           , sobre todo las que no se aprecian en las fotografías. No olvides
           explicar los servicios cercanos, el transporte disponible y los
           lugares de interés en la zona.

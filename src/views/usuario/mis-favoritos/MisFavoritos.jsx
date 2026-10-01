@@ -33,7 +33,7 @@ const MisFavoritos = () => {
         <h3 className="text-2xl font-bold text-segundo">Mis Favoritos</h3>
         <button
           onClick={() => router.push("/")}
-          className="rounded-md bg-segundo px-6 py-3 md:py-2 text-base font-semibold text-white hover:bg-segundo/80 active:scale-[0.99] cursor-pointer select-none md:mt-0 mt-4 font-poppins"
+          className="rounded-md bg-segundo px-6 py-3 md:py-2 text-base font-semibold text-white hover:bg-segundo/80 active:scale-[0.99] cursor-pointer select-none md:mt-0 mt-4 font-montserrat"
         >
           Ver más propiedades
         </button>

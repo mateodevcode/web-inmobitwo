@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const SOCIALS = [
   { id: "facebook", label: "Facebook" },
   { id: "youtube", label: "YouTube" },
@@ -6,11 +8,16 @@ const SOCIALS = [
 
 export function SocialLinks() {
   return (
-    <div className="mt-5 flex gap-3 text-slate-500">
+    <div className="mt-5 flex gap-3 text-segundo">
       {SOCIALS.map(({ id, label }) => (
-        <a key={id} href="#" aria-label={label} className="hover:text-slate-700">
+        <Link
+          key={id}
+          href="#"
+          aria-label={label}
+          className="hover:text-segundo/80"
+        >
           ●
-        </a>
+        </Link>
       ))}
     </div>
   );
