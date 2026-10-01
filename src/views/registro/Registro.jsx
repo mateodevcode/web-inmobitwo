@@ -1,4 +1,5 @@
 import useAuth from "@/hooks/useAuth.js";
+import { useSearchParams } from "next/navigation";
 import { scrollbarStyles } from "@/data/data.styles.scrollbar.js";
 import BarraNavegacionTauri from "@/components/barra-navegacion/BarraNavegacionTauri";
 import { RegisterHeader } from "./components/RegisterHeader";
@@ -7,6 +8,9 @@ import { LoginLink } from "./components/LoginLink";
 
 const Registro = () => {
   const { handleRegistro, handleChange, formDataUsuario } = useAuth();
+  // Página de origen (?next=): a dónde volver tras un registro exitoso.
+  // (La page /registro ya está envuelta en <Suspense>, exigido por useSearchParams.)
+  const nextRaw = useSearchParams().get("next");
 
   return (
     <div className="h-dvh flex items-center justify-center px-4 relative bg-gray-100">
@@ -16,10 +20,10 @@ const Registro = () => {
         <RegisterForm
           values={formDataUsuario}
           onChange={handleChange}
-          onSubmit={handleRegistro}
+          onSubmit={(e) => handleRegistro(e, nextRaw)}
         />
 
-        <LoginLink />
+        <LoginLink nextRaw={nextRaw} />
       </div>
 
       <BarraNavegacionTauri />

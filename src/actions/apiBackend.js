@@ -1,6 +1,7 @@
 // src/api/apiBackend.js
 import { URL_BACKEND } from "@/config/config.js";
 import { obtenerTokenFresco } from "./refreshToken";
+import { buildLoginUrl, obtenerOrigenActual } from "@/utils/authRedirect.js";
 
 export async function apiBackend(endpoint, metodo = "GET", datos = null) {
   try {
@@ -49,7 +50,8 @@ export async function apiBackend(endpoint, metodo = "GET", datos = null) {
       } else {
         localStorage.removeItem("access_token");
         localStorage.removeItem("usuario");
-        window.location.href = "/login";
+        // Sesión expirada: a /login conservando la página para volver tras el login.
+        window.location.href = buildLoginUrl(obtenerOrigenActual());
         return { success: false, error: "Sesión expirada.", data: null };
       }
     }

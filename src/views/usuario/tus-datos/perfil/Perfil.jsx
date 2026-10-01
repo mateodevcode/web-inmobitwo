@@ -32,7 +32,7 @@ const Perfil = ({ tamano = "lg" }) => {
       <HeadPerfilAcceso />
 
       {/* contenido */}
-      <div className="w-11/12 md:w-10/12 min-h-svh mb-8 md:mb-20">
+      <div className="w-10/12 md:w-10/12 min-h-svh mb-8 md:mb-20">
         <div className="flex items-start md:items-center my-8 gap-4 text-blue-700 cursor-pointer select-none hover:text-blue-600">
           <SlidersHorizontal className="text-xl md:text-2xl" />
           <p className="text-base md:text-xl font-semibold hover:underline">
@@ -60,7 +60,10 @@ const Perfil = ({ tamano = "lg" }) => {
           </div>
 
           {editarUsuario && (
-            <EditFields formDataUsuario={formDataUsuario} onChange={handleChange} />
+            <EditFields
+              formDataUsuario={formDataUsuario}
+              onChange={handleChange}
+            />
           )}
 
           {editarUsuario && <AccessLinkRow />}
