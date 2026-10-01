@@ -13,7 +13,7 @@ export function TabLink({ active, to, children }) {
       }}
     >
       <p
-        className={`${active ? "text-tercero" : "text-black/60"} select-none text-base`}
+        className={`${active ? "text-tercero" : "text-segundo/60"} select-none text-base font-montserrat`}
       >
         {children}
       </p>

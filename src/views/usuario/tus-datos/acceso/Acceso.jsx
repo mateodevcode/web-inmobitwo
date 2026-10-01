@@ -21,20 +21,20 @@ const Acceso = () => {
     handleDesactivar,
   } = useVerificacionEmail();
 
-  const { email } = usuario;
+  const { email } = usuario ?? {};
 
   useEffect(() => {
-    if (usuario.id) {
+    if (usuario?.id) {
       cargarUsuario(usuario.id);
     }
-  }, [usuario.id]);
+  }, [usuario?.id]);
 
   return (
     <div className="flex flex-col font-montserrat relative items-center">
       <HeaderInmobitwo />
       <HeadPerfilAcceso />
 
-      <div className="w-11/12 md:w-10/12 min-h-svh mb-8 md:mb-20">
+      <div className="w-11/12 md:w-9/12 min-h-svh mb-8 md:mb-20">
         {formDataUsuario.email_verificado ? (
           <VerifiedPanel
             email={email}

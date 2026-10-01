@@ -81,7 +81,7 @@ const ModalCambiarPassword = () => {
     <AnimatePresence>
       {openModalCambiarPassword && (
         <motion.div
-          className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 font-montserrat backdrop-blur-sm"
+          className="fixed inset-0 z-40 flex items-center justify-center bg-segundo/50 font-montserrat backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -89,7 +89,7 @@ const ModalCambiarPassword = () => {
           onClick={cerrarModal}
         >
           <motion.div
-            className="bg-white w-full max-w-md mx-4 rounded-md shadow-xl overflow-hidden"
+            className="bg-primero w-full max-w-md mx-4 rounded-md shadow-xl overflow-hidden"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
@@ -98,22 +98,22 @@ const ModalCambiarPassword = () => {
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 pt-6">
-              <h2 className="text-2xl font-bold text-black">
+              <h2 className="text-2xl font-bold text-segundo">
                 Cambiar contraseña
               </h2>
               <button
                 type="button"
                 onClick={cerrarModal}
-                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-black/5 cursor-pointer select-none"
+                className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-segundo/5 cursor-pointer select-none"
               >
-                <IoIosClose className="text-3xl text-black" />
+                <IoIosClose className="text-3xl text-segundo" />
               </button>
             </div>
 
             {/* Contenido */}
             <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4">
               {/* Contraseña actual */}
-              <label className="font-semibold text-black block mb-2">
+              <label className="font-semibold text-segundo block mb-2">
                 Tu contraseña actual
               </label>
               <div className="relative mb-6">
@@ -121,13 +121,13 @@ const ModalCambiarPassword = () => {
                   type={mostrarActual ? "text" : "password"}
                   value={passwordActual}
                   onChange={(e) => setPasswordActual(e.target.value)}
-                  className="border border-black/30 rounded-md p-3 w-full pr-20 text-black focus:outline-none focus:border-blue-600"
+                  className="border border-segundo/30 rounded-md p-3 w-full pr-20 text-segundo focus:outline-none focus:border-decimo"
                   autoComplete="current-password"
                 />
                 <button
                   type="button"
                   onClick={() => setMostrarActual((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-black/70 hover:text-black cursor-pointer flex items-center gap-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-segundo/70 hover:text-segundo cursor-pointer flex items-center gap-1"
                 >
                   {mostrarActual ? <FiEyeOff /> : <FiEye />}
                   {mostrarActual ? "Ocultar" : "Mostrar"}
@@ -135,7 +135,7 @@ const ModalCambiarPassword = () => {
               </div>
 
               {/* Contraseña nueva */}
-              <label className="font-semibold text-black block mb-2">
+              <label className="font-semibold text-segundo block mb-2">
                 Elige una nueva contraseña
               </label>
               <div className="relative mb-3">
@@ -143,13 +143,13 @@ const ModalCambiarPassword = () => {
                   type={mostrarNueva ? "text" : "password"}
                   value={passwordNueva}
                   onChange={(e) => setPasswordNueva(e.target.value)}
-                  className="border border-black/30 rounded-md p-3 w-full pr-20 text-black focus:outline-none focus:border-blue-600"
+                  className="border border-segundo/30 rounded-md p-3 w-full pr-20 text-segundo focus:outline-none focus:border-decimo"
                   autoComplete="new-password"
                 />
                 <button
                   type="button"
                   onClick={() => setMostrarNueva((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-black/70 hover:text-black cursor-pointer flex items-center gap-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-segundo/70 hover:text-segundo cursor-pointer flex items-center gap-1"
                 >
                   {mostrarNueva ? <FiEyeOff /> : <FiEye />}
                   {mostrarNueva ? "Ocultar" : "Mostrar"}
@@ -164,7 +164,7 @@ const ModalCambiarPassword = () => {
                     <li
                       key={key}
                       className={`flex items-center gap-2 text-sm transition-colors ${
-                        ok ? "text-green-600" : "text-black/50"
+                        ok ? "text-green-600" : "text-segundo/50"
                       }`}
                     >
                       {ok ? (
@@ -181,7 +181,7 @@ const ModalCambiarPassword = () => {
               {passwordNueva.length > 0 &&
                 passwordActual.length > 0 &&
                 passwordActual === passwordNueva && (
-                  <p className="text-sm text-rose-600 mb-2">
+                  <p className="text-sm text-tercero mb-2">
                     La nueva contraseña debe ser distinta a la actual.
                   </p>
                 )}
@@ -192,9 +192,9 @@ const ModalCambiarPassword = () => {
                   type="checkbox"
                   checked={recordar}
                   onChange={(e) => setRecordar(e.target.checked)}
-                  className="w-5 h-5 accent-rose-600 cursor-pointer"
+                  className="w-5 h-5 accent-tercero cursor-pointer"
                 />
-                <span className="text-black">
+                <span className="text-segundo text-sm">
                   Recordar mi contraseña en este dispositivo
                 </span>
               </label>
@@ -203,7 +203,7 @@ const ModalCambiarPassword = () => {
               <button
                 type="submit"
                 disabled={!puedeGuardar || loading}
-                className="w-full mt-6 rounded-md bg-rose-600 px-6 py-3 text-lg font-semibold text-white hover:bg-rose-500 active:scale-[0.99] cursor-pointer select-none disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="w-full mt-6 rounded-md bg-tercero py-2.5 text-lg font-semibold text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
                 {loading ? "Guardando..." : "Guardar nueva contraseña"}
               </button>

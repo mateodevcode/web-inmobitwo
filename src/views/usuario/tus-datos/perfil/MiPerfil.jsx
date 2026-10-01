@@ -5,7 +5,7 @@ import { SupportBlock } from "../components/SupportBlock";
 
 const MiPerfil = () => {
   return (
-    <div className="bg-gray-100">
+    <div className="bg-septimo">
       <Perfil />
       <SupportBlock />
       <SiteFooter />

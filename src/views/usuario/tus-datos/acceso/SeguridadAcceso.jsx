@@ -6,7 +6,7 @@ import { SupportBlock } from "../components/SupportBlock";
 
 const SeguridadAcceso = () => {
   return (
-    <div>
+    <div className="bg-septimo">
       <Acceso />
 
       <SupportBlock />

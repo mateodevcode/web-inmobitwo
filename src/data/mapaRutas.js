@@ -187,7 +187,9 @@ export const rutasBackend = [
     seccion: "Auth",
     items: [
       { metodo: "POST", path: "/auth/registro", auth: "pública (rate limit)" },
-      { metodo: "POST", path: "/auth/login", auth: "pública (rate limit)" },
+      { metodo: "POST", path: "/auth/login", auth: "pública (rate limit; requiereOTP si email verificado)" },
+      { metodo: "POST", path: "/auth/verificar-otp-login", auth: "pública (rate limit 5/10min)" },
+      { metodo: "POST", path: "/auth/reenviar-otp-login", auth: "pública (rate limit 5/10min)" },
       { metodo: "POST", path: "/auth/refresh", auth: "pública (usa cookie)" },
       { metodo: "POST", path: "/auth/logout", auth: "pública (usa cookie)" },
       { metodo: "GET", path: "/auth/me", auth: "token" },
