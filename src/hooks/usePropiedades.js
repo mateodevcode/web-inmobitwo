@@ -16,7 +16,11 @@ import { apiBackendFormData } from "@/actions/apiBackendFormData";
 import { apiBackend } from "@/actions/apiBackend";
 
 // Caché a nivel de módulo de GET /propiedades/:id. Se invalida tras PATCH/POST/DELETE.
+// Clave SIEMPRE en string: el id llega como string desde la URL ("3") y como
+// number desde el JSON (3); sin normalizar, el delete nunca acierta ("3" !== 3)
+// y la recarga devuelve datos viejos.
 const propiedadCache = new Map();
+const cacheKey = (id) => String(id);
 
 // Caché del contador de "mis anuncios" (badge del menú de usuario).
 // El endpoint devuelve la lista completa, así que solo se pide cada TTL.
@@ -323,7 +327,7 @@ const usePropiedades = () => {
           return;
         }
 
-        propiedadCache.delete(anuncioId);
+        propiedadCache.delete(cacheKey(anuncioId));
         await guardarCaracteristicas(anuncioId);
         toast.success(message || "Anuncio actualizado", {
           position: "bottom-right",
@@ -380,7 +384,7 @@ const usePropiedades = () => {
   // Actualizar propiedad
   // ─────────────────────────────────────────────
   const actualizarPropiedad = async (e, id, setLoading, formData) => {
-    e.preventDefault();
+    e?.preventDefault?.();
 
     try {
       iniciarCarga();
@@ -395,17 +399,20 @@ const usePropiedades = () => {
       const { success, message, error } = data;
 
       if (success) {
-        propiedadCache.delete(id);
+        propiedadCache.delete(cacheKey(id));
         await cargarPropiedadesMisAnuncios();
         toast.success(message);
-        resetFormDataPropiedad();
       } else {
         console.warn("⚠️ Error:", error);
-        // toast.error(error || message, { position: "bottom-right" });
+        toast.error(error || message || "No se pudo actualizar", {
+          position: "bottom-right",
+        });
       }
+      return data;
     } catch (error) {
       console.error("❌ Error:", error);
       toast.error("Error creando la propiedad", { position: "bottom-right" });
+      return { success: false, error };
     } finally {
       terminarCarga();
       setLoading(false);
@@ -433,7 +440,7 @@ const usePropiedades = () => {
       const { success, message, error } = res;
 
       if (success) {
-        propiedadCache.delete(propiedadId);
+        propiedadCache.delete(cacheKey(propiedadId));
         feedActions.setPropiedades((prev) =>
           prev.filter((propiedad) => propiedad.id !== propiedadId),
         );
@@ -605,7 +612,7 @@ const usePropiedades = () => {
       const { success, message, error } = data;
 
       if (success) {
-        propiedadCache.delete(anuncioId);
+        propiedadCache.delete(cacheKey(anuncioId));
         toast.success(message || "Fotos guardadas correctamente", {
           position: "bottom-right",
         });
@@ -620,6 +627,71 @@ const usePropiedades = () => {
     } catch (error) {
       console.error("❌ Error:", error);
       toast.error("Error subiendo las fotos", { position: "bottom-right" });
+      return { success: false };
+    } finally {
+      terminarCarga();
+      setLoading(false);
+    }
+  };
+
+  // ─────────────────────────────────────────────
+  // Actualizar fotos desde el detalle del anuncio (mis-anuncios).
+  // Igual que subirFotosAnuncio pero sin wizard: admite borrados por
+  // `orden` (imagesToDelete/planosToDelete), no redirige y devuelve data.
+  // ─────────────────────────────────────────────
+  const actualizarFotosPropiedad = async (
+    anuncioId,
+    setLoading,
+    { imagenPrincipal, galeriaFiles, planosFiles, imagesToDelete, planosToDelete, portadaOrden },
+  ) => {
+    if (!anuncioId) {
+      toast.error("ID de propiedad requerido", {
+        position: "bottom-right",
+      });
+      return { success: false };
+    }
+
+    try {
+      iniciarCarga();
+      setLoading(true);
+
+      const formData = new FormData();
+      if (imagenPrincipal) formData.append("imagenPrincipal", imagenPrincipal);
+      (galeriaFiles || []).forEach((file) => formData.append("galeria", file));
+      (planosFiles || []).forEach((file) => formData.append("planos", file));
+      if (imagesToDelete?.length)
+        formData.append("imagesToDelete", JSON.stringify(imagesToDelete));
+      if (planosToDelete?.length)
+        formData.append("planosToDelete", JSON.stringify(planosToDelete));
+      // Swap de portada: orden de la foto de galería a promover.
+      // Si además hay imagenPrincipal, el backend ignora el swap (manda el archivo).
+      if (portadaOrden !== undefined && portadaOrden !== null) {
+        formData.append("portada_orden", String(portadaOrden));
+      }
+
+      const data = await apiBackendFormData(
+        `/propiedades/${anuncioId}`,
+        formData,
+        "PATCH",
+      );
+
+      const { success, message, error } = data;
+
+      if (success) {
+        propiedadCache.delete(cacheKey(anuncioId));
+        toast.success(message || "Fotos actualizadas correctamente", {
+          position: "bottom-right",
+        });
+      } else {
+        console.warn("⚠️ Error:", error);
+        toast.error(error || message, { position: "bottom-right" });
+      }
+      return data;
+    } catch (error) {
+      console.error("❌ Error:", error);
+      toast.error("Error actualizando las fotos", {
+        position: "bottom-right",
+      });
       return { success: false };
     } finally {
       terminarCarga();
@@ -649,8 +721,8 @@ const usePropiedades = () => {
   // cargar propiedad
   // --------------------------------
   const cargarPropiedad = async (anuncioId) => {
-    if (propiedadCache.has(anuncioId)) {
-      setPropiedad(propiedadCache.get(anuncioId));
+    if (propiedadCache.has(cacheKey(anuncioId))) {
+      setPropiedad(propiedadCache.get(cacheKey(anuncioId)));
       return;
     }
     try {
@@ -658,7 +730,7 @@ const usePropiedades = () => {
       const res = await apiBackend(`/propiedades/${anuncioId}`);
       const { success, data } = res;
       if (success) {
-        propiedadCache.set(anuncioId, data);
+        propiedadCache.set(cacheKey(anuncioId), data);
         setPropiedad(data);
       }
     } catch (error) {
@@ -794,6 +866,8 @@ const usePropiedades = () => {
       "POST",
       { features },
     );
+    // El POST ya invalida el caché del servidor; aquí el caché local.
+    if (res?.success) propiedadCache.delete(cacheKey(propiedadId));
     return res;
   };
 
@@ -813,6 +887,7 @@ const usePropiedades = () => {
 
     // Paso 3: fotos del anuncio
     subirFotosAnuncio,
+    actualizarFotosPropiedad,
     continuarSinFotos,
 
     // Cargar propiedad

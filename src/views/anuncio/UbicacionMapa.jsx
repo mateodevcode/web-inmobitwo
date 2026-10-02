@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import * as maplibregl from "maplibre-gl";
 import { BsArrowsAngleExpand } from "react-icons/bs";
 
-export default function UbicacionMapa({ lat, lng }) {
+export default function UbicacionMapa({ lat, lng, zoom = 15 }) {
   const mapContainerRef = useRef(null);
   const instanceRef = useRef(null);
   const coordsRef = useRef({ lat, lng });
@@ -28,7 +28,7 @@ export default function UbicacionMapa({ lat, lng }) {
         layers: [{ id: "osm-tiles", type: "raster", source: "osm" }],
       },
       center: [lng, lat],
-      zoom: 15,
+      zoom,
       attributionControl: false,
     });
 
@@ -52,7 +52,7 @@ export default function UbicacionMapa({ lat, lng }) {
         instanceRef.current = null;
       }
     };
-  }, [lat, lng]);
+  }, [lat, lng, zoom]);
 
   const handleAmpliar = () => {
     window.open(
@@ -65,7 +65,7 @@ export default function UbicacionMapa({ lat, lng }) {
     const map = instanceRef.current;
     const c = coordsRef.current;
     if (map && c.lat && c.lng) {
-      map.flyTo({ center: [c.lng, c.lat], zoom: 15, duration: 800 });
+      map.flyTo({ center: [c.lng, c.lat], zoom, duration: 800 });
     }
   };
 

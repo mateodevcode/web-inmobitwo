@@ -5,13 +5,19 @@ import { AnuncioStatus } from "./AnuncioStatus";
 import { AnuncioInfo } from "./AnuncioInfo";
 
 const ListaAnuncios = ({ propiedades }) => {
-  const [, setLoading] = useState(false);
+  const [togglingId, setTogglingId] = useState(null);
   const { actualizarPropiedad } = usePropiedades();
 
   const handleToggle = async (e, pro) => {
-    await actualizarPropiedad(e, pro.id, setLoading, {
-      estado: pro.estado === "publicado" ? "no_publicado" : "publicado",
-    });
+    if (togglingId) return; // anti doble-clic: dos toggles = vuelve al inicio
+    setTogglingId(pro.id);
+    try {
+      await actualizarPropiedad(e, pro.id, () => {}, {
+        estado: pro.estado === "publicado" ? "no_publicado" : "publicado",
+      });
+    } finally {
+      setTogglingId(null);
+    }
   };
 
   return (
@@ -28,6 +34,7 @@ const ListaAnuncios = ({ propiedades }) => {
             <AnuncioStatus
               estado={pro.estado}
               onToggle={(e) => handleToggle(e, pro)}
+              desactivado={togglingId === pro.id}
             />
             <AnuncioInfo propiedad={pro} />
           </div>

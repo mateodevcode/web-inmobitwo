@@ -111,7 +111,7 @@ const useUsuarios = () => {
         );
 
         if (Object.keys(payload).length === 0) {
-          toast.warn("No hay cambios para guardar", {
+          toast.warning("No hay cambios para guardar", {
             position: "bottom-right",
           });
           return;
