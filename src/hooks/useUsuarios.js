@@ -15,6 +15,8 @@ const useUsuarios = () => {
     terminarCarga,
     setFormDataUsuario,
     formDataUsuario,
+    usuario,
+    setUsuario,
   } = useAppContext();
   const router = useRouter();
   const { resetFormDataUsuario } = useResetForm();
@@ -57,11 +59,28 @@ const useUsuarios = () => {
     imagenPrincipal,
     eliminarImagenPrincipal = false, // 👈 nuevo parámetro
   ) => {
-    e.preventDefault();
+    e?.preventDefault?.();
+
+    if (!id) {
+      toast.error("No se pudo identificar al usuario", {
+        position: "bottom-right",
+      });
+      return { success: false };
+    }
 
     try {
       iniciarCarga();
       setLoading(true);
+
+      // Un array vacío en `telefonos` el backend lo valida como [""] en
+      // multipart (FormData lo serializa a "") y en JSON pone `telefono`
+      // a null en BD. Se descarta siempre: el primario viaja en `telefono`.
+      const esVacioInutil = (value) =>
+        value === undefined ||
+        value === null ||
+        value === "" ||
+        (Array.isArray(value) &&
+          (value.length === 0 || value.every((t) => !t)));
 
       let data;
 
@@ -71,7 +90,7 @@ const useUsuarios = () => {
         fd.append("imagenPrincipal", imagenPrincipal);
 
         Object.entries(formData).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
+          if (!esVacioInutil(value)) {
             fd.append(key, value);
           }
         });
@@ -80,10 +99,7 @@ const useUsuarios = () => {
       } else if (eliminarImagenPrincipal) {
         // QUIERE ELIMINAR LA FOTO (sin subir una nueva) → JSON normal
         const payload = Object.fromEntries(
-          Object.entries(formData).filter(
-            ([, value]) =>
-              value !== undefined && value !== null && value !== "",
-          ),
+          Object.entries(formData).filter(([, value]) => !esVacioInutil(value)),
         );
         payload.eliminarImagenPrincipal = true;
 
@@ -91,10 +107,7 @@ const useUsuarios = () => {
       } else {
         // SIN CAMBIOS DE IMAGEN → JSON normal
         const payload = Object.fromEntries(
-          Object.entries(formData).filter(
-            ([, value]) =>
-              value !== undefined && value !== null && value !== "",
-          ),
+          Object.entries(formData).filter(([, value]) => !esVacioInutil(value)),
         );
 
         if (Object.keys(payload).length === 0) {
@@ -107,12 +120,23 @@ const useUsuarios = () => {
         data = await apiBackend(`/usuarios/${id}`, "PATCH", payload);
       }
 
-      const { success, message, error } = data;
+      const { success, message, error, data: usuarioActualizado } = data;
 
       if (success) {
         toast.success(message || "Usuario actualizado correctamente", {
           position: "bottom-right",
         });
+        // Sincroniza la sesión (header/avatar usan `usuario`, no el form).
+        // El backend devuelve el usuario actualizado en `data`.
+        if (usuarioActualizado && typeof usuarioActualizado === "object") {
+          try {
+            const sesionActualizada = { ...(usuario || {}), ...usuarioActualizado };
+            setUsuario?.(sesionActualizada);
+            localStorage.setItem("usuario", JSON.stringify(sesionActualizada));
+          } catch {
+            /* storage no disponible: la sesión en memoria ya quedó actualizada */
+          }
+        }
       } else {
         console.warn("⚠️ Error:", error);
         toast.error(error || message, { position: "bottom-right" });

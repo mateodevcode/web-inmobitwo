@@ -172,6 +172,7 @@ export const AppProvider = ({ children }) => {
       value={{
         // Auth
         usuario,
+        setUsuario,
         authListo,
         loadingAuth,
         setLoadingAuth,

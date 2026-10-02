@@ -1,8 +1,8 @@
 export const COUNTRY_CODES = [
+  { id: "co", code: "+57", flag: "🇨🇴", name: "Colombia" },
   { id: "es", code: "+34", flag: "🇪🇸", name: "España" },
   { id: "mx", code: "+52", flag: "🇲🇽", name: "México" },
   { id: "ar", code: "+54", flag: "🇦🇷", name: "Argentina" },
-  { id: "co", code: "+57", flag: "🇨🇴", name: "Colombia" },
   { id: "us", code: "+1", flag: "🇺🇸", name: "Estados Unidos" },
 ];
 
