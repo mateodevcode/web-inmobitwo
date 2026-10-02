@@ -4,13 +4,25 @@ export function AvatarBlock({
   usuario,
   formDataUsuario,
   editarUsuario,
+  previewUrl,
+  tamano = "lg",
   onFileChange,
   onEliminarFoto,
 }) {
+  const nombre = formDataUsuario?.name ?? usuario?.name ?? "";
+  const email = formDataUsuario?.email ?? usuario?.email ?? "";
+  const imageUrl = formDataUsuario?.image_url ?? usuario?.image_url ?? null;
+
   return (
     <div className="my-4">
       <div className="flex gap-3 md:items-center items-start">
-        <PerfilAvatar usuario={usuario} />
+        <PerfilAvatar
+          usuario={usuario}
+          tamano={tamano}
+          previewUrl={previewUrl}
+          imageUrl={imageUrl}
+          nombre={nombre}
+        />
         <div className="flex flex-col">
           {editarUsuario ? (
             <p className="text-sm md:text-base text-segundo/60">
@@ -18,38 +30,28 @@ export function AvatarBlock({
             </p>
           ) : (
             <p className="font-semibold text-segundo text-base md:text-lg">
-              {formDataUsuario.name}
+              {nombre}
             </p>
           )}
           {editarUsuario ? (
             <div className="text-xl flex items-center gap-6 font-montserrat">
-              {!formDataUsuario.image_url && (
-                <PhotoUploadButton
-                  label="Subir foto"
-                  onFileChange={onFileChange}
-                />
-              )}
-              {formDataUsuario.image_url && (
-                <PhotoUploadButton
-                  label="Cambiar foto font-montserrat"
-                  onFileChange={onFileChange}
-                />
-              )}
+              <PhotoUploadButton
+                label={imageUrl || previewUrl ? "Cambiar foto" : "Subir foto"}
+                onFileChange={onFileChange}
+              />
 
-              {formDataUsuario.image_url && (
+              {(imageUrl || previewUrl) && (
                 <button
                   type="button"
                   onClick={onEliminarFoto}
-                  className="text-decimo font-semibold hover:underline hover:text-decimo/80 cursor-pointer select-none active:scale-95 duration-75 transition"
+                  className="text-decimo font-semibold hover:underline hover:text-decimo/80 cursor-pointer select-none active:scale-95 duration-75 transition font-montserrat text-sm md:text-base"
                 >
                   Eliminar foto
                 </button>
               )}
             </div>
           ) : (
-            <p className="text-base md:text-lg lowercase -mt-1">
-              {formDataUsuario.email}
-            </p>
+            <p className="text-base md:text-lg lowercase -mt-1">{email}</p>
           )}
         </div>
       </div>
@@ -59,7 +61,7 @@ export function AvatarBlock({
 
 function PhotoUploadButton({ label, onFileChange }) {
   return (
-    <button className="text-blue-700 font-semibold hover:underline hover:text-blue-600 cursor-pointer select-none active:scale-95 duration-75 transition relative text-sm md:text-base">
+    <button className="text-decimo font-semibold hover:underline hover:text-decimo/80 cursor-pointer select-none active:scale-95 duration-75 transition relative text-sm md:text-base">
       <input
         type="file"
         accept="image/*"

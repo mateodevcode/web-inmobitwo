@@ -64,6 +64,7 @@ export const FORM_DATA_PROPIEDAD_INICIAL = {
 };
 
 export const FORM_DATA_USUARIO_INICIAL = {
+  id: "",
   name: "",
   email: "",
   password: "",

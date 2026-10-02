@@ -16,13 +16,13 @@ const Perfil = ({ tamano = "lg" }) => {
     usuario,
     formDataUsuario,
     editarUsuario,
-    setEditarUsuario,
+    iniciarEdicion,
     loading,
     handleChange,
     handleChangeFile,
-    setImagenPrincipal,
-    setPreviewPrincipal,
+    previewPrincipal,
     handleGuardar,
+    handleCancelar,
     handleEliminarFoto,
   } = usePerfilForm();
 
@@ -41,7 +41,7 @@ const Perfil = ({ tamano = "lg" }) => {
         </div>
 
         {/* Tus datos */}
-        <div className="w-12/12 md:w-150 bg-stone-50 shadow-sm shadow-segundo/20 p-6 md:p-8 flex flex-col justify-between border border-segundo/10">
+        <div className="w-full md:w-150 bg-stone-50 shadow-sm shadow-segundo/20 p-6 md:p-8 flex flex-col justify-between border border-segundo/10">
           <div>
             <h3 className="text-xl font-bold text-segundo">Tus datos</h3>
             <p className="text-base md:text-lg mt-2 text-segundo/80">
@@ -52,9 +52,9 @@ const Perfil = ({ tamano = "lg" }) => {
               usuario={usuario}
               formDataUsuario={formDataUsuario}
               editarUsuario={editarUsuario}
-              onFileChange={(e) =>
-                handleChangeFile(e, setImagenPrincipal, setPreviewPrincipal)
-              }
+              previewUrl={previewPrincipal}
+              tamano={tamano}
+              onFileChange={handleChangeFile}
               onEliminarFoto={handleEliminarFoto}
             />
           </div>
@@ -72,10 +72,10 @@ const Perfil = ({ tamano = "lg" }) => {
             <SaveActions
               loading={loading}
               onGuardar={handleGuardar}
-              onCancelar={() => setEditarUsuario(!editarUsuario)}
+              onCancelar={handleCancelar}
             />
           ) : (
-            <EditToggle onToggle={() => setEditarUsuario(!editarUsuario)} />
+            <EditToggle onToggle={iniciarEdicion} />
           )}
         </div>
 

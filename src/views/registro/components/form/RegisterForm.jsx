@@ -36,7 +36,7 @@ export function RegisterForm({ values, onChange, onSubmit }) {
         name="telefono"
         value={values.telefono}
         onChange={onChange}
-        placeholder="+34 600 000 000"
+        placeholder="+57 300 123 4567"
       />
 
       <button

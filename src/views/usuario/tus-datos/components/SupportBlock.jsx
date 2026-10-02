@@ -1,3 +1,5 @@
+import { numero_atencion_cliente } from "@/data/numero_atencion_cliente";
+
 export function SupportBlock() {
   return (
     <>
@@ -6,7 +8,7 @@ export function SupportBlock() {
       <div className="w-full flex items-center justify-center font-poppins">
         <div className="w-10/12 flex flex-col my-10 gap-2">
           <h3 className="text-xl md:text-2xl font-semibold text-black">
-            ¿Problemas? Llámanos al 917882791
+            ¿Problemas? Llámanos al {numero_atencion_cliente}
           </h3>
           <p className="text-base md:text-lg">
             Atención personalizada para clientes de lunes a viernes de 9:00 a

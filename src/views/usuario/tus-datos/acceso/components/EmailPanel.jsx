@@ -1,3 +1,4 @@
+import { numero_atencion_cliente } from "@/data/numero_atencion_cliente";
 import { phoneFormatter } from "@/lib/phoneFormatter";
 
 export function EmailPanel({ email, telefono }) {
@@ -18,7 +19,7 @@ export function EmailPanel({ email, telefono }) {
 
       <button className="flex items-center gap-2 text-sexto mt-4">
         <p className="text-base md:text-lg">
-          Si quieres modificar tu email llama al 917882791
+          Si quieres modificar tu email llama al {numero_atencion_cliente}
         </p>
       </button>
     </div>

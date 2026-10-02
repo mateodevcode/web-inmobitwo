@@ -8,17 +8,20 @@ const TAMANOS = {
   lg: "w-10 h-10 text-base",
 };
 
-export function PerfilAvatar({ usuario, tamano = "lg" }) {
-  const { name } = usuario;
+export function PerfilAvatar({ usuario, tamano = "lg", previewUrl, imageUrl, nombre }) {
   const sizeClass = TAMANOS[tamano] || TAMANOS.md;
+  const name = nombre ?? usuario?.name ?? "";
+  const id = usuario?.id ?? "";
+  // Prioridad: preview local > foto guardada > iniciales.
+  const src = previewUrl || imageUrl || usuario?.image_url || null;
 
-  if (usuario.image_url) {
+  if (src) {
     return (
       <Image
-        src={usuario.image_url}
-        alt={name}
-        width={500}
-        height={500}
+        src={src}
+        alt={name || "Foto de perfil"}
+        width={160}
+        height={160}
         className={`${sizeClass} rounded-full object-cover border-2 border-white shadow-sm shrink-0`}
       />
     );
@@ -27,7 +30,7 @@ export function PerfilAvatar({ usuario, tamano = "lg" }) {
   return (
     <div
       className={`${sizeClass} p-4 rounded-full font-semibold flex items-center justify-center hover:shadow shadow-black/10 active:scale-95 duration-75 transition shrink-0`}
-      style={getColorForOrg(usuario.id, name)}
+      style={getColorForOrg(id, name)}
     >
       {getInitials(name)}
     </div>
