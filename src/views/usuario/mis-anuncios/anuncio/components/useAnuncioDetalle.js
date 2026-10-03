@@ -3,15 +3,13 @@ import { useParams, usePathname } from "next/navigation";
 import { useAppContext } from "@/context/AppContext.js";
 import usePropiedades from "@/hooks/usePropiedades";
 import useTracking from "@/hooks/useTracking";
-import useLeads from "@/hooks/useLeads";
 
 export const useAnuncioDetalle = () => {
   const { id } = useParams();
   const pathname = usePathname();
   const segmento = pathname.split("/usuario/mis-anuncios/anuncio/")[1];
-  const { propiedad, cargandoGlobal, leads } = useAppContext();
+  const { propiedad, cargandoGlobal } = useAppContext();
   const { cargarPropiedad } = usePropiedades();
-  const { cargarLeads } = useLeads();
   const { dispararEventoYRevisar } = useTracking();
   const [loading, setLoading] = useState(false);
   const tiempoEntrada = useRef(0);
@@ -32,12 +30,10 @@ export const useAnuncioDetalle = () => {
   useEffect(() => {
     if (segmento) {
       cargarPropiedad(segmento);
-      // Para el conteo de mensajes de StatsCard (GET /leads del dueño).
-      cargarLeads();
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [segmento]);
 
-  return { propiedad, cargandoGlobal, loading, setLoading, leads };
+  return { propiedad, cargandoGlobal, loading, setLoading };
 };

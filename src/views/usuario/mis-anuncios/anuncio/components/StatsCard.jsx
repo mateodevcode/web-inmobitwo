@@ -1,5 +1,9 @@
+import { useEffect, useState } from "react";
+import { IoEyeOutline } from "react-icons/io5";
+import { FaRegHeart } from "react-icons/fa";
 import { MdOutlineMarkUnreadChatAlt } from "react-icons/md";
 import { DetalleCard } from "./DetalleCard";
+import { apiBackend } from "@/actions/apiBackend.js";
 
 const formatoFecha = (iso) => {
   if (!iso) return null;
@@ -12,13 +16,33 @@ const formatoFecha = (iso) => {
   }).format(fecha);
 };
 
-export function StatsCard({ propiedad, leads = [] }) {
-  const mensajes = leads.filter((l) => l?.propiedad_id === propiedad?.id);
+export function StatsCard({ propiedad }) {
+  const [stats, setStats] = useState(null);
+
+  useEffect(() => {
+    if (!propiedad?.id) return;
+    let vivo = true;
+    (async () => {
+      const res = await apiBackend(`/propiedades/${propiedad.id}/stats`);
+      if (vivo && res?.success) setStats(res.data);
+    })();
+    return () => {
+      vivo = false;
+    };
+  }, [propiedad?.id]);
+
   const ultimaPublicacion = formatoFecha(
     propiedad?.updated_at ?? propiedad?.created_at,
   );
-  // Vistas y favoritos aún no tienen endpoint agregado (Fase 4):
-  // no se muestran números inventados.
+  const items = [
+    { Icon: IoEyeOutline, label: "Vistas", value: stats?.vistas },
+    { Icon: FaRegHeart, label: "Favoritos", value: stats?.favoritos },
+    {
+      Icon: MdOutlineMarkUnreadChatAlt,
+      label: "Mensajes",
+      value: stats?.mensajes,
+    },
+  ];
 
   return (
     <DetalleCard title="Estadísticas">
@@ -28,11 +52,16 @@ export function StatsCard({ propiedad, leads = [] }) {
           : "Aún sin fecha de publicación."}
       </p>
       <div className="flex items-center gap-4 md:gap-8 mt-4 flex-wrap">
-        <div className="text-segundo flex items-center gap-4 text-base">
-          <MdOutlineMarkUnreadChatAlt />
-          <p className="text-base">Mensajes</p>
-          <p className="font-semibold text-base">{mensajes.length}</p>
-        </div>
+        {items.map(({ Icon, label, value }) => (
+          <div
+            key={label}
+            className="text-segundo flex items-center gap-4 text-base"
+          >
+            <Icon />
+            <p className="text-base">{label}</p>
+            <p className="font-semibold text-base">{value ?? "—"}</p>
+          </div>
+        ))}
       </div>
     </DetalleCard>
   );

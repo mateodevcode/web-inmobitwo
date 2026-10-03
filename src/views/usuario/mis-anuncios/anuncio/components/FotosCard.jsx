@@ -231,6 +231,7 @@ export function FotosCard({ propiedad }) {
               fill
               sizes="(max-width: 768px) 100vw, 400px"
               className="object-cover"
+              priority
             />
             <span className="absolute top-2 left-2 bg-segundo/80 text-primero text-xs font-semibold px-2 py-1 rounded">
               Principal

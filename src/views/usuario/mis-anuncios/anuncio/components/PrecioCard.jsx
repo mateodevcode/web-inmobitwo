@@ -3,6 +3,11 @@ import { formatPrecioCompleto } from "@/utils/formatPrecio";
 import { DetalleCard } from "./DetalleCard";
 import { CardActionLink } from "./CardActionLink";
 import { useCardEdit, aEnteroSeguro } from "./useCardEdit";
+import {
+  armarPrecioInput,
+  usePrecioSugerido,
+} from "./usePrecioSugerido";
+import { SugerenciaPrecio } from "./SugerenciaPrecio";
 
 const Stat = ({ children }) => (
   <>
@@ -71,6 +76,20 @@ export function PrecioCard({ propiedad }) {
   const { editando, loading, draft, iniciar, cancelar, set, guardar } =
     useCardEdit(propiedad, campos);
   const esArriendo = propiedad?.operacion_slug === "arriendo";
+  const esVenta = !esArriendo;
+  // Sugerencia del algoritmo (solo venta): en lectura valida el precio actual,
+  // en edición se recalcula con el draft y valida lo que escribes.
+  const entradaPrecio = editando
+    ? armarPrecioInput(propiedad, {
+        precio: undefined,
+        private_area: draft?.private_area ?? undefined,
+        constructed_area: draft?.constructed_area ?? undefined,
+      })
+    : armarPrecioInput(propiedad);
+  const { sugerido, validacion, cargando } = usePrecioSugerido(entradaPrecio, {
+    precioUsuario: editando ? (draft?.precio ?? "") : (propiedad?.precio ?? ""),
+    activo: esVenta,
+  });
 
   return (
     <DetalleCard
@@ -106,18 +125,27 @@ export function PrecioCard({ propiedad }) {
       }
     >
       {editando ? (
-        <div className="flex gap-4 mt-4 flex-wrap">
-          {campos.map((campo) => (
-            <FilaNumero
-              key={campo}
-              campo={campo}
-              valor={propiedad?.[campo]}
-              draft={draft}
-              editando
-              onChange={set}
+        <>
+          <div className="flex gap-4 mt-4 flex-wrap">
+            {campos.map((campo) => (
+              <FilaNumero
+                key={campo}
+                campo={campo}
+                valor={propiedad?.[campo]}
+                draft={draft}
+                editando
+                onChange={set}
+              />
+            ))}
+          </div>
+          {esVenta && (
+            <SugerenciaPrecio
+              sugerido={sugerido}
+              validacion={validacion}
+              cargando={cargando}
             />
-          ))}
-        </div>
+          )}
+        </>
       ) : (
         <div className="flex items-center gap-4 mt-4 flex-wrap">
           <p className="text-segundo font-bold">
@@ -159,6 +187,13 @@ export function PrecioCard({ propiedad }) {
           )}
           {propiedad?.zona && <Stat>{propiedad.zona}</Stat>}
         </div>
+      )}
+      {!editando && esVenta && (
+        <SugerenciaPrecio
+          sugerido={sugerido}
+          validacion={validacion}
+          cargando={cargando}
+        />
       )}
     </DetalleCard>
   );
