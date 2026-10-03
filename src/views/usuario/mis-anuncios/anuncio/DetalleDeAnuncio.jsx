@@ -16,7 +16,7 @@ import {
 } from "./components/InfoCards";
 
 const DetalleDeAnuncio = () => {
-  const { propiedad, cargandoGlobal, setLoading, leads } = useAnuncioDetalle();
+  const { propiedad, cargandoGlobal, setLoading } = useAnuncioDetalle();
   const { cargarPropiedad } = usePropiedades();
 
   if (cargandoGlobal) {
@@ -51,15 +51,16 @@ const DetalleDeAnuncio = () => {
     <div className="flex flex-col font-montserrat relative items-center mb-20">
       <HeaderInmobitwo />
       <DetalleTopBar />
+
       <DetalleEstado
         propiedad={propiedad}
         setLoading={setLoading}
         onRecargar={cargarPropiedad}
       />
       <PrecioCard propiedad={propiedad} />
-      <DetallesCard propiedad={propiedad} />
       <FotosCard propiedad={propiedad} />
-      <StatsCard propiedad={propiedad} leads={leads} />
+      <DetallesCard propiedad={propiedad} />
+      <StatsCard propiedad={propiedad} />
       <ContactoCard propiedad={propiedad} />
       <DireccionCard propiedad={propiedad} />
       <DescripcionCard propiedad={propiedad} />

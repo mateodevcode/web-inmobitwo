@@ -10,6 +10,11 @@ import { DescriptionEditor } from "@/views/publicar-anuncio/paso-2/descripcion/D
 import { stripTags } from "@/views/publicar-anuncio/paso-2/descripcion/editorConfig";
 import UbicacionMapa from "@/views/anuncio/UbicacionMapa";
 import AddressMapModal from "@/views/publicar-anuncio/paso-1/ubicacion/AddressMapModal";
+import {
+  armarPrecioInput,
+  usePrecioSugerido,
+} from "./usePrecioSugerido";
+import { SugerenciaPrecio } from "./SugerenciaPrecio";
 
 const inputCls =
   "border border-segundo/50 p-2.5 w-full text-segundo bg-white";
@@ -247,6 +252,19 @@ export function ServiciosCard({ propiedad }) {
   const [activos, setActivos] = useState(null); // { code: valor }
 
   const actuales = propiedad?.caracteristicas ?? {};
+  const esVentaServicios = propiedad?.operacion_slug !== "arriendo";
+  // Sugerencia viva (solo venta): se recalcula al marcar/quitar servicios.
+  const { sugerido, validacion, cargando } = usePrecioSugerido(
+    armarPrecioInput(
+      propiedad,
+      {},
+      Object.keys(activos ?? {}),
+    ),
+    {
+      precioUsuario: propiedad?.precio ?? "",
+      activo: editando && esVentaServicios,
+    },
+  );
   const categoriasActuales = Object.keys(actuales);
   const catalogo = catalogos.caracteristicas ?? {};
   const categoriasCatalogo = Object.keys(catalogo);
@@ -361,10 +379,11 @@ export function ServiciosCard({ propiedad }) {
       }
     >
       {editando ? (
-        <div className="mt-4 flex flex-col gap-5">
-          {categoriasCatalogo.length === 0 && (
-            <p className="text-segundo/60">Cargando servicios...</p>
-          )}
+        <>
+          <div className="mt-4 flex flex-col gap-5">
+            {categoriasCatalogo.length === 0 && (
+              <p className="text-segundo/60">Cargando servicios...</p>
+            )}
           {categoriasCatalogo.map((cat) => (
             <div key={cat}>
               <p className="text-sm font-bold text-segundo uppercase tracking-wide mb-2">
@@ -420,7 +439,15 @@ export function ServiciosCard({ propiedad }) {
               </div>
             </div>
           ))}
-        </div>
+          </div>
+          {esVentaServicios && (
+            <SugerenciaPrecio
+              sugerido={sugerido}
+              validacion={validacion}
+              cargando={cargando}
+            />
+          )}
+        </>
       ) : categoriasActuales.length > 0 ? (
         <div className="mt-4">
           {categoriasActuales.map((cat) => (
