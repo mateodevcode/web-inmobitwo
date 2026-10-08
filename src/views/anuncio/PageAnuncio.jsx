@@ -1,8 +1,9 @@
 import DetallePropiedad from "./anuncio-id/DetallePropiedad";
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import usePropiedades from "../../hooks/usePropiedades";
 import { useAppContext } from "@/context/AppContext.js";
 import useTracking from "@/hooks/useTracking";
+import useVistaDetalle from "@/hooks/useVistaDetalle";
 import NavbarHome from "@/components/header-home/NavbarHome";
 import SmartLoader from "@/components/loader/SmartLoader";
 import BarraNavegacionTauri from "../../components/barra-navegacion/BarraNavegacionTauri";
@@ -15,8 +16,9 @@ const PageAnuncio = () => {
   const { propiedad } = useAppContext();
   const router = useRouter();
   const { dispararEventoYRevisar } = useTracking();
-
-  const idVistaRegistradaRef = useRef(null);
+  // Vista de detalle (algoritmo Fase 6): acumulador de tiempo visible con
+  // token firmado. Reemplaza el antiguo disparo inmediato de vista_propiedad.
+  useVistaDetalle(id);
 
   const navState = readNavState();
   const { listaIds, posicion, total, filtroLabel, searchUrl } = navState;
@@ -41,14 +43,6 @@ const PageAnuncio = () => {
         dispararEventoYRevisar(id, "tiempo_en_pagina", { segundos });
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  useEffect(() => {
-    if (id && idVistaRegistradaRef.current !== id) {
-      dispararEventoYRevisar(id, "vista_propiedad");
-      idVistaRegistradaRef.current = id;
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 

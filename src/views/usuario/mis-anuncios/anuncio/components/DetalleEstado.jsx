@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { MdOutlineRefresh } from "react-icons/md";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { MdOutlineRefresh, MdOutlineVisibility } from "react-icons/md";
 import usePropiedades from "@/hooks/usePropiedades";
 import { apiBackend } from "@/actions/apiBackend.js";
 
@@ -7,11 +9,22 @@ import { apiBackend } from "@/actions/apiBackend.js";
 // {dirección}, {ciudad}, {depto}"). Se puede regenerar cuando cambian esos
 // datos, o editarse a mano (pre-llenado, máx 120, como el Bloque 8 del wizard).
 export function DetalleEstado({ propiedad, setLoading, onRecargar }) {
+  const router = useRouter();
   const { actualizarPropiedad } = usePropiedades();
   const [sugerido, setSugerido] = useState(null);
   const [regenerando, setRegenerando] = useState(false);
   const [cambiandoEstado, setCambiandoEstado] = useState(false);
   const publicado = propiedad.estado === "publicado";
+
+  const verAnuncio = () => {
+    if (!publicado) {
+      toast.error("Primero debes publicar tu anuncio para verlo.", {
+        position: "bottom-right",
+      });
+      return;
+    }
+    router.push(`/inmueble/${propiedad.id}`);
+  };
 
   const handleToggle = async (e) => {
     if (cambiandoEstado) return; // anti doble-clic
@@ -97,10 +110,10 @@ export function DetalleEstado({ propiedad, setLoading, onRecargar }) {
     <div className="w-full py-5">
       <div className="w-9/12 mx-auto">
         <div className="flex items-start gap-3">
-            <p className="text-xl md:text-2xl font-semibold text-segundo">
-              {`${propiedad?.titulo || "Anuncio"}`}
-            </p>
-          </div>
+          <p className="text-xl md:text-2xl font-semibold text-segundo">
+            {`${propiedad?.titulo || "Anuncio"}`}
+          </p>
+        </div>
         {desactualizado && (
           <div className="mt-3 bg-tercero/10 border border-tercero/30 rounded-md p-3 max-w-2xl">
             <p className="text-sm text-segundo">
@@ -127,18 +140,28 @@ export function DetalleEstado({ propiedad, setLoading, onRecargar }) {
           {`Anuncio gratuito. (Cod. ${propiedad?.id})`}
         </p>
 
-        <button
-          type="button"
-          onClick={handleToggle}
-          disabled={cambiandoEstado}
-          className="rounded-md bg-tercero px-6 py-2 text-lg md:text-lg font-semibold font-montserrat text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none mt-2 md:mt-8 disabled:opacity-50 disabled:cursor-wait"
-        >
-          {cambiandoEstado
-            ? "Guardando..."
-            : publicado
-              ? "Desactivar"
-              : "Reactivar gratis"}
-        </button>
+        <div className="flex items-center gap-4 mt-2 md:mt-8 flex-wrap justify-between w-8/12">
+          <button
+            type="button"
+            onClick={handleToggle}
+            disabled={cambiandoEstado}
+            className="rounded-md bg-tercero px-6 py-2 text-lg md:text-lg font-semibold font-montserrat text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none disabled:opacity-50 disabled:cursor-wait"
+          >
+            {cambiandoEstado
+              ? "Guardando..."
+              : publicado
+                ? "Desactivar"
+                : "Reactivar gratis"}
+          </button>
+          <button
+            type="button"
+            onClick={verAnuncio}
+            className="rounded-md border border-segundo/40 px-6 py-2 text-lg md:text-lg font-semibold font-montserrat text-segundo hover:bg-segundo/10 active:scale-[0.99] cursor-pointer select-none flex items-center gap-2"
+          >
+            <MdOutlineVisibility className="text-xl" />
+            Ver mi anuncio
+          </button>
+        </div>
       </div>
     </div>
   );
