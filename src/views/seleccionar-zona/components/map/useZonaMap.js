@@ -75,6 +75,9 @@ export function useZonaMap({
   });
 
   const doRefresh = (hov) => {
+    // No repintar capas de selección en modo dibujo: cierra la carrera de
+    // fetches de municipios/barrios que queden en vuelo al cambiar de modo.
+    if (drawModeRef.current) return;
     refreshLayers(
       mapRef.current,
       rawRefs,
@@ -232,13 +235,25 @@ export function useZonaMap({
     if (!map || !map.isStyleLoaded() || !mapReady) return;
 
     if (drawMode) {
+      // Reset total al entrar a dibujo (simetría con salir de dibujo):
+      // capas, subdivisiones cargadas, marcadores, popup y hover.
+      // El zoom se conserva donde estaba el cliente.
       removeSelectLayers(map);
       clearDrawLayers(map);
+      mpioRawRef.current = null;
+      barrioRawRef.current = null;
+      clearPropMarkers(propMarkersRef);
+      if (popupRef.current) {
+        popupRef.current.remove();
+        popupRef.current = null;
+      }
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setHovCode(null);
+
       loadDrawBoundaries(map, setLoading);
 
       // Reset imperativo del modo dibujo (Geoman es imperativo; no hay evento
       // previo donde hacerlo porque drawMode llega por props).
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDrawArmed(false);
 
       if (!gmRef.current) {
