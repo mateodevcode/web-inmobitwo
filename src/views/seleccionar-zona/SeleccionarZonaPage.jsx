@@ -48,10 +48,6 @@ export default function SeleccionarZonaPage() {
   } = usePolygonSearch(operation, tipoInmueble);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
-  const handleSelectZone = (zone, op, tipo) => {
-    selectZone(zone, op, tipo);
-  };
-
   const handleToggleDrawMode = (active) => {
     setDrawMode(active);
     if (active) {
@@ -61,6 +57,16 @@ export default function SeleccionarZonaPage() {
       router.replace(pathname);
       clearPolygon();
     }
+  };
+
+  const handleSelectZone = (zone, op, tipo) => {
+    // Invariante: nunca "zona seleccionada" + "modo dibujo" a la vez.
+    // Si se elige una zona (p. ej. desde el buscador del header) estando
+    // en modo dibujo, primero se sale del modo dibujo.
+    if (drawMode) {
+      handleToggleDrawMode(false);
+    }
+    selectZone(zone, op, tipo);
   };
 
   const handleVerInmuebles = () => {
