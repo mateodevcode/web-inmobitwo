@@ -27,7 +27,7 @@ const Acceso = () => {
     if (usuario?.id) {
       cargarUsuario(usuario.id);
     }
-  }, [usuario?.id]);
+  }, [usuario?.id]); 
 
   return (
     <div className="flex flex-col font-montserrat relative items-center">

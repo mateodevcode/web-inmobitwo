@@ -41,7 +41,7 @@ const Perfil = ({ tamano = "lg" }) => {
         </div>
 
         {/* Tus datos */}
-        <div className="w-full md:w-150 bg-stone-50 shadow-sm shadow-segundo/20 p-6 md:p-8 flex flex-col justify-between border border-segundo/10">
+        <div className="w-full md:w-190 bg-stone-50 shadow-sm shadow-segundo/20 p-6 md:p-8 flex flex-col justify-between border border-segundo/10">
           <div>
             <h3 className="text-xl font-bold text-segundo">Tus datos</h3>
             <p className="text-base md:text-lg mt-2 text-segundo/80">

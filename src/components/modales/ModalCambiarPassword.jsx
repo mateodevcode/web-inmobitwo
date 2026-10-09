@@ -89,7 +89,7 @@ const ModalCambiarPassword = () => {
           onClick={cerrarModal}
         >
           <motion.div
-            className="bg-primero w-full max-w-md mx-4 rounded-md shadow-xl overflow-hidden"
+            className="bg-primero w-full max-w-120 mx-4 rounded-md shadow-xl overflow-hidden"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
@@ -203,7 +203,7 @@ const ModalCambiarPassword = () => {
               <button
                 type="submit"
                 disabled={!puedeGuardar || loading}
-                className="w-full mt-6 rounded-md bg-tercero py-2.5 text-lg font-semibold text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="w-full mt-6 rounded-md bg-tercero py-2.5 text-base font-semibold text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none disabled:opacity-40 disabled:cursor-not-allowed transition"
               >
                 {loading ? "Guardando..." : "Guardar nueva contraseña"}
               </button>

@@ -12,7 +12,7 @@ export function UnverifiedPanel({
   onConfirmarCodigo,
 }) {
   return (
-    <div className="w-full md:w-150 bg-stone-50 shadow-sm shadow-segundo/20 p-6 md:p-8 flex flex-col justify-between border border-segundo/10 mt-8">
+    <div className="w-full md:w-190 bg-stone-50 shadow-sm shadow-segundo/20 p-6 md:p-8 flex flex-col justify-between border border-segundo/10 mt-8">
       <div>
         <h3 className="text-xl font-bold text-segundo">
           Verifica tu correo electrónico para proteger tu cuenta

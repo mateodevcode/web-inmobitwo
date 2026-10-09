@@ -28,7 +28,7 @@ export function CodeForm({
         <button
           type="submit"
           disabled={loading || codigoInput.length !== 6}
-          className="bg-segundo text-primero px-6 py-2 rounded-md font-semibold hover:bg-segundo/80 disabled:opacity-40 disabled:cursor-not-allowed font-montserrat"
+          className="bg-segundo text-primero px-6 py-2 rounded-md font-semibold hover:bg-segundo/80 disabled:opacity-40 disabled:cursor-not-allowed font-montserrat text-base"
         >
           {loading ? "Verificando..." : "Confirmar código"}
         </button>
@@ -36,7 +36,7 @@ export function CodeForm({
           type="button"
           onClick={onEnviarCodigo}
           disabled={loading}
-          className="text-decimo font-semibold hover:underline font-montserrat"
+          className="text-decimo font-semibold hover:underline font-montserrat text-base"
         >
           Reenviar código
         </button>
