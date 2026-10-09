@@ -25,14 +25,14 @@ export function SaveActions({ loading, onGuardar, onCancelar }) {
   return (
     <div className="flex items-center gap-4">
       <button
-        className="rounded-md bg-tercero px-6 py-3 md:py-2 text-sm md:text-lg font-semibold text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none mt-8 font-montserrat"
+        className="rounded-md bg-tercero px-6 py-3 md:py-2 text-sm md:text-base font-semibold text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none mt-8 font-montserrat"
         type="button"
         onClick={onGuardar}
       >
         {loading ? "Cargando" : "Guardar cambios"}
       </button>
       <button
-        className="font-montserrat rounded-md bg-segundo px-6 py-3 md:py-2 text-sm md:text-lg font-semibold text-primero hover:bg-segundo/80 active:scale-[0.99] cursor-pointer select-none mt-8"
+        className="font-montserrat rounded-md bg-segundo px-6 py-3 md:py-2 text-sm md:text-base font-semibold text-primero hover:bg-segundo/80 active:scale-[0.99] cursor-pointer select-none mt-8"
         type="button"
         onClick={onCancelar}
       >

@@ -2,7 +2,7 @@ import { FaCheckCircle } from "react-icons/fa";
 
 export function VerifiedPanel({ email, loading, onDesactivar }) {
   return (
-    <div className="w-full md:w-150 bg-stone-50 shadow-sm shadow-segundo/20 p-8 flex flex-col justify-between border border-segundo/10 mt-8">
+    <div className="w-full md:w-190 bg-stone-50 shadow-sm shadow-segundo/20 p-8 flex flex-col justify-between border border-segundo/10 mt-8">
       <div>
         <h3 className="text-lg md:text-xl font-bold text-segundo">
           Protege tu cuenta con verificación por email al iniciar sesión

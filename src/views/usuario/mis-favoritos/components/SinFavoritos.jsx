@@ -20,7 +20,7 @@ const SinFavoritos = () => {
 
       <button
         onClick={() => router.push("/")}
-        className="mt-8 bg-segundo text-primero px-8 py-3 rounded-md font-semibold hover:bg-segundo/80 transition active:scale-95 cursor-pointer select-none font-montserrat"
+        className="mt-8 bg-segundo text-primero px-6 py-2.5 rounded-md font-semibold hover:bg-segundo/80 transition active:scale-95 cursor-pointer select-none font-montserrat text-base"
       >
         Explorar propiedades
       </button>

@@ -9,7 +9,7 @@ import { buildGeoPath } from "@/views/inicio/lib/geoPath";
 import { irArriba } from "@/utils/irArriba";
 
 const cardCls =
-  "w-full md:w-150 bg-stone-50 shadow-sm shadow-segundo/20 md:p-8 p-6 flex flex-col justify-between mt-6 md:mt-10 border border-segundo/10";
+  "w-full md:w-190 bg-stone-50 shadow-sm shadow-segundo/20 md:p-8 p-6 flex flex-col justify-between mt-6 md:mt-10 border border-segundo/10";
 
 function Accion({ onClick, disabled, children }) {
   return (
@@ -121,14 +121,14 @@ export function RoomProfileCard() {
             type="button"
             onClick={guardar}
             disabled={loading}
-            className="rounded-md bg-tercero px-6 py-3 md:py-2 text-sm md:text-lg font-semibold text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none font-montserrat disabled:opacity-50"
+            className="rounded-md bg-tercero px-6 py-3 md:py-2 text-sm md:text-base font-semibold text-primero hover:bg-tercero/80 active:scale-[0.99] cursor-pointer select-none font-montserrat disabled:opacity-50"
           >
             {loading ? "Guardando..." : "Guardar perfil"}
           </button>
           <button
             type="button"
             onClick={cancelarEdicion}
-            className="font-montserrat rounded-md bg-segundo px-6 py-3 md:py-2 text-sm md:text-lg font-semibold text-primero hover:bg-segundo/80 active:scale-[0.99] cursor-pointer select-none"
+            className="font-montserrat rounded-md bg-segundo px-6 py-3 md:py-2 text-sm md:text-base font-semibold text-primero hover:bg-segundo/80 active:scale-[0.99] cursor-pointer select-none"
           >
             Cancelar
           </button>
