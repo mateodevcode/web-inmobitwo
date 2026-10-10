@@ -68,7 +68,7 @@ export default function AddressMapModal({
             <button
               type="button"
               onClick={onClose}
-              className="text-sm font-semibold text-slate-600 hover:underline"
+              className="text-sm font-semibold text-slate-600 hover:underline font-montserrat"
             >
               Cancelar
             </button>
@@ -77,7 +77,7 @@ export default function AddressMapModal({
               onClick={() =>
                 onConfirm({ lat: position.lat, lng: position.lng })
               }
-              className="rounded-md bg-tercero px-6 py-3 text-sm font-semibold text-primero hover:bg-tercero/80"
+              className="rounded-md bg-tercero px-6 py-3 text-sm font-semibold text-primero hover:bg-tercero/80 font-montserrat"
             >
               Confirmar ubicacion
             </button>

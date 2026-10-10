@@ -66,7 +66,7 @@ const EncabezadoBusqueda = ({ locationInfo }) => {
   return (
     <div className="w-full md:w-[75%] md:h-full h-60 flex flex-col justify-between mt-4 md:mt-0">
       <div className="mx-0 md:mx-4">
-        <p className="font-semibold text-lg sm:text-xl md:text-2xl text-segundo leading-snug">
+        <p className="font-semibold text-lg sm:text-xl md:text-2xl text-segundo leading-snug font-montserrat">
           <span>{locationInfo?.total_matching?.toLocaleString() || 0}</span>{" "}
           <span>
             {getTypeLabel(typeSlug, locationInfo?.total_matching || 0)}
@@ -89,7 +89,7 @@ const EncabezadoBusqueda = ({ locationInfo }) => {
             </span>
           )}{" "}
           <span
-            className="inline-flex items-center gap-1 align-middle text-blue-500 font-semibold text-sm sm:text-base cursor-pointer select-none hover:text-blue-600"
+            className="inline-flex items-center gap-1 align-middle text-blue-500 font-semibold text-sm sm:text-base cursor-pointer select-none hover:text-blue-600 font-montserrat"
             onClick={() =>
               router.push(`/busqueda-multizona/${operationSlug}-${typeSlug}`)
             }

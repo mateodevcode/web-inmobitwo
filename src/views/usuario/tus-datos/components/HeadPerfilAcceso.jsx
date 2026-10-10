@@ -8,6 +8,11 @@ const TABS = [
     label: "Acceso y seguridad",
     to: "/usuario/tus-datos/acceso",
   },
+  {
+    id: "mis-busquedas",
+    label: "Mis búsquedas",
+    to: "/usuario/tus-datos/mis-busquedas",
+  },
 ];
 
 const HeadPerfilAcceso = () => {

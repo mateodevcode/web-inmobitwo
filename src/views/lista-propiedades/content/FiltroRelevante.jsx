@@ -25,7 +25,7 @@ const FiltroRelevante = ({ value = "relevante", onChange }) => {
         {OPCIONES_ORDEN.filter((o) => CHIPS.includes(o.id)).map((fil) => (
           <div
             key={fil.id}
-            className={`flex items-center gap-2 px-3 py-2 border font-semibold ${
+            className={`flex items-center gap-2 px-3 py-2 border font-semibold font-montserrat text-sm ${
               fil.id === value
                 ? "border-tercero text-tercero bg-tercero/5"
                 : "border-segundo/40 text-segundo bg-primero"
@@ -40,7 +40,7 @@ const FiltroRelevante = ({ value = "relevante", onChange }) => {
           {({ open }) => (
             <div className="relative">
               <ListboxButton
-                className={`flex items-center gap-2 px-3 py-2 border font-semibold cursor-pointer select-none justify-center ${
+                className={`flex items-center gap-2 px-3 py-2 border font-semibold cursor-pointer select-none justify-center font-montserrat text-sm ${
                   open
                     ? "border-tercero text-tercero bg-tercero/5"
                     : "border-segundo/40 text-segundo bg-primero"

@@ -19,6 +19,7 @@ Construido con **Next.js 16 (App Router) + React 19 + Tailwind CSS 4 + MapLibre 
 - [Instalación y desarrollo local](#-instalación-y-desarrollo-local)
 - [Variables de entorno](#-variables-de-entorno)
 - [Scripts disponibles](#-scripts-disponibles)
+- [Búsquedas guardadas con alertas](#-búsquedas-guardadas-con-alertas)
 - [Docker y despliegue](#-docker-y-despliegue)
 - [SEO](#-seo)
 - [Convenciones](#-convenciones)
@@ -39,6 +40,7 @@ Construido con **Next.js 16 (App Router) + React 19 + Tailwind CSS 4 + MapLibre 
 
 - Publicar anuncio (`/propiedades/publicar-anuncio`, `/info/publicar-anuncio`).
 - Panel de usuario (`/usuario/...`): mis propiedades, favoritos, perfil.
+- Búsquedas guardadas con alertas: botón `Guardar búsqueda` en resultados + pestaña `Mis búsquedas` en Tu cuenta (`/usuario/tus-datos/mis-busquedas`) + emails agrupados (ver sección dedicada).
 - Leads (`/leads`): captación y gestión de contactos interesados.
 - Chat (`/feed` integrado vía `views/chat`).
 
@@ -104,7 +106,7 @@ src/
 ├── components/             # Componentes reutilizables (header, footer, map, modales,
 │                           # auth, guards, barra-navegacion...)
 ├── context/                # AppContext / AppProvider + TenantContext / TenantProvider
-├── actions/                # Cliente API: apiBackend.js, apiBackendFormData.js, refreshToken.js
+├── actions/                # Cliente API: apiBackend.js, apiBackendFormData.js, refreshToken.js, busquedasGuardadas.js
 ├── config/                 # config.js (URL_BACKEND), tenantConfig.js (MAIN_HOSTS)
 ├── hooks/ lib/ utils/ data/ assets/  # Utilidades (geo, formato, nav, estilos...)
 ├── public/                 # Estáticos (favicon, og-image, etc.)
@@ -158,6 +160,8 @@ pnpm lint
 |---|---|---|
 | `NEXT_PUBLIC_API_URL` | `http://localhost:3001` (dev) / `https://api.inmobitwo.seventwo.tech` (prod) | URL base del backend. Se consume en `src/config/config.js`. |
 | `NEXT_PUBLIC_MAIN_HOSTS` | `inmobitwo.seventwo.tech,localhost:3000` | Hosts considerados "plataforma principal" (coma-separados, incluir puerto en local). |
+| `NEXT_PUBLIC_PUSH_ENABLED` | `false` | Muestra el canal push en el modal (apagado; requiere llaves VAPID y backend con `PUSH_ENABLED=true`). |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | `` (vacía) | Clave pública VAPID para suscribir push (`GET /busquedas-guardadas/push/clave-publica`). |
 
 Archivos de referencia:
 
@@ -200,6 +204,18 @@ docker logs inmobitwo-web
 3. Exporta las `NEXT_PUBLIC_*` desde `.env.production` y levanta `docker compose up -d --build`.
 4. Asegura certificado Let's Encrypt y recarga `nginx/inmobitwo.conf` (`inmobitwo.seventwo.tech → 127.0.0.1:3000`).
 5. Verifica con `curl -sf https://inmobitwo.seventwo.tech/`.
+
+---
+
+## 🔔 Búsquedas guardadas con alertas
+
+El usuario guarda su búsqueda actual y recibe un email agrupado ante vivienda nueva, bajada de precio o disponibilidad recuperada (match por cron en el backend).
+
+- **Botón** `Guardar búsqueda` (`views/lista-propiedades/header-lista/BotonGuardarBusqueda.jsx` + `ModalGuardarBusqueda.jsx`): pide login con retorno (`?next=`), verifica duplicados por hash, guarda nombre + frecuencia + canales + consentimiento Habeas Data. En zona dibujada avisa que aún no está disponible.
+- **Pestaña `Mis búsquedas`** en Tu cuenta (`/usuario/tus-datos/mis-busquedas`, tercer tab junto a Perfil/Acceso): lista, cambia frecuencia/canales, pausa/reanuda, elimina con confirmación en línea. La ruta vieja `/usuario/mis-busquedas` redirige ahí. Entrada también en el menú de cuenta (`items_menu.jsx`).
+- **Baja desde el email** (`/busquedas/baja/[token]`): página pública para pausar/reactivar sin login.
+- **Filtros** (`src/lib/filtrosBusqueda.js`): mismo objeto que `usePropertySearch` envía a `/propiedades/search-slugs` (fuente única, sin duplicar el mapeo de slugs).
+- **Push**: `src/lib/push.js` + `public/sw.js` listos tras `NEXT_PUBLIC_PUSH_ENABLED=true` (checkbox "próximamente" mientras tanto).
 
 ---
 

@@ -1,21 +1,21 @@
 # Graph Report - web-inmobitwo  (2026-10-09)
 
 ## Corpus Check
-- 612 files · ~417,538 words
+- 614 files · ~417,600 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1745 nodes · 4077 edges · 121 communities (100 shown, 21 thin omitted)
+- 1749 nodes · 4091 edges · 126 communities (106 shown, 20 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 12 edges (avg confidence: 0.53)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0985500b`
+- Built from commit: `c70c8ab6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- PropertyCard.jsx
+- useFavoritos
 - components/InfoCards.jsx
 - irArriba
 - descargas/DescargarApp.jsx
@@ -24,22 +24,22 @@
 - hero/Hero.jsx
 - useAppContext
 - useOutletContext
-- CardPropiedad.jsx
+- hamburger/ConLogin.jsx
 - useDetalles
 - useZonaMap.js
-- useFavoritos
+- PropiedadId.jsx
 - useDatosBasicos.js
-- useTracking
-- usePropiedades.js
+- AppProvider.jsx
+- info-cards/InfoCards.jsx
 - footer/SiteFooter.jsx
 - RestablecerPassword.jsx
 - dependencies
 - temaRegistry.js
-- useDatosBasicos
+- RadioGroupInput.jsx
 - Feed.jsx
 - usePropiedades
 - PublicarAnuncio.jsx
-- SeleccionarZonaPage.jsx
+- geoApi.js
 - InfoPublicarAnuncio.jsx
 - MiOrganizacionesSidebar.jsx
 - useSlugParser
@@ -55,12 +55,12 @@
 - Leads.jsx
 - Inmobitwo — Red social inmobiliaria
 - rutas/page.js
-- geoApi.js
-- apiBackend
+- useMapaInmuebles.js
+- MisAnuncios.jsx
 - MapaInmueblesPage.jsx
 - useAuth.js
 - Loading.jsx
-- mapStyles.js
+- layers.js
 - SelectZonaMap.jsx
 - FormatoDetail.jsx
 - AdminOrganizacionesPage.jsx
@@ -69,27 +69,27 @@
 - Acceso.jsx
 - PropertySearchWidget.jsx
 - BarraNavegacionTauri.jsx
-- FormAgregarPropiedad.jsx
+- RoomSeekerForm.jsx
 - tema1/home/FooterSection.jsx
 - tema2/home/Home.jsx
 - tema2/home/FooterSection.jsx
 - package.json
 - apiBackend.js
-- MiPerfil.jsx
-- NavbarListaPropiedades.jsx
-- PropiedadId.jsx
-- useResetForm.js
-- DownloadAppSection.jsx
+- SeguridadAcceso.jsx
 - TituloDescripcion.jsx
+- PageAnuncio.jsx
+- apiBackend
+- DownloadAppSection.jsx
+- Principal.jsx
 - geoman.js
 - devDependencies
 - Estado del refactor seguro (safe-refactor)
-- SeguridadAcceso.jsx
+- Logs.jsx
 - GetInTouchSection.jsx
-- mapPins.js
+- search/InputSearchPrincipal.jsx
 - PropertyMap.jsx
 - Header.jsx
-- useMiniMapa.js
+- components/Caracteristicas.jsx
 - tema1/home/PropertyGrid.jsx
 - tema2/home/PropertyGrid.jsx
 - PublishingGuideSection.jsx
@@ -97,7 +97,7 @@
 - header-principal/InputSearchPrincipal.jsx
 - FAQSection.jsx
 - FeaturedPropertyHero.jsx
-- ServicesSection.jsx
+- Perfil.jsx
 - RegisterForm.jsx
 - nuevo-profesional/page.js
 - AgentsSlider.jsx
@@ -109,20 +109,25 @@
 - MarketProperty.jsx
 - tema2/home/TopHeader.jsx
 - compilerOptions
+- ServicesSection.jsx
+- ListadoDePropiedades.jsx
 - AGENTS.md
 - eslint.config.mjs
-- @geoman-io/maplibre-geoman-free
+- HowToPublishHero.jsx
 - gsap
 - lucide
 - maplibre-gl
 - motion
-- next
+- TenantProvider.jsx
 - next.config.mjs
 - react-dom
-- @tiptap/react
 - postcss.config.mjs
 - links_inicio.js
 - skills_data.js
+- MisAnunciosContent.jsx
+- HeaderPublicarAnuncio.jsx
+- @geoman-io/maplibre-geoman-free
+- lucide-react
 
 ## God Nodes (most connected - your core abstractions)
 1. `useAppContext()` - 147 edges
@@ -137,33 +142,33 @@
 10. `useDatosBasicos()` - 22 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `useMapaInmuebles()` --references--> `supercluster`  [EXTRACTED]
-  src/views/mapa-inmuebles/components/map/useMapaInmuebles.js → package.json
+- `DescripcionAnuncio()` --references--> `dompurify`  [EXTRACTED]
+  src/views/lista-propiedades/card-anuncio/DescripcionAnuncio.jsx → package.json
 - `FormatoDetail()` --references--> `dompurify`  [EXTRACTED]
   src/views/publicar-anuncio/paso-2/descripcion/FormatoDetail.jsx → package.json
-- `GeoSelects()` --calls--> `apiBackend()`  [EXTRACTED]
-  src/views/usuario/tus-datos/perfil/components/RoomSeekerForm.jsx → src/actions/apiBackend.js
-- `SlugLayout()` --calls--> `useOrganizaciones()`  [EXTRACTED]
-  src/app/inmobiliarias/[slug]/layout.js → src/hooks/useOrganizaciones.js
-- `OrganizacionLayout()` --calls--> `useTenant()`  [EXTRACTED]
-  src/views/organizacion/paginas/OrganizacionLayout.jsx → src/context/TenantContext.js
+- `useMapaInmuebles()` --references--> `supercluster`  [EXTRACTED]
+  src/views/mapa-inmuebles/components/map/useMapaInmuebles.js → package.json
+- `fetchBoundaryGeometry()` --calls--> `apiBackend()`  [EXTRACTED]
+  src/views/mapa-inmuebles/hooks/useMapaCenter.js → src/actions/apiBackend.js
+- `geocodeCenter()` --calls--> `apiBackend()`  [EXTRACTED]
+  src/views/mapa-inmuebles/hooks/useMapaCenter.js → src/actions/apiBackend.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (121 total, 21 thin omitted)
+## Communities (126 total, 20 thin omitted)
 
-### Community 0 - "PropertyCard.jsx"
-Cohesion: 0.06
-Nodes (48): PropertyImage(), CardActions(), CardBody(), CardGallery(), getOperacionLabel(), getTipoLabel(), getTitulo(), getUbicacion() (+40 more)
+### Community 0 - "useFavoritos"
+Cohesion: 0.05
+Nodes (61): PropertyImage(), CardActions(), CardBody(), CardGallery(), getOperacionLabel(), getTipoLabel(), getTitulo(), getUbicacion() (+53 more)
 
 ### Community 1 - "components/InfoCards.jsx"
-Cohesion: 0.06
-Nodes (49): UbicacionMapa(), AddressMapModal(), ConfirmedLocation(), MapWarnings(), createMap(), createMarker(), resolveInitial(), useAddressMap() (+41 more)
+Cohesion: 0.07
+Nodes (46): AddressMapModal(), MapWarnings(), createMap(), createMarker(), resolveInitial(), useAddressMap(), DescriptionEditor(), editorExtensions (+38 more)
 
 ### Community 2 - "irArriba"
-Cohesion: 0.05
-Nodes (43): boolToTri(), BUSCA_CON_OPTIONS, formatoCOP(), formatoFecha(), GENERO_OPTIONS, OCUPACION_OPTIONS, perfilAChips(), TRI_OPTIONS (+35 more)
+Cohesion: 0.15
+Nodes (14): irArriba(), PublishCtaButton(), WizardFooter(), DetalleTopBar(), scrollTop(), AnuncioInfo(), AnuncioPhoto(), AnuncioStatus() (+6 more)
 
 ### Community 3 - "descargas/DescargarApp.jsx"
 Cohesion: 0.05
@@ -174,52 +179,52 @@ Cohesion: 0.06
 Nodes (35): MiniMapaUbicacion(), useMiniMapa(), CARACTERISTICAS_INMUEBLE, ESTADOS_INMUEBLE, PROPERTY_TYPES_FALLBACK, CATEGORIAS_VIVIENDA, Alcobas(), OPCIONES (+27 more)
 
 ### Community 5 - "Guards.jsx"
-Cohesion: 0.05
-Nodes (14): RutaPrivada(), RutaPublica(), useLogsTracking(), leerNextActual(), Feed(), LogLine(), LogsHeader(), useLogsAutoRefresh() (+6 more)
+Cohesion: 0.11
+Nodes (5): RutaAdmin(), RutaPrivada(), obtenerOrigenActual(), Feed(), Anuncio()
 
 ### Community 6 - "hero/Hero.jsx"
-Cohesion: 0.08
-Nodes (26): FRASES, cards, TIPO_OPTIONS, SUGGESTIONS, AnimatedTitle(), Hero(), HeroSearchButton(), HeroTabs() (+18 more)
+Cohesion: 0.16
+Nodes (12): FRASES, TIPO_OPTIONS, AnimatedTitle(), Hero(), HeroSearchButton(), HeroTabs(), SelectorTipo(), TABS (+4 more)
 
 ### Community 7 - "useAppContext"
-Cohesion: 0.13
-Nodes (20): TrackingInit(), ConsentimientoBanner(), DescargarApp(), ModalHamburguesa(), SinLogin(), AccountAccess(), HamburgerButton(), PublishButton() (+12 more)
+Cohesion: 0.12
+Nodes (22): TrackingInit(), ConsentimientoBanner(), DescargarApp(), ModalHamburguesa(), SinLogin(), HamburgerToggle(), UserNavLinks(), LoaderGlobal() (+14 more)
 
 ### Community 8 - "useOutletContext"
 Cohesion: 0.10
 Nodes (18): usePropiedadesOrganizacionData(), ContactoOrg(), OrgOutletContext, OrgOutletProvider, useOutletContext, SobreNosotrosOrg(), Contacto(), Home() (+10 more)
 
-### Community 9 - "CardPropiedad.jsx"
-Cohesion: 0.14
-Nodes (20): closeMenus(), ConLogin(), TAMANOS, UserAvatar(), UserNavLinks(), ConLogin(), ModalUserPropiedadId(), CardPropiedad() (+12 more)
+### Community 9 - "hamburger/ConLogin.jsx"
+Cohesion: 0.15
+Nodes (17): closeMenus(), ConLogin(), TAMANOS, UserAvatar(), ConLogin(), ModalUserPropiedadId(), items_menu, useMisAnunciosCount() (+9 more)
 
 ### Community 10 - "useDetalles"
-Cohesion: 0.13
-Nodes (22): ESTRATOS, PARQUEADERO_MODOS, PARQUEADERO_TIPOS, cargarCatalogos(), cargarFeaturesDePropiedad(), featuresCache, getTituloSugerido(), tituloCache (+14 more)
+Cohesion: 0.15
+Nodes (22): ESTRATOS, PARQUEADERO_MODOS, PARQUEADERO_TIPOS, ZONAS, cargarCatalogos(), cargarFeaturesDePropiedad(), featuresCache, getTituloSugerido() (+14 more)
 
 ### Community 11 - "useZonaMap.js"
 Cohesion: 0.20
-Nodes (24): OSM_STYLE, zoomToBounds(), fetchBarrios(), fetchCitiesGeoJSON(), fetchRegionsGeoJSON(), findFeature(), handleStartDrawing(), setupInteractivity() (+16 more)
+Nodes (18): OSM_STYLE, zoomToBounds(), collectionBounds(), coords(), drawGeometry(), featBounds(), findFeature(), handleStartDrawing() (+10 more)
 
-### Community 12 - "useFavoritos"
-Cohesion: 0.14
-Nodes (19): AppContext, AppProvider(), leerLocal(), favoritos, getFavoritosSnapshot(), listeners, setFavoritosLoading(), setFavoritosStore() (+11 more)
+### Community 12 - "PropiedadId.jsx"
+Cohesion: 0.18
+Nodes (7): SmartLoader(), HeaderPropiedadId(), PropiedadId(), logo, logo_2, HeaderSidebar(), PagePropiedadId()
 
 ### Community 13 - "useDatosBasicos.js"
-Cohesion: 0.13
-Nodes (19): BARRIOS_POR_CIUDAD, OPERATION_OPTIONS, OPERATION_TYPE_IDS, INDICE_ORDEN, ordenarPropertyTypes(), PROPERTY_TYPES_DESCRIPCIONES, fetchStaticJson(), inFlight (+11 more)
+Cohesion: 0.11
+Nodes (26): BARRIOS_POR_CIUDAD, CONTACT_PREFERENCES, COUNTRY_CODES, INDICE_ORDEN, ordenarPropertyTypes(), PROPERTY_TYPES_DESCRIPCIONES, RENTAL_TYPE_IDS, RENTAL_TYPE_OPTIONS (+18 more)
 
-### Community 14 - "useTracking"
-Cohesion: 0.15
-Nodes (15): ModalContactoLead(), useTracking(), leerUtm(), postSilencioso(), resolverSource(), useVistaDetalle(), readNavState(), generarSessionId() (+7 more)
+### Community 14 - "AppProvider.jsx"
+Cohesion: 0.18
+Nodes (15): AppContext, AppProvider(), leerLocal(), FORM_DATA_PROPIEDAD_INICIAL, FORM_DATA_USUARIO_INICIAL, leerUtm(), postSilencioso(), resolverSource() (+7 more)
 
-### Community 15 - "usePropiedades.js"
-Cohesion: 0.17
-Nodes (22): useFotos(), appendCamposPropiedad(), cacheKey(), CAMPOS_PROPIEDAD, camposPropiedad(), countMisAnunciosCache, invalidarCountMisAnuncios(), normalizarCoord() (+14 more)
+### Community 15 - "info-cards/InfoCards.jsx"
+Cohesion: 0.23
+Nodes (9): cards, SUGGESTIONS, SuggestionsMenu(), InfoCardItem(), InfoCards(), buildGeoPath(), buildZonaUrl(), getOperationSlug() (+1 more)
 
 ### Community 16 - "footer/SiteFooter.jsx"
-Cohesion: 0.13
-Nodes (17): AppStoreButtons(), STORE_BUTTONS, FooterLinkColumns(), LanguageSelect(), LinkColumn(), FOOTER_GROUPS, SocialLinks(), SOCIALS (+9 more)
+Cohesion: 0.14
+Nodes (16): AppStoreButtons(), STORE_BUTTONS, FooterLinkColumns(), LanguageSelect(), LinkColumn(), FOOTER_GROUPS, SocialLinks(), SOCIALS (+8 more)
 
 ### Community 17 - "RestablecerPassword.jsx"
 Cohesion: 0.15
@@ -227,39 +232,39 @@ Nodes (12): getPasswordChecklist(), validatePasswordRegistro(), FormRestablecer(
 
 ### Community 18 - "dependencies"
 Cohesion: 0.09
-Nodes (23): framer-motion, @gsap/react, @headlessui/react, lucide-react, dependencies, framer-motion, @gsap/react, @headlessui/react (+15 more)
+Nodes (23): framer-motion, @gsap/react, @headlessui/react, next, dependencies, framer-motion, @gsap/react, @headlessui/react (+15 more)
 
 ### Community 19 - "temaRegistry.js"
-Cohesion: 0.14
-Nodes (11): dynamic, dynamic, dynamic, ContactoTemaSlot(), HomeTemaSlot(), LayoutPublicoResolver(), LayoutResolver(), SobreNosotrosTemaSlot() (+3 more)
+Cohesion: 0.15
+Nodes (10): dynamic, dynamic, dynamic, ContactoTemaSlot(), HomeTemaSlot(), LayoutPublicoResolver(), SobreNosotrosTemaSlot(), getTema() (+2 more)
 
-### Community 20 - "useDatosBasicos"
-Cohesion: 0.17
-Nodes (13): CONTACT_PREFERENCES, COUNTRY_CODES, RENTAL_TYPE_IDS, RENTAL_TYPE_OPTIONS, useDatosBasicos(), RadioGroupInput(), ContactContinue(), ContactForm() (+5 more)
+### Community 20 - "RadioGroupInput.jsx"
+Cohesion: 0.31
+Nodes (5): OPERATION_OPTIONS, OPERATION_TYPE_IDS, RadioGroupInput(), Operacion(), TipoAlquiler()
 
 ### Community 21 - "Feed.jsx"
 Cohesion: 0.13
-Nodes (14): Actividad(), ActivityMap(), EVENTOS, RecentActivity(), STAT_CARDS, STAT_VALUES, StatsGrid(), ModalActividades() (+6 more)
+Nodes (14): AgregarPropiedad(), Actividad(), ActivityMap(), EVENTOS, RecentActivity(), STAT_CARDS, STAT_VALUES, StatsGrid() (+6 more)
 
 ### Community 22 - "usePropiedades"
-Cohesion: 0.16
-Nodes (14): ModalHamburguesa(), HeaderFiltros(), HeaderPrincipal(), Principal(), filtros_propiedades, getFeedSnapshot(), listeners, state (+6 more)
+Cohesion: 0.14
+Nodes (29): FormAgregarPropiedad(), agentes, departamentosCiudades, estadosPropiedad, tiposPropiedad, useFotos(), appendCamposPropiedad(), cacheKey() (+21 more)
 
 ### Community 23 - "PublicarAnuncio.jsx"
 Cohesion: 0.16
 Nodes (10): ModalContinuarAnuncio(), ModalInformativo(), WizardSteps(), InfoIntro(), InfoPromoRow(), Informacion(), DatosBasicos(), Detalles() (+2 more)
 
-### Community 24 - "SeleccionarZonaPage.jsx"
-Cohesion: 0.18
-Nodes (10): fetchInmueblesEnPoligono(), fetchStatesGeoJSON(), SelectedZoneCard(), ZonaPageHeader(), useDeptNames(), usePolygonSearch(), parseOperationAndType(), SeleccionarZonaPage() (+2 more)
+### Community 24 - "geoApi.js"
+Cohesion: 0.15
+Nodes (15): useSelectZona(), expandTipoInmueble(), fetchGeoCount(), fetchInmueblesEnBbox(), fetchInmueblesEnPoligono(), fetchRegionsGeoJSON(), fetchStatesGeoJSON(), SelectedZoneCard() (+7 more)
 
 ### Community 25 - "InfoPublicarAnuncio.jsx"
-Cohesion: 0.15
-Nodes (7): SiteFooter(), scrollbarStyles, AdvantageColumn(), ADVANTAGES, AdvantagesSection(), InfoPublicarAnuncio(), Anuncio()
+Cohesion: 0.23
+Nodes (5): AdvantageColumn(), ADVANTAGES, AdvantagesSection(), LinksGridSection(), InfoPublicarAnuncio()
 
 ### Community 26 - "MiOrganizacionesSidebar.jsx"
-Cohesion: 0.17
-Nodes (10): items_admin, items_organizacion, items_sidebar, toCapitalize(), ActiveOrgCard(), EmptyOrgCard(), MiOrganizacionesSidebar(), OrgNavItems() (+2 more)
+Cohesion: 0.14
+Nodes (12): items_admin, items_organizacion, items_sidebar, toCapitalize(), ActiveOrgCard(), BotonAdminOrganizaciones(), EmptyOrgCard(), ItemsSidebar() (+4 more)
 
 ### Community 27 - "useSlugParser"
 Cohesion: 0.18
@@ -267,27 +272,27 @@ Nodes (13): getSelectedId(), getTabs(), TAB_ALQUILAR, TAB_COMPRAR, TAB_OBRA_NUEV
 
 ### Community 28 - "LocationForm.jsx"
 Cohesion: 0.20
-Nodes (9): ZONAS, InputField(), TipoSelect(), ContactNameField(), TipoInmueble(), BarrioFields(), LocationCascadeSelect(), StreetFields() (+1 more)
+Nodes (8): UbicacionMapa(), TipoSelect(), TipoInmueble(), BarrioFields(), ConfirmedLocation(), LocationCascadeSelect(), LocationForm(), StreetFields()
 
 ### Community 29 - "tema1/home/Home.jsx"
 Cohesion: 0.13
 Nodes (9): items, Navbar(), neighborhoods, NeighborhoodsSection(), ScrollToTop(), testimonials, TestimonialsSection(), contactItems (+1 more)
 
 ### Community 30 - "app/page.js"
-Cohesion: 0.20
-Nodes (10): dynamic, RoutePage(), SlugLayout(), dynamic, Page(), dynamic, RoutePage(), useTenant() (+2 more)
+Cohesion: 0.21
+Nodes (10): dynamic, RoutePage(), dynamic, Page(), dynamic, RoutePage(), useTenant(), LayoutResolver() (+2 more)
 
 ### Community 31 - "useOrganizaciones"
-Cohesion: 0.22
-Nodes (9): invalidarMisOrgCache(), misOrgCache, misOrgCacheKey(), useOrganizaciones(), AgentesPanel(), EstadisticasPanel(), MiInmobiliariaPanel(), SolicitarDominioForm() (+1 more)
+Cohesion: 0.16
+Nodes (11): invalidarMisOrgCache(), misOrgCache, misOrgCacheKey(), useOrganizaciones(), AgentesPanel(), CrearOrganizacionForm(), estadoInicial, EstadisticasPanel() (+3 more)
 
 ### Community 32 - "Login.jsx"
-Cohesion: 0.21
-Nodes (8): PasswordInput(), ProfessionalFooter(), SubmitButton(), EmailStep(), GoogleButton(), OtpStep(), PasswordStep(), useEmailPrefill()
+Cohesion: 0.24
+Nodes (7): ProfessionalFooter(), SubmitButton(), EmailStep(), GoogleButton(), OtpStep(), PasswordStep(), useEmailPrefill()
 
 ### Community 33 - "Logo.jsx"
-Cohesion: 0.18
-Nodes (8): HamburgerHeader(), Logo(), HeaderPublicarAnuncio(), LogoBar(), STEPS, StepsNav(), useIsMobile(), RegisterHeader()
+Cohesion: 0.36
+Nodes (3): HamburgerHeader(), Logo(), RegisterHeader()
 
 ### Community 34 - "ListaPropiedades.jsx"
 Cohesion: 0.25
@@ -302,7 +307,7 @@ Cohesion: 0.20
 Nodes (7): TIPS, GaleriaDropzone(), GaleriaPreviewGrid(), InfoBannerBlue(), NoPhotosWarningModal(), PrincipalDropzone(), TipsList()
 
 ### Community 37 - "Leads.jsx"
-Cohesion: 0.31
+Cohesion: 0.24
 Nodes (8): useLeads(), EstadoFilter(), formatFecha(), LeadCard(), useLeadsFilter(), Leads(), ESTADOS, getEstadoInfo()
 
 ### Community 38 - "Inmobitwo — Red social inmobiliaria"
@@ -313,65 +318,65 @@ Nodes (13): 🏘️ Arquitectura multi-tenant, ✨ Características, 📝 Conven
 Cohesion: 0.24
 Nodes (6): rutasBackend, rutasFrontend, AdminRutasPage(), BackendRoutes(), FrontendRoutes(), RouteGroup()
 
-### Community 40 - "geoApi.js"
-Cohesion: 0.31
-Nodes (9): createOsmMap(), useSelectZona(), expandTipoInmueble(), fetchGeoCount(), fetchInmueblesEnBbox(), renderBoundary(), slugify(), useMapaInmuebles() (+1 more)
+### Community 40 - "useMapaInmuebles.js"
+Cohesion: 0.21
+Nodes (13): supercluster, createClusterIcon(), createPricePin(), createOsmMap(), formatPrecioCompacto(), formatPrecioPin(), renderBoundary(), clearMarkers() (+5 more)
 
-### Community 41 - "apiBackend"
-Cohesion: 0.22
-Nodes (9): apiBackend(), formatearRespuesta(), MAIN_HOSTS, TenantContext, TenantProvider(), fetchBoundaryGeometry(), geocodeCenter(), useSolicitarCodigo() (+1 more)
+### Community 41 - "MisAnuncios.jsx"
+Cohesion: 0.29
+Nodes (4): SiteFooter(), HeaderInmobitwo(), scrollbarStyles, MiPerfil()
 
 ### Community 42 - "MapaInmueblesPage.jsx"
-Cohesion: 0.26
-Nodes (4): useMapaCenter(), parseOperationAndType(), slugToName(), MapaInmueblesPage()
+Cohesion: 0.21
+Nodes (6): fetchBoundaryGeometry(), geocodeCenter(), useMapaCenter(), parseOperationAndType(), slugToName(), MapaInmueblesPage()
 
 ### Community 43 - "useAuth.js"
-Cohesion: 0.35
-Nodes (8): useAuth(), useModalUser(), agregarNext(), buildLoginUrl(), getSafeNext(), Login(), LoginLink(), Registro()
+Cohesion: 0.20
+Nodes (9): RutaPublica(), useAuth(), agregarNext(), buildLoginUrl(), getSafeNext(), leerNextActual(), Login(), LoginLink() (+1 more)
 
 ### Community 44 - "Loading.jsx"
-Cohesion: 0.22
-Nodes (5): OrgActions(), OrganizacionLayout(), OrganizacionNav(), OrganizacionPublicaLayout(), Loading()
+Cohesion: 0.17
+Nodes (7): SlugLayout(), OrgActions(), OrgList(), OrganizacionLayout(), OrganizacionNav(), OrganizacionPublicaLayout(), Loading()
 
-### Community 45 - "mapStyles.js"
-Cohesion: 0.18
-Nodes (12): sourceData(), ANCESTOR_OPACITY, FILL_COLOR, FILL_OPACITY, HOVER_DARK, HOVER_DARK_PINK, LINE_WIDTH, lineColorFor() (+4 more)
+### Community 45 - "layers.js"
+Cohesion: 0.15
+Nodes (21): fetchBarrios(), fetchCitiesGeoJSON(), addDrawSource(), loadDrawBoundaries(), loadMunicipios(), maybeLoadDrawBarrios(), refreshLayers(), sourceData() (+13 more)
 
 ### Community 46 - "SelectZonaMap.jsx"
 Cohesion: 0.22
 Nodes (7): DrawGuide(), DrawToolbar(), LoadingBadge(), MapHintBanner(), MapWidgets(), VerInmueblesBar(), SelectZonaMap()
 
 ### Community 47 - "FormatoDetail.jsx"
-Cohesion: 0.32
-Nodes (8): dompurify, dompurify, FormatoCard(), FormatoDetail(), FormatoSelector(), FORMATO_ICONS, stripHtml(), TONOS_REFINAR
+Cohesion: 0.36
+Nodes (7): dompurify, dompurify, FormatoCard(), FormatoDetail(), FORMATO_ICONS, stripHtml(), TONOS_REFINAR
 
 ### Community 48 - "AdminOrganizacionesPage.jsx"
-Cohesion: 0.26
-Nodes (6): RutaAdmin(), AdminOrganizacionesPage(), EstadoFilter(), OrgList(), ESTADOS_ORG, useOrganizacionesAdmin()
+Cohesion: 0.33
+Nodes (4): AdminOrganizacionesPage(), EstadoFilter(), ESTADOS_ORG, useOrganizacionesAdmin()
 
 ### Community 49 - "app/layout.js"
 Cohesion: 0.17
 Nodes (10): geistAnton, geistArchivoBlack, geistBangers, geistLondrina, geistMono, geistMontserrat, geistPoppins, geistSans (+2 more)
 
 ### Community 50 - "modal-hamburguesa/ModalHamburguesa.jsx"
-Cohesion: 0.24
-Nodes (5): EnlacesHamburguesa(), DescargarApp(), EnlacesHamburguesa(), SinLogin(), sections
+Cohesion: 0.16
+Nodes (10): EnlacesHamburguesa(), Columna(), EnlaceNav(), NavLinks(), DescargarApp(), EnlacesHamburguesa(), ModalHamburguesa(), sections (+2 more)
 
 ### Community 51 - "Acceso.jsx"
-Cohesion: 0.26
-Nodes (6): phoneFormatter(), Acceso(), CodeForm(), EmailPanel(), UnverifiedPanel(), VerifiedPanel()
+Cohesion: 0.36
+Nodes (4): Acceso(), CodeForm(), UnverifiedPanel(), VerifiedPanel()
 
 ### Community 52 - "PropertySearchWidget.jsx"
 Cohesion: 0.18
 Nodes (10): BEDROOMS, formatPrice(), LOCATIONS, MAX_AREAS, MIN_AREAS, PriceRangeSlider(), PROPERTY_TYPES, PropertySearchWidget() (+2 more)
 
 ### Community 53 - "BarraNavegacionTauri.jsx"
-Cohesion: 0.27
-Nodes (4): BarraNavegacionTauri(), isTauri(), SolicitarForm(), OlvidastePassword()
-
-### Community 54 - "FormAgregarPropiedad.jsx"
 Cohesion: 0.24
-Nodes (7): AgregarPropiedad(), FormAgregarPropiedad(), agentes, departamentosCiudades, estadosPropiedad, tiposPropiedad, ModalAgregarPropiedad()
+Nodes (5): BarraNavegacionTauri(), isTauri(), SolicitarForm(), useSolicitarCodigo(), OlvidastePassword()
+
+### Community 54 - "RoomSeekerForm.jsx"
+Cohesion: 0.21
+Nodes (14): boolToTri(), BUSCA_CON_OPTIONS, formatoCOP(), formatoFecha(), GENERO_OPTIONS, OCUPACION_OPTIONS, perfilAChips(), TRI_OPTIONS (+6 more)
 
 ### Community 55 - "tema1/home/FooterSection.jsx"
 Cohesion: 0.18
@@ -390,28 +395,28 @@ Cohesion: 0.20
 Nodes (9): name, packageManager, private, scripts, build, dev, lint, start (+1 more)
 
 ### Community 59 - "apiBackend.js"
-Cohesion: 0.47
-Nodes (6): apiBackendFormData(), formatearRespuesta(), obtenerTokenFresco(), renovarToken(), URL_BACKEND, obtenerOrigenActual()
+Cohesion: 0.42
+Nodes (6): formatearRespuesta(), apiBackendFormData(), formatearRespuesta(), obtenerTokenFresco(), renovarToken(), URL_BACKEND
 
-### Community 60 - "MiPerfil.jsx"
+### Community 60 - "SeguridadAcceso.jsx"
+Cohesion: 0.23
+Nodes (5): numero_atencion_cliente, phoneFormatter(), EmailPanel(), SeguridadAcceso(), SupportBlock()
+
+### Community 61 - "TituloDescripcion.jsx"
 Cohesion: 0.27
-Nodes (4): numero_atencion_cliente, SupportBlock(), MiPerfil(), Perfil()
+Nodes (6): DescripcionTabs(), FormatoSelector(), IaGeneratePanel(), TituloAuto(), TituloDescripcion(), useRefinarDescripcion()
 
-### Community 61 - "NavbarListaPropiedades.jsx"
-Cohesion: 0.38
-Nodes (5): Columna(), EnlaceNav(), NavLinks(), MENUS, NavbarListaPropiedades()
+### Community 62 - "PageAnuncio.jsx"
+Cohesion: 0.22
+Nodes (6): AccountAccess(), HamburgerButton(), PublishButton(), NavbarHome(), readNavState(), PageAnuncio()
 
-### Community 62 - "PropiedadId.jsx"
+### Community 63 - "apiBackend"
 Cohesion: 0.29
-Nodes (5): SmartLoader(), MenuOpciones(), HeaderPropiedadId(), logo, logo_2
+Nodes (10): apiBackend(), getPasswordChecklist(), ModalCambiarPassword(), REQUISITOS, mapearApiAFormDataUsuario(), useUsuarios(), validatePasswordNueva(), DetalleEstado() (+2 more)
 
-### Community 63 - "useResetForm.js"
-Cohesion: 0.49
-Nodes (6): mapearApiAFormDataUsuario(), useResetForm(), useUsuarios(), validatePasswordNueva(), useVerificacionEmail(), usePerfilForm()
-
-### Community 65 - "TituloDescripcion.jsx"
-Cohesion: 0.31
-Nodes (5): DescripcionTabs(), IaGeneratePanel(), TituloAuto(), TituloDescripcion(), useRefinarDescripcion()
+### Community 65 - "Principal.jsx"
+Cohesion: 0.17
+Nodes (11): HeaderFiltros(), HeaderPrincipal(), Principal(), filtros_propiedades, feedActions, getFeedSnapshot(), listeners, state (+3 more)
 
 ### Community 66 - "geoman.js"
 Cohesion: 0.44
@@ -425,17 +430,17 @@ Nodes (9): eslint, eslint-config-next, devDependencies, eslint, eslint-config-ne
 Cohesion: 0.22
 Nodes (8): Candidatos a promover a `src/components/` (ejecutado), Consumidores externos actualizados (solo ruta de import), Deuda técnica / mejoras futuras (no refactorizar a ciegas), Errores corregidos, Estado del refactor seguro (safe-refactor), Pre-existentes NO tocados (fuera de alcance), Regla de ubicación (acordada), Zonas refactorizadas
 
-### Community 69 - "SeguridadAcceso.jsx"
-Cohesion: 0.31
-Nodes (4): getPasswordChecklist(), ModalCambiarPassword(), REQUISITOS, SeguridadAcceso()
+### Community 69 - "Logs.jsx"
+Cohesion: 0.23
+Nodes (7): useLogsTracking(), LogLine(), LogsHeader(), useLogsAutoRefresh(), COLOR_POR_TIPO, formatearHora(), Logs()
 
 ### Community 70 - "GetInTouchSection.jsx"
 Cohesion: 0.22
 Nodes (3): GetInTouchSection(), marqueeItems, repeatedItems
 
-### Community 71 - "mapPins.js"
-Cohesion: 0.46
-Nodes (6): createClusterIcon(), createPricePin(), formatPrecioCompacto(), formatPrecioPin(), clearMarkers(), renderMarkers()
+### Community 71 - "search/InputSearchPrincipal.jsx"
+Cohesion: 0.33
+Nodes (5): InputSearchPrincipal(), SearchResultsList(), useCitySuggestions(), toGeoSelection(), toQueryLabel()
 
 ### Community 72 - "PropertyMap.jsx"
 Cohesion: 0.32
@@ -445,9 +450,9 @@ Nodes (6): Hero(), formatPrice(), MapPin(), properties, PropertyMap(), PropertyP
 Cohesion: 0.32
 Nodes (5): Header(), links, Navbar(), socials, TopBar()
 
-### Community 74 - "useMiniMapa.js"
-Cohesion: 0.48
-Nodes (4): collectionBounds(), coords(), drawGeometry(), featBounds()
+### Community 74 - "components/Caracteristicas.jsx"
+Cohesion: 0.43
+Nodes (4): CheckboxGroup(), CheckBoxUnico(), CheckPublicarPorInmobiliaria(), Caracteristicas()
 
 ### Community 75 - "tema1/home/PropertyGrid.jsx"
 Cohesion: 0.33
@@ -473,13 +478,13 @@ Nodes (3): InputSearchPrincipal(), frases_buscar, useTypingPlaceholder()
 Cohesion: 0.40
 Nodes (3): FeaturedPropertyHero(), formatPrice(), slides
 
-### Community 82 - "ServicesSection.jsx"
-Cohesion: 0.47
-Nodes (3): ServiceCard(), SERVICES, ServicesSection()
+### Community 82 - "Perfil.jsx"
+Cohesion: 0.27
+Nodes (7): HeadPerfilAcceso(), TABS, EditFields(), AccessLinkRow(), EditToggle(), SaveActions(), Perfil()
 
 ### Community 83 - "RegisterForm.jsx"
-Cohesion: 0.47
-Nodes (3): PasswordField(), RegisterForm(), TextField()
+Cohesion: 0.36
+Nodes (4): PasswordInput(), PasswordField(), RegisterForm(), TextField()
 
 ### Community 85 - "AgentsSlider.jsx"
 Cohesion: 0.50
@@ -501,25 +506,49 @@ Nodes (3): AVATARS, SERVICES, WhyChooseUs()
 Cohesion: 0.67
 Nodes (3): getItemsPerView(), PropertySlider(), propertyTypes
 
+### Community 94 - "ServicesSection.jsx"
+Cohesion: 0.47
+Nodes (3): ServiceCard(), SERVICES, ServicesSection()
+
+### Community 95 - "ListadoDePropiedades.jsx"
+Cohesion: 0.33
+Nodes (7): OPCIONES_ORDEN, usePropertySearch(), CHIPS, FiltroRelevante(), getFiltroLabel(), ListadoDePropiedades(), TYPE_LABELS
+
+### Community 98 - "HowToPublishHero.jsx"
+Cohesion: 0.36
+Nodes (4): HERO_BULLETS, HeroBullets(), HowToPublishHero(), PhoneIllustration()
+
+### Community 103 - "TenantProvider.jsx"
+Cohesion: 0.60
+Nodes (3): MAIN_HOSTS, TenantContext, TenantProvider()
+
+### Community 121 - "MisAnunciosContent.jsx"
+Cohesion: 0.50
+Nodes (3): ListaAnuncios(), MisAnunciosContent(), SinAnuncios()
+
+### Community 123 - "HeaderPublicarAnuncio.jsx"
+Cohesion: 0.33
+Nodes (5): HeaderPublicarAnuncio(), LogoBar(), STEPS, StepsNav(), useIsMobile()
+
 ## Knowledge Gaps
 - **194 isolated node(s):** `eslintConfig`, `paths`, `nextConfig`, `name`, `version` (+189 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **21 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **20 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `apiBackend()` connect `apiBackend` to `PropertyCard.jsx`, `components/InfoCards.jsx`, `irArriba`, `Guards.jsx`, `hero/Hero.jsx`, `useDetalles`, `useZonaMap.js`, `useFavoritos`, `useDatosBasicos.js`, `useTracking`, `usePropiedades.js`, `RestablecerPassword.jsx`, `useDatosBasicos`, `usePropiedades`, `SeleccionarZonaPage.jsx`, `useOrganizaciones`, `ListaPropiedades.jsx`, `MapOverlays.jsx`, `Leads.jsx`, `geoApi.js`, `MapaInmueblesPage.jsx`, `useAuth.js`, `apiBackend.js`, `useResetForm.js`, `TituloDescripcion.jsx`, `useMiniMapa.js`?**
-  _High betweenness centrality (0.242) - this node is a cross-community bridge._
-- **Why does `useAppContext()` connect `useAppContext` to `components/InfoCards.jsx`, `irArriba`, `Guards.jsx`, `CardPropiedad.jsx`, `useDetalles`, `useFavoritos`, `useDatosBasicos.js`, `useTracking`, `usePropiedades.js`, `useDatosBasicos`, `Feed.jsx`, `usePropiedades`, `PublicarAnuncio.jsx`, `MiOrganizacionesSidebar.jsx`, `LocationForm.jsx`, `useOrganizaciones`, `Login.jsx`, `Logo.jsx`, `Leads.jsx`, `AdminOrganizacionesPage.jsx`, `modal-hamburguesa/ModalHamburguesa.jsx`, `FormAgregarPropiedad.jsx`, `NavbarListaPropiedades.jsx`, `PropiedadId.jsx`, `useResetForm.js`, `SeguridadAcceso.jsx`, `RegisterForm.jsx`?**
-  _High betweenness centrality (0.182) - this node is a cross-community bridge._
-- **Why does `useOrganizaciones()` connect `useOrganizaciones` to `Guards.jsx`, `useAppContext`, `useOutletContext`, `apiBackend`, `Loading.jsx`, `useDatosBasicos.js`, `AdminOrganizacionesPage.jsx`, `temaRegistry.js`, `useDatosBasicos`, `MiOrganizacionesSidebar.jsx`, `app/page.js`?**
-  _High betweenness centrality (0.079) - this node is a cross-community bridge._
+- **Why does `apiBackend()` connect `apiBackend` to `useFavoritos`, `components/InfoCards.jsx`, `Guards.jsx`, `useAppContext`, `useDetalles`, `useZonaMap.js`, `useDatosBasicos.js`, `AppProvider.jsx`, `RestablecerPassword.jsx`, `usePropiedades`, `geoApi.js`, `useOrganizaciones`, `ListaPropiedades.jsx`, `MapOverlays.jsx`, `Leads.jsx`, `useMapaInmuebles.js`, `MapaInmueblesPage.jsx`, `useAuth.js`, `layers.js`, `BarraNavegacionTauri.jsx`, `RoomSeekerForm.jsx`, `apiBackend.js`, `TituloDescripcion.jsx`, `Logs.jsx`, `search/InputSearchPrincipal.jsx`, `TenantProvider.jsx`?**
+  _High betweenness centrality (0.216) - this node is a cross-community bridge._
+- **Why does `useAppContext()` connect `useAppContext` to `useFavoritos`, `components/InfoCards.jsx`, `Guards.jsx`, `hamburger/ConLogin.jsx`, `useDetalles`, `PropiedadId.jsx`, `useDatosBasicos.js`, `AppProvider.jsx`, `Feed.jsx`, `usePropiedades`, `PublicarAnuncio.jsx`, `MiOrganizacionesSidebar.jsx`, `LocationForm.jsx`, `useOrganizaciones`, `Login.jsx`, `Leads.jsx`, `MisAnuncios.jsx`, `useAuth.js`, `modal-hamburguesa/ModalHamburguesa.jsx`, `RoomSeekerForm.jsx`, `PageAnuncio.jsx`, `apiBackend`, `Principal.jsx`, `Logs.jsx`, `RegisterForm.jsx`, `HeaderPublicarAnuncio.jsx`?**
+  _High betweenness centrality (0.183) - this node is a cross-community bridge._
+- **Why does `dependencies` connect `dependencies` to `gsap`, `lucide`, `maplibre-gl`, `motion`, `useMapaInmuebles.js`, `react-dom`, `FormatoDetail.jsx`, `package.json`, `@geoman-io/maplibre-geoman-free`, `lucide-react`?**
+  _High betweenness centrality (0.076) - this node is a cross-community bridge._
 - **What connects `eslintConfig`, `paths`, `nextConfig` to the rest of the system?**
   _194 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `PropertyCard.jsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.06127206127206127 - nodes in this community are weakly interconnected._
+- **Should `useFavoritos` be split into smaller, more focused modules?**
+  _Cohesion score 0.05425742574257426 - nodes in this community are weakly interconnected._
 - **Should `components/InfoCards.jsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.05927405927405927 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06506849315068493 - nodes in this community are weakly interconnected._
 - **Should `irArriba` be split into smaller, more focused modules?**
-  _Cohesion score 0.05081081081081081 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1455026455026455 - nodes in this community are weakly interconnected._

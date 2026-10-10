@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BsFillGeoAltFill } from "react-icons/bs";
-import { FaArchway } from "react-icons/fa6";
-import { FiVideo } from "react-icons/fi";
 import { HiOutlineTrash } from "react-icons/hi2";
-import { ImImage } from "react-icons/im";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -16,6 +12,8 @@ import useFavoritos from "@/hooks/useFavoritos";
 import { formatPrecioCompleto } from "@/utils/formatPrecio";
 import { agruparPorOrden } from "@/utils/galeriaUtils";
 import PropertyImage from "@/components/common/PropertyImage";
+import { DescripcionAnuncio } from "./DescripcionAnuncio";
+import { MediaToolbar } from "./MediaToolbar";
 import { useRouter } from "next/navigation";
 import { irAInmueble, saveNavState } from "@/lib/navState.js";
 import {
@@ -23,6 +21,7 @@ import {
   AUTOPLAY_SECONDS,
   OPERACION_LABEL,
 } from "@/data/lista-propiedades/lista_propiedades";
+import Image from "next/image";
 
 const CardAnuncioCompra = ({
   propiedad,
@@ -113,8 +112,7 @@ const CardAnuncioCompra = ({
     <div
       className="flex items-center md:flex-row flex-col md:h-96 h-full w-full rounded-md shadow-lg hover:shadow-xl shadow-black/10 transition duration-300 group cursor-pointer"
       onClick={() =>
-        propiedad?.id &&
-        irAInmueble(router, propiedad.id, navState)
+        propiedad?.id && irAInmueble(router, propiedad.id, navState)
       }
     >
       <div className="w-full md:w-[50%] h-96 bg-primero rounded-l-md relative overflow-hidden">
@@ -139,7 +137,10 @@ const CardAnuncioCompra = ({
                   className="relative w-full h-full cursor-pointer select-none"
                   onClick={(e) => {
                     e.stopPropagation();
-                    saveNavState(navState), router.push(`/inmueble/${propiedad.id}/foto/${actualIndex + 1}`);
+                    (saveNavState(navState),
+                      router.push(
+                        `/inmueble/${propiedad.id}/foto/${actualIndex + 1}`,
+                      ));
                   }}
                 >
                   <PropertyImage
@@ -162,54 +163,7 @@ const CardAnuncioCompra = ({
           </div>
         )}
 
-        <div className="absolute left-2 bottom-2 flex items-center justify-center gap-2 z-10">
-          <div
-            className="bg-primero/60 group-hover:bg-primero rounded-xs p-2.5 flex items-center justify-center transition-colors duration-300 cursor-pointer select-none"
-            onClick={(e) => {
-              e.stopPropagation();
-              propiedad?.id &&
-                irAInmueble(router, propiedad.id, navState, "fotos");
-            }}
-            title="Ver fotos"
-          >
-            <ImImage className="text-sm text-segundo/60 group-hover:text-segundo transition-colors duration-300" />
-          </div>
-          {planos.length > 0 && (
-            <div
-              className="bg-primero/60 group-hover:bg-primero rounded-xs p-2.5 flex items-center justify-center transition-colors duration-300 cursor-pointer select-none"
-              onClick={(e) => {
-                e.stopPropagation();
-                propiedad?.id &&
-                  irAInmueble(router, propiedad.id, navState, "planos");
-              }}
-              title="Ver planos"
-            >
-              <FaArchway className="text-sm text-segundo/60 group-hover:text-segundo transition-colors duration-300" />
-            </div>
-          )}
-          <div
-            className="bg-primero/60 group-hover:bg-primero rounded-xs p-2.5 flex items-center justify-center transition-colors duration-300 cursor-pointer select-none"
-            onClick={(e) => {
-              e.stopPropagation();
-              propiedad?.id &&
-                irAInmueble(router, propiedad.id, navState, "3d");
-            }}
-            title="Visita 3D"
-          >
-            <FiVideo className="text-sm text-segundo/60 group-hover:text-segundo transition-colors duration-300" />
-          </div>
-          <div
-            className="bg-primero/60 group-hover:bg-primero rounded-xs p-2.5 flex items-center justify-center transition-colors duration-300 cursor-pointer select-none"
-            onClick={(e) => {
-              e.stopPropagation();
-              propiedad?.id &&
-                irAInmueble(router, propiedad.id, navState, "mapa");
-            }}
-            title="Ver mapa"
-          >
-            <BsFillGeoAltFill className="text-sm text-segundo/60 group-hover:text-segundo transition-colors duration-300" />
-          </div>
-        </div>
+        <MediaToolbar propiedad={propiedad} navState={navState} />
 
         {totalImagenes > 1 && (
           <>
@@ -245,24 +199,25 @@ const CardAnuncioCompra = ({
         </div>
       </div>
 
-      <div className="w-full md:w-[50%] bg-primero min-h-72 md:h-full rounded-r-md relative pb-3 flex flex-col justify-between">
-        <div className="flex flex-col">
+      <div className="w-full md:w-[50%] min-w-0 bg-primero min-h-72 md:h-full rounded-r-md relative pb-3 flex flex-col justify-between">
+        <div className="flex flex-col min-w-0">
           <div className="flex items-center justify-between w-full">
             <h2
               className="font-medium text-blue-600 hover:text-blue-700 hover:underline cursor-pointer select-none px-4 pt-2"
               onClick={(e) => {
                 e.stopPropagation();
-                propiedad?.id &&
-                  irAInmueble(router, propiedad.id, navState);
+                propiedad?.id && irAInmueble(router, propiedad.id, navState);
               }}
             >
               {titulo}
             </h2>
             {propiedad?.es_de_organizacion && (
               <div className="mx-6 border border-segundo/10 w-32 h-16">
-                <img
+                <Image
                   src={propiedad?.organizacion_logo_url || "/logo/logo-hor.png"}
                   alt={propiedad?.organizacion_nombre || "Inmobiliaria"}
+                  width={500}
+                  height={500}
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -319,20 +274,21 @@ const CardAnuncioCompra = ({
             </div>
 
             {propiedad?.description && (
-              <p className="text-sm text-black/70 mt-2 line-clamp-8">
-                {propiedad.description}
-              </p>
+              <DescripcionAnuncio
+                html={propiedad.description}
+                clampClass="line-clamp-6"
+              />
             )}
           </div>
         </div>
 
+        {/* Feed */}
         <div className="px-4 flex items-center justify-between w-full">
           <div
             className="flex items-center gap-2 text-blue-600 cursor-pointer select-none"
             onClick={(e) => {
               e.stopPropagation();
-              propiedad?.id &&
-                irAInmueble(router, propiedad.id, navState);
+              propiedad?.id && irAInmueble(router, propiedad.id, navState);
             }}
           >
             <PiChats className="text-lg" />
