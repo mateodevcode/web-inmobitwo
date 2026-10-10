@@ -144,7 +144,7 @@ const ListadoDePropiedades = ({
               onClick={() =>
                 router.push(`/busqueda-multizona/${operationSlug}-${typeSlug}`)
               }
-              className="px-5 py-2.5 bg-[#e6007a] text-white border-none rounded-md text-sm font-semibold cursor-pointer transition-colors hover:bg-[#c40068]"
+              className="px-5 py-2.5 bg-noveno text-primero border-none rounded-md text-sm font-semibold cursor-pointer transition-colors hover:bg-[#c40068]"
             >
               Volver a seleccionar zona
             </button>

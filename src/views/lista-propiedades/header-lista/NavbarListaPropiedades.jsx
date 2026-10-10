@@ -50,11 +50,6 @@ const NavbarListaPropiedades = () => {
             </p>
           </button>
 
-          <button className="hidden md:flex items-center gap-1 text-sm text-black/80">
-            🇪🇸
-            <MdOutlineKeyboardArrowDown className="text-black/60" />
-          </button>
-
           {usuario ? (
             <BotonUsuario onClick={() => setOpenModalUser(!openModalUser)} />
           ) : (

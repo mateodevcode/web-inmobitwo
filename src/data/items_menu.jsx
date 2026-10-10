@@ -1,4 +1,5 @@
 import { FaRegHeart } from "react-icons/fa";
+import { FaBell } from "react-icons/fa";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { LuBuilding2 } from "react-icons/lu";
@@ -23,5 +24,10 @@ export const items_menu = [
     label: "Notificaciones",
     id: "notificaciones",
     icon: <IoMdNotificationsOutline className="text-xl" />,
+  },
+  {
+    label: "Mis búsquedas",
+    id: "mis-busquedas",
+    icon: <FaBell className="text-xl" />,
   },
 ];
