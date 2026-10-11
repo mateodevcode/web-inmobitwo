@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { HiOutlineTrash } from "react-icons/hi2";
+import BotonDescartar from "@/views/anuncio/anuncio-id/BotonDescartar";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -299,7 +299,7 @@ const CardAnuncioCompra = ({
               className="cursor-pointer select-none"
               onClick={(e) => e.stopPropagation()}
             >
-              <HiOutlineTrash className="text-lg text-blue-600" />
+              <BotonDescartar compact id={propiedad?.id} />
             </div>
             <div
               className="cursor-pointer select-none"

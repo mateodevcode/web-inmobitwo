@@ -92,7 +92,7 @@ const CardPrincipal = ({
                 {inmueble.departamento && `, ${inmueble.departamento}`}
               </p>
               {inmueble.latitude && inmueble.longitude && (
-                <div className="flex items-center gap-1 text-blue-600 hover:underline cursor-pointer select-none md:text-base text-sm">
+                <div className="flex items-center gap-1 text-decimo hover:underline cursor-pointer select-none md:text-base text-sm">
                   <FaMapMarkerAlt className="" />
                   <span className="text-sm">Ver mapa</span>
                 </div>
@@ -114,12 +114,12 @@ const CardPrincipal = ({
         </div>
 
         <div className="flex items-center gap-8 mt-4">
-          <div className="text-blue-600 hover:underline flex items-center gap-2">
+          <div className="text-decimo hover:underline flex items-center gap-2 cursor-pointer select-none hover:text-decimo/80">
             <GiHistogram />
             <p className="text-sm">Calcular hipoteca</p>
           </div>
 
-          <div className="text-blue-600 hover:underline flex items-center gap-2">
+          <div className="text-decimo hover:underline flex items-center gap-2 cursor-pointer select-none hover:text-decimo/80">
             <AiOutlineEdit />
             <p className="text-sm">Calcular hipoteca</p>
           </div>

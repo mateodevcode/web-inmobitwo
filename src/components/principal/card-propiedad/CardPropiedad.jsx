@@ -6,6 +6,7 @@ import { PiBathtub } from "react-icons/pi";
 import { RxRulerSquare } from "react-icons/rx";
 import { TbPointFilled } from "react-icons/tb";
 import { TiHeartFullOutline, TiHeartOutline } from "react-icons/ti";
+import { IoMdCloseCircle, IoMdUndo } from "react-icons/io";
 
 import { getInitials } from "@/lib/getInitials";
 import { formatFirstTwoNames } from "@/lib/formatFirstTwoNames";
@@ -16,6 +17,8 @@ import { useFavoritosStore } from "@/hooks/favoritosStore";
 import { useTiempoRelativo } from "@/hooks/useTiempoRelativo";
 import useTracking from "@/hooks/useTracking";
 import useFavoritos from "@/hooks/useFavoritos";
+import useDescartados from "@/hooks/useDescartados";
+import { useDescartadosStore } from "@/hooks/descartadosStore";
 import ImagenesCard from "./ImagenesCard";
 import { useRouter } from "next/navigation";
 
@@ -31,6 +34,10 @@ const CardPropiedad = ({ propiedades, ultimaCardRef, esLaUltima }) => {
     setPropiedadAEliminar,
   } = useAppContext();
   const favoritos = useFavoritosStore();
+  const descartados = useDescartadosStore();
+  const { handleDescartar, handleRestaurar, estaDescartado } =
+    useDescartados();
+  const descartado = estaDescartado(descartados, id);
 
   const esOrganizacion = publicador?.tipo === "organizacion";
   // usuario -> "name" | organizacion -> "nombre"
@@ -180,6 +187,22 @@ const CardPropiedad = ({ propiedades, ultimaCardRef, esLaUltima }) => {
             <TiHeartOutline className="text-base md:text-lg" />
           )}
           <span>{isFavorited ? "Favorito" : "Guardar"}</span>
+        </button>
+        <button
+          className="flex items-center justify-center gap-2 bg-white border border-black/20 text-black rounded-md px-2 py-1.5 font-semibold w-full cursor-pointer select-none active:scale-95 duration-75 transition hover:bg-black/5 text-xs md:text-base"
+          type="button"
+          onClick={(e) =>
+            descartado
+              ? handleRestaurar(e, propiedades.id)
+              : handleDescartar(e, propiedades.id)
+          }
+        >
+          {descartado ? (
+            <IoMdUndo className="text-base md:text-lg" />
+          ) : (
+            <IoMdCloseCircle className="text-base md:text-lg" />
+          )}
+          <span>{descartado ? "Restaurar" : "Descartar"}</span>
         </button>
         <button
           className="flex items-center justify-center gap-2 bg-white border border-black/20 text-black rounded-md px-2 py-1.5 font-semibold w-full cursor-pointer select-none active:scale-95 duration-75 transition hover:bg-black/5 text-xs md:text-base"
