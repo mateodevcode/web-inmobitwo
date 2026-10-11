@@ -1,4 +1,3 @@
-
 import PropertyImage from "@/components/common/PropertyImage";
 import { BiNotepad } from "react-icons/bi";
 import { PiChats } from "react-icons/pi";
@@ -6,7 +5,8 @@ import { BsCameraFill } from "react-icons/bs";
 import { HiOutlineFlag } from "react-icons/hi2";
 import UbicacionMapa from "../UbicacionMapa";
 import { formatPrecioCompleto } from "@/utils/formatPrecio";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import DOMPurify from "dompurify";
 import useScrollSentinel from "@/hooks/useScrollSentinel";
 import { apiBackend } from "@/actions/apiBackend";
 import { useRouter } from "next/navigation";
@@ -19,9 +19,25 @@ const DetalleInmuble = ({
 }) => {
   const router = useRouter();
 
-  const descripcionLarga = inmueble.description || "";
+  const descripcionHtml = inmueble.description || "";
   const [descripcionAbierta, setDescripcionAbierta] = useState(false);
-  const mostrarDescripcion = !!descripcionLarga;
+  // La descripción llega como HTML del editor Tiptap: se sanitiza y se
+  // renderiza formateada (mismo patrón que DescripcionAnuncio / InfoCards).
+  // Seguro en SSR: este detalle solo se renderiza con datos del fetch cliente.
+  const descripcionLimpia = useMemo(
+    () => (descripcionHtml ? DOMPurify.sanitize(descripcionHtml) : ""),
+    [descripcionHtml],
+  );
+  const descripcionTexto = useMemo(
+    () =>
+      descripcionLimpia
+        .replace(/<[^>]*>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim(),
+    [descripcionLimpia],
+  );
+  const mostrarDescripcion = descripcionTexto.length > 0;
+  const necesitaRecorte = descripcionTexto.length > 280;
 
   // Historial de precios
   const [historialPrecios, setHistorialPrecios] = useState([]);
@@ -59,19 +75,25 @@ const DetalleInmuble = ({
       {mostrarDescripcion && (
         <div className="py-5 border-b border-gray-200">
           <h2 className="text-lg font-bold text-gray-900 mb-3">Descripción</h2>
-          <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">
-            {descripcionAbierta
-              ? descripcionLarga
-              : descripcionLarga.slice(0, 280)}
-          </p>
-          {descripcionLarga.length > 280 && (
+          <div className="relative">
+            <div
+              className={`prose prose-sm max-w-none text-gray-700 leading-relaxed wrap-break-word ${
+                !descripcionAbierta && necesitaRecorte
+                  ? "max-h-42 overflow-hidden"
+                  : ""
+              }`}
+              dangerouslySetInnerHTML={{ __html: descripcionLimpia }}
+            />
+            {!descripcionAbierta && necesitaRecorte && (
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-linear-to-t from-white to-transparent" />
+            )}
+          </div>
+          {necesitaRecorte && (
             <button
               onClick={() => setDescripcionAbierta((v) => !v)}
               className="text-sm font-semibold text-blue-600 hover:underline mt-2"
             >
-              {descripcionAbierta
-                ? "Leer menos"
-                : "Leer descripción completa"}
+              {descripcionAbierta ? "Leer menos" : "Leer descripción completa"}
             </button>
           )}
 
@@ -132,7 +154,9 @@ const DetalleInmuble = ({
             <li>· {inmueble.parking_space_count} parqueadero(s)</li>
           )}
           {inmueble.administracion != null && (
-            <li>· Administración: {formatPrecioCompleto(inmueble.administracion)}</li>
+            <li>
+              · Administración: {formatPrecioCompleto(inmueble.administracion)}
+            </li>
           )}
           {inmueble.zona && <li>· Zona: {inmueble.zona}</li>}
           {inmueble.has_elevator && <li>· Ascensor</li>}
@@ -156,9 +180,7 @@ const DetalleInmuble = ({
                 {categoria}
               </h3>
               <p className="text-sm text-gray-700">
-                {caracteristicas[categoria]
-                  .map((f) => f.label_es)
-                  .join(", ")}
+                {caracteristicas[categoria].map((f) => f.label_es).join(", ")}
               </p>
             </div>
           ))}

@@ -5,14 +5,11 @@ import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
 } from "react-icons/md";
-import { TiHeartFullOutline, TiHeartOutline } from "react-icons/ti";
 import { IoArrowRedoOutline, IoClose } from "react-icons/io5";
 import { ImImage } from "react-icons/im";
 import { FaArchway, FaMapMarkerAlt } from "react-icons/fa";
 import { Md3dRotation, MdMyLocation } from "react-icons/md";
-import useFavoritos from "@/hooks/useFavoritos";
 import { useAppContext } from "@/context/AppContext";
-import { useFavoritosStore } from "@/hooks/favoritosStore";
 import { formatPrecioCompleto } from "@/utils/formatPrecio";
 import { agruparPorOrden } from "@/utils/galeriaUtils";
 import PropertyImage from "@/components/common/PropertyImage";
@@ -20,6 +17,7 @@ import usePropiedades from "../../../hooks/usePropiedades";
 import { BsArrowsAngleExpand, BsArrowsAngleContract } from "react-icons/bs";
 import * as maplibregl from "maplibre-gl";
 import { ZoomControl } from "@/components/map/MapControls";
+import BotonFavorito from "../anuncio-id/BotonFavorito";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 export default function FotoVisor() {
@@ -27,18 +25,22 @@ export default function FotoVisor() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { propiedad: inmueble } = useAppContext();
-  const favoritos = useFavoritosStore();
-  const { estaEnFavoritos, handleFavorito } = useFavoritos();
 
   const [loading, setLoading] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
-  const [modo, setModo] = useState(
+  // El modo vive en la URL (?planos=1 / ?3d=1 / ?mapa=1) para que sobreviva a
+  // router.replace y a recargas. Se deriva directo de searchParams (sin estado
+  // local): antes el modo era un useState inicializado una sola vez y al
+  // navegar con las flechas (replace sin query) el visor "se devolvía a las
+  // fotos".
+  const modo =
     searchParams.get("mapa") === "1"
       ? "mapa"
       : searchParams.get("planos") === "1"
         ? "planos"
-        : "fotos",
-  );
+        : searchParams.get("3d") === "1"
+          ? "3d"
+          : "fotos";
   const mapaContainerRef = useRef(null);
   const mapaInstanceRef = useRef(null);
   const [mapa, setMapa] = useState(null);
@@ -127,13 +129,24 @@ export default function FotoVisor() {
   ];
   const indexActual = Math.min(
     Math.max(parseInt(fotoIndex, 10) - 1, 0),
-    totalImagenes - 1,
+    Math.max(totalImagenes - 1, 0),
+  );
+  // El índice de la URL se reutiliza como posición genérica entre modos,
+  // pero cada modo se acota a su propio total para no salir de rango.
+  const indexPlanos = Math.min(
+    Math.max(parseInt(fotoIndex, 10) - 1, 0),
+    Math.max(totalPlanos - 1, 0),
   );
   const nombreEspacio =
     inmueble.galeria?.[indexActual - 1]?.etiqueta ||
     (indexActual === 0 ? "Salón" : "");
 
-  const isFavorited = estaEnFavoritos(favoritos, inmueble.id);
+  const tieneMapa = Boolean(inmueble?.latitude && inmueble?.longitude);
+  const tiene3d = Boolean(inmueble?.video_3d);
+  // Secuencia lineal única: fotos → planos → 3D → mapa (solo los que existen).
+  const totalPasos =
+    totalImagenes + totalPlanos + (tiene3d ? 1 : 0) + (tieneMapa ? 1 : 0);
+  const mostrarFlechas = totalPasos > 1;
 
   const specsLinea = [
     inmueble.constructed_area
@@ -148,38 +161,63 @@ export default function FotoVisor() {
     inmueble.estrato != null ? `Estrato ${inmueble.estrato}` : null,
   ].filter(Boolean);
 
+  const irA = (nuevoModo, posicion1Based) => {
+    const query =
+      nuevoModo === "planos"
+        ? "?planos=1"
+        : nuevoModo === "mapa"
+          ? "?mapa=1"
+          : nuevoModo === "3d"
+            ? "?3d=1"
+            : "";
+    router.replace(`/inmueble/${id}/foto/${posicion1Based}${query}`);
+  };
+
+  const irAModo = (nuevoModo) => {
+    // Al cambiar de pestaña se empieza en la posición 1 de ese modo
+    // (cada galería tiene su propio total; reutilizar el índice del otro
+    // modo mostraba una posición arbitraria).
+    if (nuevoModo === "planos") {
+      irA("planos", 1);
+    } else if (nuevoModo === "mapa") {
+      irA("mapa", indexActual + 1);
+    } else if (nuevoModo === "3d") {
+      irA("3d", 1);
+    } else {
+      irA("fotos", 1);
+    }
+  };
+
   const handleNavegar = (direccion) => {
-    if (modo === "fotos") {
-      const nuevo = indexActual + direccion;
-      if (nuevo >= 0 && nuevo < totalImagenes) {
-        router.replace(`/inmueble/${id}/foto/${nuevo + 1}`);
-        return;
-      }
-    }
-    if (modo === "planos" && totalPlanos > 0) {
-      const nuevo = indexActual + direccion;
-      if (nuevo >= 0 && nuevo < totalPlanos) {
-        router.replace(`/inmueble/${id}/foto/${nuevo + 1}`);
-        return;
-      }
-    }
-    // saltar al siguiente/anterior modo disponible (solo secciones que existen)
+    // Secuencia lineal única: fotos → planos → 3D → mapa (solo los que
+    // existen). Al acabarse un modo se entra al siguiente; al retroceder del
+    // primero de un modo se va al último del anterior. Al final hay wrap
+    // (mapa → foto 1, foto 1 → último modo).
     if (modosDisponibles.length === 0) return;
-    const idx = modosDisponibles.indexOf(modo);
-    const nuevoModoIdx =
-      (((idx + direccion) % modosDisponibles.length) +
-        modosDisponibles.length) %
-      modosDisponibles.length;
-    const nuevoModo = modosDisponibles[nuevoModoIdx];
-    setModo(nuevoModo);
-    if (nuevoModo === "fotos") {
-      const target = direccion > 0 ? 0 : totalImagenes - 1;
-      router.replace(`/inmueble/${id}/foto/${target + 1}`);
+    const totalDe = (m) =>
+      m === "fotos" ? totalImagenes : m === "planos" ? totalPlanos : 1;
+    const posDe = (m) =>
+      m === "fotos" ? indexActual : m === "planos" ? indexPlanos : 0;
+    let actual = modosDisponibles.includes(modo)
+      ? modo
+      : modosDisponibles[0];
+    const total = totalDe(actual);
+
+    // Paso dentro del mismo modo (galerías con varios items).
+    if (total > 1) {
+      const pos = posDe(actual) + direccion;
+      if (pos >= 0 && pos < total) {
+        irA(actual, pos + 1);
+        return;
+      }
     }
-    if (nuevoModo === "planos" && totalPlanos > 0) {
-      const target = direccion > 0 ? 0 : totalPlanos - 1;
-      router.replace(`/inmueble/${id}/foto/${target + 1}`);
-    }
+    // Salto de modo (borde alcanzado, o modo de un solo paso como 3D/mapa).
+    const idx = modosDisponibles.indexOf(actual);
+    const len = modosDisponibles.length;
+    const vecino =
+      modosDisponibles[(((idx + direccion) % len) + len) % len];
+    // Hacia adelante se entra por el primero; hacia atrás por el último.
+    irA(vecino, direccion > 0 ? 1 : totalDe(vecino));
   };
 
   const cerrar = () => router.back();
@@ -204,7 +242,7 @@ export default function FotoVisor() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [indexActual, totalImagenes, fullscreen, modo]);
+  }, [indexActual, indexPlanos, totalImagenes, totalPlanos, fullscreen, modo]);
 
   const counterText = (() => {
     switch (modo) {
@@ -212,7 +250,7 @@ export default function FotoVisor() {
         return `Foto ${indexActual + 1}/${totalImagenes}`;
       case "planos":
         return totalPlanos > 0
-          ? `Plano ${indexActual + 1}/${totalPlanos}`
+          ? `Plano ${indexPlanos + 1}/${totalPlanos}`
           : "Plano no disponible";
       case "mapa":
         return "Mapa de zona";
@@ -258,17 +296,9 @@ export default function FotoVisor() {
                 <IoArrowRedoOutline className="text-lg" />
                 Compartir
               </button>
-              <button
-                onClick={(e) => handleFavorito(e, inmueble.id)}
-                className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:underline"
-              >
-                {isFavorited ? (
-                  <TiHeartFullOutline className="text-lg text-tercero" />
-                ) : (
-                  <TiHeartOutline className="text-lg" />
-                )}
-                Guardar favorito
-              </button>
+              <div className="hidden sm:flex">
+                <BotonFavorito id={inmueble.id} />
+              </div>
               {/* <button className="bg-[#e6007a] text-white text-sm font-semibold rounded-sm px-5 py-2 hover:bg-[#c40068] transition-colors"> */}
               <button
                 className="bg-tercero text-white text-sm font-semibold rounded-sm px-5 py-2 hover:bg-tercero/80 transition-colors border-2 border-black cursor-pointer select-none"
@@ -325,23 +355,95 @@ export default function FotoVisor() {
                 <BsArrowsAngleContract className="text-2xl" />
               </button>
             )}
+            {/* Flechas de la secuencia lineal (mapa es el último paso) */}
+            {mostrarFlechas && (
+              <>
+                <button
+                  onClick={() => handleNavegar(-1)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white transition duration-300 flex items-center justify-center text-xl shadow-lg border border-black/20 z-10"
+                  title="Anterior"
+                >
+                  <MdOutlineKeyboardArrowLeft className="text-2xl text-black" />
+                </button>
+                <button
+                  onClick={() => handleNavegar(1)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white transition duration-300 flex items-center justify-center text-xl shadow-lg border border-black/20 z-10"
+                  title="Siguiente"
+                >
+                  <MdOutlineKeyboardArrowRight className="text-2xl text-black" />
+                </button>
+              </>
+            )}
           </div>
         ) : modo === "plano" ? (
           <div className="flex items-center justify-center text-gray-400 text-lg">
             Plano no disponible
           </div>
         ) : modo === "planos" && totalPlanos > 0 ? (
-          <PropertyImage
-            foto={planosAgrupados[indexActual]}
-            tamañoBase="xlarge"
-            sizes="200vw"
-            alt={`Plano ${indexActual + 1}`}
-            className={`${fullscreen ? "w-full h-full" : "max-w-full max-h-full"} object-contain select-none`}
-          />
+          <>
+            <PropertyImage
+              foto={planosAgrupados[indexPlanos]}
+              tamañoBase="xlarge"
+              sizes="200vw"
+              alt={`Plano ${indexPlanos + 1}`}
+              className={`${fullscreen ? "w-full h-full" : "max-w-full max-h-full"} object-contain select-none`}
+            />
+
+            {fullscreen && (
+              <button
+                onClick={() => setFullscreen(false)}
+                className="absolute bottom-4 right-4 z-2200 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white rounded-lg p-3 transition-colors duration-200 cursor-pointer"
+                title="Salir de pantalla completa"
+              >
+                <BsArrowsAngleContract className="text-2xl" />
+              </button>
+            )}
+
+            {/* Flechas de la secuencia lineal: al acabarse los planos sigue 3D/mapa */}
+            {mostrarFlechas && (
+              <>
+                <button
+                  onClick={() => handleNavegar(-1)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white transition duration-300 flex items-center justify-center text-xl shadow-lg border border-black/20 z-10"
+                  title="Anterior"
+                >
+                  <MdOutlineKeyboardArrowLeft className="text-2xl text-black" />
+                </button>
+                <button
+                  onClick={() => handleNavegar(1)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white transition duration-300 flex items-center justify-center text-xl shadow-lg border border-black/20 z-10"
+                  title="Siguiente"
+                >
+                  <MdOutlineKeyboardArrowRight className="text-2xl text-black" />
+                </button>
+              </>
+            )}
+          </>
         ) : modo === "3d" ? (
-          <div className="flex items-center justify-center text-gray-400 text-lg">
-            Vista 3D no disponible
-          </div>
+          <>
+            <div className="flex items-center justify-center text-gray-400 text-lg">
+              Vista 3D no disponible
+            </div>
+            {/* Flechas de la secuencia lineal (3D es un paso único) */}
+            {mostrarFlechas && (
+              <>
+                <button
+                  onClick={() => handleNavegar(-1)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white transition duration-300 flex items-center justify-center text-xl shadow-lg border border-black/20 z-10"
+                  title="Anterior"
+                >
+                  <MdOutlineKeyboardArrowLeft className="text-2xl text-black" />
+                </button>
+                <button
+                  onClick={() => handleNavegar(1)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white transition duration-300 flex items-center justify-center text-xl shadow-lg border border-black/20 z-10"
+                  title="Siguiente"
+                >
+                  <MdOutlineKeyboardArrowRight className="text-2xl text-black" />
+                </button>
+              </>
+            )}
+          </>
         ) : (
           <>
             <PropertyImage
@@ -362,21 +464,25 @@ export default function FotoVisor() {
               </button>
             )}
 
-            {/* Flechas de navegacion entre modos (siempre visibles) */}
-            <button
-              onClick={() => handleNavegar(-1)}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white transition duration-300 flex items-center justify-center text-xl shadow-lg border border-black/20 z-10"
-              title="Anterior"
-            >
-              <MdOutlineKeyboardArrowLeft className="text-2xl text-black" />
-            </button>
-            <button
-              onClick={() => handleNavegar(1)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white transition duration-300 flex items-center justify-center text-xl shadow-lg border border-black/20 z-10"
-              title="Siguiente"
-            >
-              <MdOutlineKeyboardArrowRight className="text-2xl text-black" />
-            </button>
+            {/* Flechas de la secuencia lineal (al acabarse las fotos siguen planos) */}
+            {mostrarFlechas && (
+              <>
+                <button
+                  onClick={() => handleNavegar(-1)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white transition duration-300 flex items-center justify-center text-xl shadow-lg border border-black/20 z-10"
+                  title="Anterior"
+                >
+                  <MdOutlineKeyboardArrowLeft className="text-2xl text-black" />
+                </button>
+                <button
+                  onClick={() => handleNavegar(1)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white transition duration-300 flex items-center justify-center text-xl shadow-lg border border-black/20 z-10"
+                  title="Siguiente"
+                >
+                  <MdOutlineKeyboardArrowRight className="text-2xl text-black" />
+                </button>
+              </>
+            )}
           </>
         )}
       </div>
@@ -392,7 +498,7 @@ export default function FotoVisor() {
             <div className="gap-0.5 md:gap-0 items-center flex-wrap grid grid-cols-3 md:grid-cols-4">
               {totalImagenes > 0 && (
                 <button
-                  onClick={() => setModo("fotos")}
+                  onClick={() => irAModo("fotos")}
                   className={btnClass("fotos")}
                 >
                   <ImImage className="text-base" />
@@ -401,7 +507,7 @@ export default function FotoVisor() {
               )}
               {totalPlanos > 0 && (
                 <button
-                  onClick={() => setModo("planos")}
+                  onClick={() => irAModo("planos")}
                   className={btnClass("planos")}
                 >
                   <FaArchway className="text-sm" />
@@ -410,7 +516,7 @@ export default function FotoVisor() {
               )}
               {inmueble?.video_3d && (
                 <button
-                  onClick={() => setModo("3d")}
+                  onClick={() => irAModo("3d")}
                   className={btnClass("3d")}
                 >
                   <Md3dRotation className="text-base" />
@@ -419,7 +525,7 @@ export default function FotoVisor() {
               )}
               {inmueble?.latitude && inmueble?.longitude && (
                 <button
-                  onClick={() => setModo(modo === "mapa" ? "fotos" : "mapa")}
+                  onClick={() => irAModo(modo === "mapa" ? "fotos" : "mapa")}
                   className={btnClass("mapa")}
                 >
                   <FaMapMarkerAlt className="text-sm" />
