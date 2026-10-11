@@ -1,7 +1,7 @@
-import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
 import { formatPrecioCompleto } from "@/utils/formatPrecio";
 import BotonDescartar from "./BotonDescartar";
 import BotonFavorito from "./BotonFavorito";
+import { HiArrowLongLeft } from "react-icons/hi2";
 
 const HeaderDinamico = ({ onClose, inmueble, specsLinea }) => {
   return (
@@ -12,10 +12,10 @@ const HeaderDinamico = ({ onClose, inmueble, specsLinea }) => {
           className="text-blue-600 hover:text-blue-700 shrink-0"
           title="Volver"
         >
-          <MdOutlineKeyboardDoubleArrowLeft className="text-2xl" />
+          <HiArrowLongLeft className="text-2xl" />
         </button>
         <div className="min-w-0">
-          <p className="font-bold text-gray-900 text-sm truncate">
+          <p className="font-bold text-gray-900 text-sm truncate font-sans">
             {inmueble.titulo}
           </p>
           <p className="text-xs text-gray-600 truncate">
@@ -26,7 +26,7 @@ const HeaderDinamico = ({ onClose, inmueble, specsLinea }) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 shrink-0">
+      <div className="flex items-center gap-4 shrink-0">
         <BotonFavorito />
         <BotonDescartar compact />
       </div>

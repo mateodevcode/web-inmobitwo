@@ -1,3 +1,4 @@
+import { HiArrowLongLeft } from "react-icons/hi2";
 import {
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -14,19 +15,19 @@ const BarraNavegacion = ({
 }) => {
   return (
     <div className="w-full md:h-12 h-24 bg-white flex items-center">
-      <div className="mx-auto w-9/12 flex items-center md:flex-row flex-col justify-between gap-4">
+      <div className="mx-auto w-11/12 md:w-9/12 flex items-start md:flex-row flex-col justify-between gap-4">
         <button
           onClick={onClose}
           className="flex items-center justify-center cursor-pointer select-none gap-2 font-poppins text-blue-600 hover:underline hover:text-blue-700"
         >
-          <MdOutlineKeyboardDoubleArrowLeft className="text-xl shrink-0" />
+          <HiArrowLongLeft className="text-xl shrink-0" />
           <span className="truncate text-sm">
             {filtroLabel || "Volver a resultados"}
           </span>
         </button>
 
         {listaIds && listaIds.length > 0 && (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 justify-between md:justify-center w-full md:w-max">
             <button
               onClick={() => onNavigateTo("anterior")}
               disabled={posicion <= 0}

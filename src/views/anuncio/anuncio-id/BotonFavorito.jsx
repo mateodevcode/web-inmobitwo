@@ -1,23 +1,26 @@
-
 import { TiHeartFullOutline, TiHeartOutline } from "react-icons/ti";
 import useFavoritos from "@/hooks/useFavoritos";
 import { useFavoritosStore } from "@/hooks/favoritosStore";
 import { useParams } from "next/navigation";
 
-const BotonFavorito = () => {
-  const { id } = useParams();
+const BotonFavorito = ({ id: idProp }) => {
+  const { id: idParam } = useParams();
+  const id = idProp ?? idParam;
   const favoritos = useFavoritosStore();
   const { handleFavorito, estaEnFavoritos } = useFavoritos();
   const isFavorited = estaEnFavoritos(favoritos, id);
 
+  // Mismo diseño que el botón "Contactar" del header del visor, invertido:
+  // guardado = fondo tercero + texto blanco, sin guardar = fondo blanco +
+  // texto tercero (colores opuestos).
   return (
     <button
       type="button"
       onClick={(e) => handleFavorito(e, id)}
-      className={`flex items-center justify-center gap-2 border rounded-md px-4 py-1.5 font-semibold cursor-pointer select-none active:scale-95 duration-75 transition text-xs w-min ${
+      className={`flex items-center justify-center gap-2 border-2 rounded-sm px-5 py-2 font-semibold text-sm cursor-pointer select-none active:scale-95 transition w-min ${
         isFavorited
-          ? "bg-red-50 border-red-500 text-red-600"
-          : "bg-white border-black/20 text-black hover:bg-black/5"
+          ? "bg-tercero/10 text-tercero hover:bg-tercero/20 border-tercero"
+          : "bg-white text-segundo hover:bg-segundo/10 border-segundo"
       }`}
     >
       {isFavorited ? (

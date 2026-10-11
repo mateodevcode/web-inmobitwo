@@ -26,13 +26,15 @@ const CardPrincipal = ({
     if (inmueble?.id) dispararEventoYRevisar(inmueble.id, "click_compartir");
   };
 
+  console.log(inmueble);
+
   return (
     <>
       <div className="grid grid-cols-3 md:grid-cols-4 gap-1 mt-3">
         {totalImagenes > 0 && (
           <button
             onClick={() => router.push(`/inmueble/${inmueble.id}/foto/1`)}
-            className="flex items-center justify-center gap-2 border-2 border-black/80 px-3 py-1.5 text-sm font-semibold text-gray-800 hover:border-tercero hover:text-tercero hover:bg-tercero/20 cursor-pointer"
+            className="flex items-center justify-center gap-2 border-2 border-segundo/80 px-3 py-1.5 text-sm font-semibold text-gray-800 hover:border-tercero hover:text-tercero hover:bg-tercero/20 cursor-pointer"
           >
             <ImImage className="text-base" />
             {totalImagenes} fotos
@@ -40,8 +42,10 @@ const CardPrincipal = ({
         )}
         {totalPlanos > 0 && (
           <button
-            onClick={() => router.push(`/inmueble/${inmueble.id}/foto/1?planos=1`)}
-            className="flex items-center justify-center gap-2 border-2 border-black/80 px-3 py-1.5 text-sm font-semibold text-gray-800 hover:border-tercero hover:text-tercero hover:bg-tercero/20 cursor-pointer"
+            onClick={() =>
+              router.push(`/inmueble/${inmueble.id}/foto/1?planos=1`)
+            }
+            className="flex items-center justify-center gap-2 border-2 border-segundo/80 px-3 py-1.5 text-sm font-semibold text-gray-800 hover:border-tercero hover:text-tercero hover:bg-tercero/20 cursor-pointer"
           >
             <FaArchway /> {totalPlanos} planos
           </button>
@@ -53,15 +57,17 @@ const CardPrincipal = ({
                 .getElementById("tour-section")
                 ?.scrollIntoView({ behavior: "smooth" })
             }
-            className="flex items-center justify-center gap-2 border-2 border-black/80 px-3 py-1.5 text-sm font-semibold text-gray-800 hover:border-tercero hover:text-tercero hover:bg-tercero/20 cursor-pointer"
+            className="flex items-center justify-center gap-2 border-2 border-segundo/80 px-3 py-1.5 text-sm font-semibold text-gray-800 hover:border-tercero hover:text-tercero hover:bg-tercero/20 cursor-pointer"
           >
             <Md3dRotation /> Vista 3D
           </button>
         )}
         {inmueble?.latitude && inmueble?.longitude && (
           <button
-            onClick={() => router.push(`/inmueble/${inmueble.id}/foto/1?mapa=1`)}
-            className="flex items-center justify-center gap-2 border-2 border-black/80 px-3 py-1.5 text-sm font-semibold text-gray-800 hover:border-tercero hover:text-tercero hover:bg-tercero/20 cursor-pointer"
+            onClick={() =>
+              router.push(`/inmueble/${inmueble.id}/foto/1?mapa=1`)
+            }
+            className="flex items-center justify-center gap-2 border-2 border-segundo/80 px-3 py-1.5 text-sm font-semibold text-gray-800 hover:border-tercero hover:text-tercero hover:bg-tercero/20 cursor-pointer"
           >
             <FaMapMarkerAlt /> Mapa
           </button>
@@ -72,13 +78,17 @@ const CardPrincipal = ({
       <div className="mt-4 pb-4 border-b border-gray-200">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-xl md:text-2xl font-bold text-gray-900 font-montserrat">
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900 font-sans">
               {inmueble.titulo ||
                 `${inmueble.operacion || ""} · ${inmueble.tipo_inmueble || "Inmueble"} en ${inmueble.ciudad || ""}`}
             </h1>
-            <div className="flex md:items-center items-start gap-2 md:flex-row flex-col">
-              <p className="text-black/60 md:text-base text-sm">
-                {inmueble.barrio || inmueble.direccion || inmueble.ciudad}
+            <div className="flex md:items-center items-start gap-2 md:flex-row flex-col mt-4">
+              <p className="text-segundo/60 md:text-base text-sm">
+                {inmueble.direccion} N {inmueble.numero_direccion}
+                {", "}
+                {inmueble.barrio ? inmueble.barrio : null}
+                {inmueble.barrio ? ", " : null}
+                {inmueble.ciudad}{" "}
                 {inmueble.departamento && `, ${inmueble.departamento}`}
               </p>
               {inmueble.latitude && inmueble.longitude && (
@@ -88,7 +98,7 @@ const CardPrincipal = ({
                 </div>
               )}
             </div>
-            <p className="text-xs text-rose-600 mt-2">{tiempo}</p>
+            <p className="text-sm text-rose-600 mt-3">{tiempo}</p>
           </div>
         </div>
 
@@ -119,25 +129,25 @@ const CardPrincipal = ({
           {inmueble.constructed_area != null && (
             <>
               <span>{inmueble.constructed_area} m²</span>
-              <div className="w-px h-5 bg-black/40" />
+              <div className="w-px h-5 bg-segundo/40" />
             </>
           )}
           {inmueble.bedroom_count != null && (
             <>
               <span>{inmueble.bedroom_count} alc.</span>
-              <div className="w-px h-5 bg-black/40" />
+              <div className="w-px h-5 bg-segundo/40" />
             </>
           )}
           {inmueble.bathroom_count != null && (
             <>
               <span>{inmueble.bathroom_count} baños</span>
-              <div className="w-px h-5 bg-black/40" />
+              <div className="w-px h-5 bg-segundo/40" />
             </>
           )}
           {inmueble.zona && (
             <>
               <span>{inmueble.zona}</span>
-              <div className="w-px h-5 bg-black/40" />
+              <div className="w-px h-5 bg-segundo/40" />
             </>
           )}
           {inmueble.has_elevator && <span>con ascensor</span>}
@@ -150,12 +160,12 @@ const CardPrincipal = ({
 
         <div className="flex items-center gap-4 mt-4">
           <BotonFavorito />
-          <BotonDescartar />
+          <BotonDescartar compact />
           <button
             onClick={handleCompartirClick}
-            className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:underline"
+            className="flex items-center gap-2 text-base font-semibold text-decimo hover:underline font-montserrat"
           >
-            <IoArrowRedoOutline className="text-lg" />
+            <IoArrowRedoOutline className="text-xl" />
             <span className="hidden md:flex">Compartir</span>
           </button>
         </div>
