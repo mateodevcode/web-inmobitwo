@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import FiltroRelevante from "./FiltroRelevante";
 import { useSlugParser } from "@/hooks/useSlugParser";
 import { usePropertySearch } from "@/hooks/usePropertySearch";
+import { useDescartadosStore } from "@/hooks/descartadosStore";
 
 import SmartLoader from "@/components/loader/SmartLoader";
 import CardAnuncioCompra from "../card-anuncio/CardAnuncioCompra";
@@ -59,6 +60,7 @@ const ListadoDePropiedades = ({
 }) => {
   const { citySlug, deptSlug } = useSlugParser();
   const router = useRouter();
+  const descartados = useDescartadosStore();
   const [orden, setOrden] = useState("relevante");
   const {
     properties: searchProperties,
@@ -71,11 +73,15 @@ const ListadoDePropiedades = ({
     deptSlug: isCustomPolygon ? "" : deptSlug,
   });
 
-  const properties = useMemo(
-    () =>
-      isCustomPolygon ? polygonProps?.propiedades || [] : searchProperties,
-    [isCustomPolygon, polygonProps, searchProperties],
-  );
+  const properties = useMemo(() => {
+    const base = isCustomPolygon
+      ? polygonProps?.propiedades || []
+      : searchProperties;
+    // Oculta al instante los descartados (el backend ya los excluye en la
+    // siguiente carga). listaIds/total se calculan sobre `visibles` para que
+    // la navegación anterior/siguiente sea coherente.
+    return (base ?? []).filter((p) => !descartados.includes(Number(p.id)));
+  }, [isCustomPolygon, polygonProps, searchProperties, descartados]);
   const loading = isCustomPolygon
     ? !polygonProps && !polygonMissing
     : searchLoading;

@@ -20,7 +20,7 @@ const BotonFavorito = ({ id: idProp }) => {
       className={`flex items-center justify-center gap-2 border-2 rounded-sm px-5 py-2 font-semibold text-sm cursor-pointer select-none active:scale-95 transition w-min ${
         isFavorited
           ? "bg-tercero/10 text-tercero hover:bg-tercero/20 border-tercero"
-          : "bg-white text-segundo hover:bg-segundo/10 border-segundo"
+          : "bg-white text-segundo/60 hover:bg-segundo/10 border-segundo/60"
       }`}
     >
       {isFavorited ? (

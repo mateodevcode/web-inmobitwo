@@ -13,6 +13,11 @@ const TABS = [
     label: "Mis búsquedas",
     to: "/usuario/tus-datos/mis-busquedas",
   },
+  {
+    id: "descartados",
+    label: "Descartados",
+    to: "/usuario/tus-datos/descartados",
+  },
 ];
 
 const HeadPerfilAcceso = () => {
@@ -26,7 +31,7 @@ const HeadPerfilAcceso = () => {
       </div>
 
       {/* Menu */}
-      <div className="w-11/12 md:w-9/12 gap-4 flex flex-row font-semibold">
+      <div className="w-11/12 md:w-9/12 gap-x-4 gap-y-3 flex flex-row flex-wrap font-semibold">
         {TABS.map(({ id, label, to }) => (
           <TabLink key={id} active={segmento === id} to={to}>
             {label}

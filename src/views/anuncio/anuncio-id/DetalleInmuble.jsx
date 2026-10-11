@@ -66,15 +66,17 @@ const DetalleInmuble = ({
     <div className="min-w-0 bg-white font-poppins">
       <div ref={sentinelRef} />
 
-      <div className="bg-orange-50 w-full h-16 flex items-center px-6 text-blue-600 gap-2 hover:underline">
+      <div className="bg-orange-50 w-full h-16 flex items-center px-6 text-decimo gap-2 hover:underline cursor-pointer select-none">
         <BiNotepad className="text-lg" />
-        <p className="text-sm font-semibold">Añadir tu nota</p>
+        <p className="text-sm font-semibold font-sans">Añadir tu nota</p>
       </div>
 
       {/* Descripción */}
       {mostrarDescripcion && (
         <div className="py-5 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-3">Descripción</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-3 font-sans">
+            Descripción
+          </h2>
           <div className="relative">
             <div
               className={`prose prose-sm max-w-none text-gray-700 leading-relaxed wrap-break-word ${
@@ -91,16 +93,16 @@ const DetalleInmuble = ({
           {necesitaRecorte && (
             <button
               onClick={() => setDescripcionAbierta((v) => !v)}
-              className="text-sm font-semibold text-blue-600 hover:underline mt-2"
+              className="text-sm font-semibold text-decimo hover:underline mt-2 font-montserrat"
             >
               {descripcionAbierta ? "Leer menos" : "Leer descripción completa"}
             </button>
           )}
 
           {inmueble.usuario_nombre && (
-            <div className="text-sm text-gray-600 mt-4 flex items-center gap-2 border-t border-black/10 pt-4">
+            <div className="text-sm text-gray-600 mt-4 flex items-center gap-2 border-t border-black/10 pt-4 flex-wrap">
               <PiChats className="text-base" />
-              Si tenés alguna duda podés hablar con{" "}
+              Si tienes alguna duda puedes hablar con{" "}
               <span className="font-semibold">
                 {inmueble.usuario_nombre}
               </span>{" "}
@@ -112,7 +114,7 @@ const DetalleInmuble = ({
 
       {/* Características básicas */}
       <div className="py-5 border-b border-gray-200">
-        <h2 className="text-lg font-bold text-gray-900 mb-3">
+        <h2 className="text-lg font-bold text-gray-900 mb-3 font-montserrat">
           Características básicas
         </h2>
         <ul className="text-sm text-gray-700 space-y-1.5">
@@ -171,7 +173,7 @@ const DetalleInmuble = ({
       {/* Características N:M agrupadas por categoría */}
       {categorias.length > 0 && (
         <div className="py-5 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-3">
+          <h2 className="text-lg font-bold text-gray-900 mb-3 font-montserrat">
             Características
           </h2>
           {categorias.map((categoria) => (
@@ -190,7 +192,7 @@ const DetalleInmuble = ({
       {/* Fotos completas */}
       {totalImagenes > 0 && (
         <div id="fotos-section" className="py-5 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2 font-sans">
             <BsCameraFill className="text-base" />
             Fotos
           </h2>
@@ -221,14 +223,16 @@ const DetalleInmuble = ({
         <p className="text-sm text-gray-600 mt-1">
           Infórmanos para corregirlo y ayudar a otras personas.
         </p>
-        <button className="text-sm font-semibold text-blue-600 hover:underline mt-1">
+        <button className="text-sm font-semibold text-decimo hover:underline mt-1 font-montserrat cursor-pointer">
           Cuéntanos qué error has visto
         </button>
       </div>
 
       {/* Precio */}
       <div className="py-5 border-b border-gray-200">
-        <h2 className="text-lg font-bold text-gray-900 mb-3">Precio</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-3 font-sans">
+          Precio
+        </h2>
         <div className="flex items-center justify-between text-sm text-gray-700 mb-1">
           <span>Precio del inmueble:</span>
           <span className="font-bold text-gray-900">
@@ -247,7 +251,7 @@ const DetalleInmuble = ({
       {/* Historial de precios */}
       {historialPrecios.length > 0 && (
         <div className="py-5 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-3">
+          <h2 className="text-lg font-bold text-gray-900 mb-3 font-sans">
             Historial de precios
           </h2>
           <ul className="text-sm text-gray-700 space-y-1.5">
@@ -276,7 +280,9 @@ const DetalleInmuble = ({
       {/* Ubicación */}
       {inmueble.latitude && inmueble.longitude && (
         <div id="ubicacion-section" className="py-5 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-3">Ubicación</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-3 font-sans">
+            Ubicación
+          </h2>
           <div className="text-sm text-gray-700 space-y-0.5 mb-3">
             {inmueble.direccion && <p>{inmueble.direccion}</p>}
             {inmueble.barrio && <p>Barrio {inmueble.barrio}</p>}
@@ -293,7 +299,9 @@ const DetalleInmuble = ({
 
       {/* Estadísticas */}
       <div className="py-5">
-        <h2 className="text-lg font-bold text-gray-900 mb-3">Estadísticas</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-3 font-sans">
+          Estadísticas
+        </h2>
         {inmueble.updated_at && (
           <p className="text-sm text-gray-700">
             Anuncio actualizado el{" "}

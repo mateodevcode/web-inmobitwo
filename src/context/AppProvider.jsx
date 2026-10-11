@@ -11,6 +11,7 @@ import {
 } from "@/hooks/useResetForm";
 import { feedActions } from "@/hooks/feedStore";
 import { setFavoritosStore } from "@/hooks/favoritosStore";
+import { clearDescartadosStore } from "@/hooks/descartadosStore";
 
 const leerLocal = (clave) => {
   if (typeof window === "undefined") return null;
@@ -77,6 +78,7 @@ export const AppProvider = ({ children }) => {
     setUsuario(null);
     feedActions.reset();
     setFavoritosStore([]);
+    clearDescartadosStore();
   };
 
   const estaAutenticado = !!usuario;

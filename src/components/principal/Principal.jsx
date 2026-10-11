@@ -5,6 +5,8 @@ import CardPropiedad from "./card-propiedad/CardPropiedad";
 import usePropiedades from "@/hooks/usePropiedades";
 import { useRef } from "react";
 import useFavoritos from "@/hooks/useFavoritos";
+import { useDescartadosStore } from "@/hooks/descartadosStore";
+import useDescartados from "@/hooks/useDescartados";
 import HeaderPrincipal from "./header-principal/HeaderPrincipal";
 import HeaderFiltros from "./header-principal/HeaderFiltros";
 import SmartLoader from "@/components/loader/SmartLoader";
@@ -22,9 +24,14 @@ const Principal = () => {
   const cargaInicialHecha = useRef(false); // 👈 nuevo
   const ultimaCardRef = useRef(null);
   const { cargarMisFavoritos } = useFavoritos();
+  const { cargarDescartados } = useDescartados();
+  const descartados = useDescartadosStore();
 
   const propiedades_publicadas = propiedades
     ?.filter((pro) => pro.estado === "publicado")
+    // Oculta al instante los descartados (el backend ya los excluye en la
+    // siguiente carga)
+    .filter((pro) => !descartados.includes(Number(pro.id)))
     .filter((pro) => {
       if (filtroSeleccionado === "todo" || filtroSeleccionado === "mas_filtros")
         return true;
@@ -65,6 +72,7 @@ const Principal = () => {
     cargaInicialHecha.current = true; // 👈 nuevo
     cargarPropiedades();
     cargarMisFavoritos();
+    cargarDescartados();
   }, []);
 
   // 👇 Observer que detecta cuándo la última card entra en pantalla
