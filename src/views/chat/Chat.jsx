@@ -20,6 +20,7 @@ import {
   upsertMensaje,
   actualizarUltimoMensaje,
   marcarLeidaLocal,
+  setNoLeidosTotal,
 } from "@/hooks/chatStore";
 import ItemConversacion from "./components/ItemConversacion";
 import VentanaChat from "./components/VentanaChat";
