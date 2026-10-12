@@ -20,6 +20,7 @@ Construido con **Next.js 16 (App Router) + React 19 + Tailwind CSS 4 + MapLibre 
 - [Variables de entorno](#-variables-de-entorno)
 - [Scripts disponibles](#-scripts-disponibles)
 - [Búsquedas guardadas con alertas](#-búsquedas-guardadas-con-alertas)
+- [Chat en tiempo real](#-chat-en-tiempo-real)
 - [Docker y despliegue](#-docker-y-despliegue)
 - [SEO](#-seo)
 - [Convenciones](#-convenciones)
@@ -42,7 +43,7 @@ Construido con **Next.js 16 (App Router) + React 19 + Tailwind CSS 4 + MapLibre 
 - Panel de usuario (`/usuario/...`): mis propiedades, favoritos, perfil.
 - Búsquedas guardadas con alertas: botón `Guardar búsqueda` en resultados + pestaña `Mis búsquedas` en Tu cuenta (`/usuario/tus-datos/mis-busquedas`) + emails agrupados (ver sección dedicada).
 - Leads (`/leads`): captación y gestión de contactos interesados.
-- Chat (`/feed` integrado vía `views/chat`).
+- Chat en tiempo real (`/usuario/chat`): conversaciones por anuncio con mensajes en vivo vía socket-core (ver sección dedicada).
 
 **Organizaciones / Inmobiliarias (multi-tenant)**
 
@@ -106,9 +107,10 @@ src/
 ├── components/             # Componentes reutilizables (header, footer, map, modales,
 │                           # auth, guards, barra-navegacion...)
 ├── context/                # AppContext / AppProvider + TenantContext / TenantProvider
-├── actions/                # Cliente API: apiBackend.js, apiBackendFormData.js, refreshToken.js, busquedasGuardadas.js
+├── actions/                # Cliente API: apiBackend.js, apiBackendFormData.js, refreshToken.js, busquedasGuardadas.js, chat.js, descartados.js
+├── hooks/                  # chatStore.js, useDescartados.js, descartadosStore.js…
 ├── config/                 # config.js (URL_BACKEND), tenantConfig.js (MAIN_HOSTS)
-├── hooks/ lib/ utils/ data/ assets/  # Utilidades (geo, formato, nav, estilos...)
+├── lib/ utils/ data/ assets/  # chatSocket.js, geo, formato, nav, estilos...
 ├── public/                 # Estáticos (favicon, og-image, etc.)
 ├── nginx/inmobitwo.conf    # Reverse proxy :443 → 127.0.0.1:3000
 ├── Dockerfile              # Build standalone multi-stage (deps → builder → runner)
@@ -216,6 +218,16 @@ El usuario guarda su búsqueda actual y recibe un email agrupado ante vivienda n
 - **Baja desde el email** (`/busquedas/baja/[token]`): página pública para pausar/reactivar sin login.
 - **Filtros** (`src/lib/filtrosBusqueda.js`): mismo objeto que `usePropertySearch` envía a `/propiedades/search-slugs` (fuente única, sin duplicar el mapeo de slugs).
 - **Push**: `src/lib/push.js` + `public/sw.js` listos tras `NEXT_PUBLIC_PUSH_ENABLED=true` (checkbox "próximamente" mientras tanto).
+
+---
+
+## 💬 Chat en tiempo real
+
+Conversaciones por anuncio (una por interesado+anuncio) con mensajes en vivo. El historial y el estado viven en el backend; socket-core solo reparte en vivo al canal personal `inmobitwo:user:{id}`.
+
+- **Núcleo** (`src/actions/chat.js`, `src/hooks/chatStore.js`, `src/lib/chatSocket.js`): servicio REST, store con `useSyncExternalStore` (deduplica por `id`/`clientMsgId`) y singleton WS con backoff+jitter, renovación proactiva del token y recuperación por REST al reconectar o volver a la pestaña. `ChatInit` (en `Providers`) lo arranca con sesión; al cerrar sesión se detiene y vacía.
+- **Pantalla** `/usuario/chat` (`src/app/usuario/chat/page.js` + `src/views/chat/`): lista (`ItemConversacion` con globo de no leídos) y ventana (`VentanaChat` con grupos Hoy/Ayer, scroll inteligente, paginación hacia arriba, `InputMensaje` con envío optimista y reintento idempotente). Selección por `?c=` (funciona el atrás en móvil). `Avatar.jsx` compartido (foto o iniciales, misma receta que `BotonUsuario`).
+- **Integración**: "Contactar por chat" en la ficha (`SidebarContacto.jsx`, texto clicable en `DetalleInmuble.jsx`) crea/abre la conversación; globo de no leídos en header (`UserNavLinks.jsx`), menú de cuenta (`ConLogin`) y sidebar del feed. Sin `NEXT_PUBLIC_*` para el chat: la URL del WS la entrega `POST /chat/token` (`wss://ws.seventwo.tech/ws` en prod).
 
 ---
 
