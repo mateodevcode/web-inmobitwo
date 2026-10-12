@@ -114,6 +114,21 @@ export const incrementarNoLeidos = (conversacionId) => {
 export const setNoLeidosTotal = (total) =>
   setState({ noLeidosTotal: total ?? 0 });
 
+// Quita la conversación de la lista y limpia sus mensajes.
+// Uso al eliminar: el otro usuario la sigue viendo (soft-delete en backend).
+export const eliminarConversacionLocal = (conversacionId) => {
+  const conversaciones = state.conversaciones.filter(
+    (c) => c.id !== conversacionId,
+  );
+  const mensajesPorConv = { ...state.mensajesPorConv };
+  delete mensajesPorConv[conversacionId];
+  setState({
+    conversaciones,
+    mensajesPorConv,
+    noLeidosTotal: conversaciones.reduce((t, c) => t + (c.noLeidos || 0), 0),
+  });
+};
+
 export const setEstadoConexion = (estadoConexion) =>
   setState({ estadoConexion });
 

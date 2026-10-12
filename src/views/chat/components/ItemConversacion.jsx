@@ -1,16 +1,20 @@
 "use client";
 
-import { MdOutlineImageNotSupported } from "react-icons/md";
+import { MdOutlineImageNotSupported, MdDeleteOutline } from "react-icons/md";
 import Avatar from "@/components/usuario/Avatar";
 import { fechaCorta } from "../lib/fechaChat";
 
-const ItemConversacion = ({ conv, activa, onSelect }) => {
+const ItemConversacion = ({ conv, activa, onSelect, onEliminar }) => {
   const ultimo = conv.ultimoMensaje;
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={() => onSelect(conv.id)}
-      className={`w-full flex items-center gap-3 p-3 text-left cursor-pointer select-none transition-colors ${
+      onKeyDown={(e) => {
+        if (e.key === "Enter") onSelect(conv.id);
+      }}
+      className={`group w-full flex items-center gap-3 p-3 text-left cursor-pointer select-none transition-colors ${
         activa ? "bg-segundo/5" : "hover:bg-segundo/5"
       }`}
     >
@@ -58,13 +62,27 @@ const ItemConversacion = ({ conv, activa, onSelect }) => {
         {ultimo && (
           <span className="text-xs text-segundo/60">{fechaCorta(ultimo.at)}</span>
         )}
-        {conv.noLeidos > 0 && (
-          <span className="min-w-6 h-6 px-1.5 rounded-full bg-tercero text-primero text-xs font-bold flex items-center justify-center">
-            {conv.noLeidos > 9 ? "9+" : conv.noLeidos}
-          </span>
-        )}
+        <div className="flex items-center gap-1">
+          {conv.noLeidos > 0 && (
+            <span className="min-w-6 h-6 px-1.5 rounded-full bg-tercero text-primero text-xs font-bold flex items-center justify-center">
+              {conv.noLeidos > 9 ? "9+" : conv.noLeidos}
+            </span>
+          )}
+          <button
+            type="button"
+            title="Eliminar conversación"
+            aria-label={`Eliminar conversación con ${conv.otraPersona?.nombre || "usuario"}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onEliminar?.(conv.id);
+            }}
+            className="w-8 h-8 rounded-full hover:bg-segundo/10 flex items-center justify-center cursor-pointer md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+          >
+            <MdDeleteOutline className="text-lg text-segundo/50 hover:text-red-600" />
+          </button>
+        </div>
       </div>
-    </button>
+    </div>
   );
 };
 
