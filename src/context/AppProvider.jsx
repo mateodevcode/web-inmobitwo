@@ -12,6 +12,8 @@ import {
 import { feedActions } from "@/hooks/feedStore";
 import { setFavoritosStore } from "@/hooks/favoritosStore";
 import { clearDescartadosStore } from "@/hooks/descartadosStore";
+import { detenerChatSocket } from "@/lib/chatSocket.js";
+import { clearChatStore } from "@/hooks/chatStore.js";
 
 const leerLocal = (clave) => {
   if (typeof window === "undefined") return null;
@@ -79,6 +81,8 @@ export const AppProvider = ({ children }) => {
     feedActions.reset();
     setFavoritosStore([]);
     clearDescartadosStore();
+    detenerChatSocket();
+    clearChatStore();
   };
 
   const estaAutenticado = !!usuario;

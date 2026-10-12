@@ -10,7 +10,7 @@ import ModalHamburguesa from "@/components/modales/modal-hamburguesa/ModalHambur
 import useFavoritos from "@/hooks/useFavoritos";
 import ListaFavoritos from "./components/ListaFavoritos";
 import SinFavoritos from "./components/SinFavoritos";
-import Loading from "@/views/organizacion/temas/loading/Loading";
+import Loading from "@/components/loading/Loading";
 import BarraNavegacionTauri from "@/components/barra-navegacion/BarraNavegacionTauri";
 import { useRouter } from "next/navigation";
 
@@ -41,7 +41,7 @@ const MisFavoritos = () => {
 
       {cargandoFavoritos ? (
         <div className="flex justify-center items-center min-h-[30svh]">
-          <Loading type="opcion2" />
+          <Loading />
         </div>
       ) : favoritos.length === 0 ? (
         <SinFavoritos />

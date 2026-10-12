@@ -1,7 +1,7 @@
 // src/pages/organizacion/temas/tema1/Home.jsx
 
 import usePropiedadesOrganizacionData from "@/hooks/usePropiedadesOrganizacionData.js";
-import Loading from "../loading/Loading";
+import Loading from "@/components/loading/Loading";
 import { useOutletContext } from "@/views/organizacion/paginas/OrgOutletContext.jsx"; // TODO-NEXT Outlet
 
 const Home = () => {
@@ -19,7 +19,7 @@ const Home = () => {
   }
 
   if (loading && propiedades.length === 0) {
-    return <Loading logo="/logo/logo-hor.png" type="opcion2" />;
+    return <Loading fullPage />;
   }
 
   return (

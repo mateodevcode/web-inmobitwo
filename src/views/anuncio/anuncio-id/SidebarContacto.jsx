@@ -1,16 +1,50 @@
 import { BsTelephone } from "react-icons/bs";
 import { PiChats } from "react-icons/pi";
 import { TbAlertOctagonFilled } from "react-icons/tb";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import useTracking from "@/hooks/useTracking";
+import { useAppContext } from "@/context/AppContext";
+import { iniciarConversacion } from "@/actions/chat";
 import { useState } from "react";
 
 const SidebarContacto = ({ inmueble }) => {
   const { dispararEventoYRevisar } = useTracking();
+  const { usuario } = useAppContext();
+  const router = useRouter();
   const [mostrarTelefono, setMostrarTelefono] = useState(false);
+  const [abriendoChat, setAbriendoChat] = useState(false);
 
   const handleContactarClick = () => {
     setMostrarTelefono(true);
     if (inmueble?.id) dispararEventoYRevisar(inmueble.id, "click_telefono");
+  };
+
+  const esPropio =
+    usuario?.id != null &&
+    inmueble?.publicado_por_id != null &&
+    Number(usuario.id) === Number(inmueble.publicado_por_id);
+  const muestraChat = inmueble?.how_to_contact !== "solo_telefono";
+
+  const handleChatClick = async () => {
+    if (abriendoChat) return;
+    setAbriendoChat(true);
+    try {
+      // Sin sesión: igual que handleFavorito — el backend responde 401 y
+      // se muestra como toast (sin modal ni redirección).
+      const r = await iniciarConversacion(inmueble?.id);
+      if (r?.success) {
+        router.push(`/usuario/chat?c=${r.data.id}`);
+      } else {
+        toast.error(r?.error || "No se pudo abrir el chat", {
+          position: "bottom-right",
+        });
+      }
+    } catch {
+      toast.error("No se pudo abrir el chat", { position: "bottom-right" });
+    } finally {
+      setAbriendoChat(false);
+    }
   };
 
   return (
@@ -28,10 +62,21 @@ const SidebarContacto = ({ inmueble }) => {
           </p>
         </div>
 
-        <button className="w-full bg-tercero text-white text-sm font-semibold rounded-sm py-2.5 hover:bg-tercero/80 transition-colors mb-4 flex items-center gap-2 justify-center cursor-pointer select-none">
-          <PiChats className="text-2xl" />
-          Contactar por chat
-        </button>
+        {muestraChat &&
+          (esPropio ? (
+            <p className="text-sm font-semibold text-segundo/60 text-center mb-4">
+              Este es tu anuncio
+            </p>
+          ) : (
+            <button
+              onClick={handleChatClick}
+              disabled={abriendoChat}
+              className="w-full bg-tercero text-white text-sm font-semibold rounded-sm py-2.5 hover:bg-tercero/80 transition-colors mb-4 flex items-center gap-2 justify-center cursor-pointer select-none disabled:opacity-60"
+            >
+              <PiChats className="text-2xl" />
+              {abriendoChat ? "Abriendo chat…" : "Contactar por chat"}
+            </button>
+          ))}
 
         <div className="border-t border-gray-100 pt-3">
           {mostrarTelefono ? (

@@ -1,4 +1,4 @@
-import Loading from "@/views/organizacion/temas/loading/Loading";
+import Loading from "@/components/loading/Loading";
 import { OrgActions } from "./OrgActions";
 
 export function OrgRow({ org, actions, onAction }) {
@@ -21,7 +21,7 @@ export function OrgRow({ org, actions, onAction }) {
 
 export function OrgList({ loading, organizaciones, actions, onAction }) {
   if (loading) {
-    return <Loading logo="/logo/logo-hor.png" type="opcion2" />;
+    return <Loading />;
   }
 
   if (organizaciones.length === 0) {
