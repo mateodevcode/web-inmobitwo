@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import useOrganizaciones from "@/hooks/useOrganizaciones.js";
 import { OrgShell } from "@/views/organizacion/paginas/OrgShell.jsx";
-import Loading from "@/views/organizacion/temas/loading/Loading";
+import Loading from "@/components/loading/Loading";
 
 export default function SlugLayout({ children }) {
   const { slug } = useParams();
@@ -27,7 +27,7 @@ export default function SlugLayout({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
-  if (loading) return <Loading logo="/logo/logo-hor.png" type="opcion2" />;
+  if (loading) return <Loading fullPage />;
 
   if (notFound) {
     return (

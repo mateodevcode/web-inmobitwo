@@ -6,7 +6,6 @@ import { SiteFooter } from "@/components/footer/SiteFooter";
 import ModalHamburguesa from "@/components/modales/modal-hamburguesa/ModalHamburguesa";
 import { useEffect } from "react";
 import usePropiedades from "@/hooks/usePropiedades";
-import Loading from "@/views/organizacion/temas/loading/Loading";
 import BarraNavegacionTauri from "@/components/barra-navegacion/BarraNavegacionTauri";
 import { PublishAnuncioButton } from "./components/PublishAnuncioButton";
 import { MisAnunciosContent } from "./components/MisAnunciosContent";

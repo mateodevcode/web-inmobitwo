@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import useOrganizaciones from "@/hooks/useOrganizaciones.js";
 import OrganizacionNav from "./OrganizacionNav.jsx";
-import Loading from "../temas/loading/Loading.jsx";
+import Loading from "@/components/loading/Loading";
 import { useParams } from "next/navigation";
 import { useOutletContext } from "@/views/organizacion/paginas/OrgOutletContext.jsx"; // TODO-NEXT Outlet
 
@@ -32,7 +32,7 @@ const OrganizacionPublicaLayout = () => {
   }, [slug]);
 
   if (loading) {
-    return <Loading logo="/logo/logo-hor.png" type="opcion2" />;
+    return <Loading fullPage />;
   }
 
   if (notFound) {

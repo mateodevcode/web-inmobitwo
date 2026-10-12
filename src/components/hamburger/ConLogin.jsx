@@ -7,6 +7,7 @@ import { irArriba } from "@/utils/irArriba";
 import { MdLogout, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import UserAvatar from "./UserAvatar";
 import { useMisAnunciosCount } from "@/hooks/useMisAnunciosCount";
+import { useChatStore } from "@/hooks/chatStore";
 
 const closeMenus = (setOpenModalHamburguesa, setOpenModalUser) => {
   setOpenModalHamburguesa(false);
@@ -42,6 +43,7 @@ const ConLogin = ({ tamano = "lg" }) => {
     openModalHamburguesa,
     openModalUser,
   });
+  const noLeidos = useChatStore((s) => s.noLeidosTotal);
 
   const close = () => closeMenus(setOpenModalHamburguesa, setOpenModalUser);
   const go = (path) => {
@@ -76,7 +78,11 @@ const ConLogin = ({ tamano = "lg" }) => {
             icon={item.icon}
             label={item.label}
             trailing={
-              item.id === "mis-anuncios" ? `(${countMisAnuncios})` : null
+              item.id === "mis-anuncios"
+                ? `(${countMisAnuncios})`
+                : item.id === "chat" && noLeidos > 0
+                  ? `(${noLeidos > 9 ? "9+" : noLeidos})`
+                  : null
             }
             onClick={() => {
               go(`/usuario/${item.id}`);

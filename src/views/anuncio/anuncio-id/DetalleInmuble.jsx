@@ -10,6 +10,9 @@ import DOMPurify from "dompurify";
 import useScrollSentinel from "@/hooks/useScrollSentinel";
 import { apiBackend } from "@/actions/apiBackend";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useAppContext } from "@/context/AppContext";
+import { iniciarConversacion } from "@/actions/chat";
 
 const DetalleInmuble = ({
   inmueble,
@@ -18,6 +21,31 @@ const DetalleInmuble = ({
   fotos,
 }) => {
   const router = useRouter();
+  const { usuario } = useAppContext();
+  const [abriendoChat, setAbriendoChat] = useState(false);
+
+  const handleHablarPorChat = async () => {
+    if (abriendoChat) return;
+    setAbriendoChat(true);
+    try {
+      const r = await iniciarConversacion(inmueble?.id);
+      if (r?.success) {
+        router.push(`/usuario/chat?c=${r.data.id}`);
+      } else {
+        toast.error(r?.error || "No se pudo abrir el chat", {
+          position: "bottom-right",
+        });
+      }
+    } catch {
+      toast.error("No se pudo abrir el chat", { position: "bottom-right" });
+    } finally {
+      setAbriendoChat(false);
+    }
+  };
+  const esPropio =
+    usuario?.id != null &&
+    inmueble?.publicado_por_id != null &&
+    Number(usuario.id) === Number(inmueble.publicado_por_id);
 
   const descripcionHtml = inmueble.description || "";
   const [descripcionAbierta, setDescripcionAbierta] = useState(false);
@@ -99,16 +127,26 @@ const DetalleInmuble = ({
             </button>
           )}
 
-          {inmueble.usuario_nombre && (
-            <div className="text-sm text-gray-600 mt-4 flex items-center gap-2 border-t border-black/10 pt-4 flex-wrap">
-              <PiChats className="text-base" />
-              Si tienes alguna duda puedes hablar con{" "}
-              <span className="font-semibold">
-                {inmueble.usuario_nombre}
-              </span>{" "}
-              por chat.
-            </div>
-          )}
+          {inmueble.usuario_nombre &&
+            !esPropio &&
+            inmueble?.how_to_contact !== "solo_telefono" && (
+              <div className="text-sm text-gray-600 mt-4 flex items-center gap-2 border-t border-black/10 pt-4 flex-wrap">
+                <PiChats className="text-base" />
+                Si tienes alguna duda puedes hablar con{" "}
+                <span className="font-semibold">
+                  {inmueble.usuario_nombre}
+                </span>{" "}
+                <button
+                  type="button"
+                  onClick={handleHablarPorChat}
+                  disabled={abriendoChat}
+                  className="font-semibold text-decimo hover:underline cursor-pointer disabled:opacity-60"
+                >
+                  por chat
+                </button>
+                .
+              </div>
+            )}
         </div>
       )}
 

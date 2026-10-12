@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import useOrganizaciones from "@/hooks/useOrganizaciones.js";
 import { getTema } from "@/views/organizacion/temas/temaRegistry.js";
-import Loading from "../temas/loading/Loading";
+import Loading from "@/components/loading/Loading";
 import { useParams } from "next/navigation";
 
 const LayoutPublicoResolver = () => {
@@ -27,7 +27,7 @@ const LayoutPublicoResolver = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
-  if (loading) return <Loading logo="/logo/logo-hor.png" type="opcion2" />;
+  if (loading) return <Loading fullPage />;
 
   if (notFound) {
     return (
