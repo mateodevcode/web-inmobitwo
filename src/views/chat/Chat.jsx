@@ -69,9 +69,7 @@ const Chat = () => {
   const conv = conversaciones.find((c) => c.id === seleccionadaId) ?? null;
   const mensajes = useMemo(
     () =>
-      seleccionadaId != null
-        ? (mensajesPorConv[seleccionadaId] ?? [])
-        : [],
+      seleccionadaId != null ? (mensajesPorConv[seleccionadaId] ?? []) : [],
     [seleccionadaId, mensajesPorConv],
   );
 
@@ -102,8 +100,7 @@ const Chat = () => {
 
   // Al llegar mensajes visibles de la abierta: marcar leído (debounce).
   useEffect(() => {
-    if (seleccionadaId == null || miId == null || mensajes.length === 0)
-      return;
+    if (seleccionadaId == null || miId == null || mensajes.length === 0) return;
     const ultimo = mensajes[mensajes.length - 1];
     if (ultimo.remitenteId === miId || ultimo.leidoAt) return;
     if (leerTimer.current) clearTimeout(leerTimer.current);
@@ -122,11 +119,7 @@ const Chat = () => {
   const cargarAnteriores = useCallback(async () => {
     if (seleccionadaId == null || mensajes.length === 0) return;
     setCargandoMas(true);
-    const r = await listarMensajes(
-      seleccionadaId,
-      mensajes[0].id,
-      30,
-    );
+    const r = await listarMensajes(seleccionadaId, mensajes[0].id, 30);
     if (r?.success) {
       const actuales = mensajesPorConv[seleccionadaId] ?? [];
       setMensajesConv(seleccionadaId, [
@@ -185,7 +178,10 @@ const Chat = () => {
   );
 
   const cInvalido =
-    selParam != null && !cargandoLista && seleccionadaId != null && conv == null;
+    selParam != null &&
+    !cargandoLista &&
+    seleccionadaId != null &&
+    conv == null;
   const cargandoHist =
     seleccionadaId != null && histCargadoId !== seleccionadaId;
 
@@ -197,7 +193,7 @@ const Chat = () => {
           Reconectando…
         </p>
       )}
-      <div className="flex-1 min-h-0 flex justify-center">
+      <div className="flex-1 min-h-0 flex justify-center w-9/12 mx-auto">
         <div className="flex flex-1 min-h-0 w-full md:w-9/12 md:py-4 md:px-0">
           {/* Columna izquierda */}
           <aside
