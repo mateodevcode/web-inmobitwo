@@ -12,6 +12,7 @@ import {
   listarMensajes,
   enviarMensaje,
   marcarLeida,
+  eliminarConversacion,
 } from "@/actions/chat";
 import {
   useChatStore,
@@ -21,6 +22,7 @@ import {
   actualizarUltimoMensaje,
   marcarLeidaLocal,
   setNoLeidosTotal,
+  eliminarConversacionLocal,
 } from "@/hooks/chatStore";
 import ItemConversacion from "./components/ItemConversacion";
 import VentanaChat from "./components/VentanaChat";
@@ -47,6 +49,8 @@ const Chat = () => {
   const [cargandoMas, setCargandoMas] = useState(false);
   const [hayMas, setHayMas] = useState(false);
   const [enviando, setEnviando] = useState(false);
+  const [idAEliminar, setIdAEliminar] = useState(null);
+  const [eliminando, setEliminando] = useState(false);
   const leerTimer = useRef(null);
 
   // Lista inicial (el estado ya nace cargando)
@@ -177,6 +181,23 @@ const Chat = () => {
     [seleccionadaId],
   );
 
+  const confirmarEliminar = useCallback(async () => {
+    if (idAEliminar == null || eliminando) return;
+    setEliminando(true);
+    const r = await eliminarConversacion(idAEliminar);
+    if (r?.success) {
+      eliminarConversacionLocal(idAEliminar);
+      if (idAEliminar === seleccionadaId) seleccionar(null);
+      toast.success("Conversación eliminada", { position: "bottom-right" });
+      setIdAEliminar(null);
+    } else {
+      toast.error(r?.error || "No se pudo eliminar", {
+        position: "bottom-right",
+      });
+    }
+    setEliminando(false);
+  }, [idAEliminar, eliminando, seleccionadaId, seleccionar]);
+
   const cInvalido =
     selParam != null &&
     !cargandoLista &&
@@ -232,6 +253,7 @@ const Chat = () => {
                     conv={c}
                     activa={c.id === seleccionadaId}
                     onSelect={seleccionar}
+                    onEliminar={setIdAEliminar}
                   />
                 ))
               )}
@@ -275,12 +297,52 @@ const Chat = () => {
                 onLoadMore={cargarAnteriores}
                 onEnviar={enviar}
                 onReintentar={reintentar}
+                onEliminar={setIdAEliminar}
                 enviando={enviando}
               />
             )}
           </main>
         </div>
       </div>
+      {idAEliminar != null && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-segundo/40 p-4"
+          onClick={() => !eliminando && setIdAEliminar(null)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            className="w-full max-w-sm rounded-md bg-primero p-6 flex flex-col gap-3"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="font-montserrat font-bold text-lg text-segundo">
+              Eliminar conversación
+            </h2>
+            <p className="text-sm text-segundo/80">
+              Ya no la verás en tu lista. La otra persona seguirá viendo el
+              historial.
+            </p>
+            <div className="flex justify-end gap-2 mt-2">
+              <button
+                type="button"
+                disabled={eliminando}
+                onClick={() => setIdAEliminar(null)}
+                className="px-4 py-2 rounded-md border border-segundo/20 font-semibold text-segundo hover:bg-segundo/5 cursor-pointer disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                disabled={eliminando}
+                onClick={confirmarEliminar}
+                className="px-4 py-2 rounded-md bg-red-600 text-white font-semibold hover:bg-red-700 cursor-pointer disabled:opacity-50"
+              >
+                {eliminando ? "Eliminando…" : "Eliminar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

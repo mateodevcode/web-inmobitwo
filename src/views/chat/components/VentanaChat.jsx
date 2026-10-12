@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { MdKeyboardArrowLeft } from "react-icons/md";
+import { MdKeyboardArrowLeft, MdDeleteOutline } from "react-icons/md";
 import Avatar from "@/components/usuario/Avatar";
 import Loading from "@/components/loading/Loading";
 import { claveDia, etiquetaDia, horaCorta } from "../lib/fechaChat";
@@ -52,6 +52,7 @@ const VentanaChat = ({
   onLoadMore,
   onEnviar,
   onReintentar,
+  onEliminar,
   enviando,
 }) => {
   const scrollRef = useRef(null);
@@ -113,7 +114,7 @@ const VentanaChat = ({
           semilla={conv.otraPersona?.id}
           tamano="md"
         />
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="font-semibold text-segundo truncate">
             {conv.otraPersona?.nombre || "Usuario"}
           </p>
@@ -130,6 +131,15 @@ const VentanaChat = ({
             </Link>
           )}
         </div>
+        <button
+          type="button"
+          title="Eliminar conversación"
+          aria-label="Eliminar conversación"
+          onClick={() => onEliminar?.(conv.id)}
+          className="shrink-0 w-9 h-9 rounded-full hover:bg-segundo/5 flex items-center justify-center cursor-pointer"
+        >
+          <MdDeleteOutline className="text-xl text-segundo/50 hover:text-red-600" />
+        </button>
       </div>
 
       {/* Mensajes */}

@@ -20,3 +20,5 @@ export const enviarMensaje = (id, contenido, clientMsgId) =>
 export const marcarLeida = (id) =>
   apiBackend(`${base}/conversaciones/${id}/leer`, "POST");
 export const contarNoLeidos = () => apiBackend(`${base}/no-leidos`, "GET");
+export const eliminarConversacion = (id) =>
+  apiBackend(`${base}/conversaciones/${id}`, "DELETE");
