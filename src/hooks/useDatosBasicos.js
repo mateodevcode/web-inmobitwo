@@ -170,7 +170,7 @@ const useDatosBasicos = () => {
     }
   }, [countries, country]);
 
-  // Reset en cascada: cambiar país limpia provincia y ciudad (y sus ids)
+  // Reset en cascada: cambiar país limpia departamento y ciudad (y sus ids)
   const handleCountryChange = (newCountry) => {
     setCountry(newCountry);
     setState(null);
@@ -185,7 +185,7 @@ const useDatosBasicos = () => {
     }));
   };
 
-  // Reset en cascada: cambiar provincia limpia ciudad (y su id)
+  // Reset en cascada: cambiar departamento limpia ciudad (y su id)
   const handleStateChange = (newState) => {
     setState(newState);
     setCity(null);
@@ -284,7 +284,7 @@ const useDatosBasicos = () => {
   const handleCheckAddress = async () => {
     if (!country || !state || !city || !streetName.trim()) {
       setCheckError(
-        "Completa país, provincia, ciudad y la dirección antes de comprobar.",
+        "Completa país, departamento, ciudad y la dirección antes de comprobar.",
       );
       return;
     }

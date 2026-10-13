@@ -6,7 +6,7 @@
 // `endpoint` debe incluir el querystring ya armado, ej:
 //   "/api/states?countryId=1"
 // Si `endpoint` es null/undefined, el hook no dispara la petición
-// (útil para el caso "todavía no hay país elegido, no cargues provincias").
+// (útil para el caso "todavía no hay país elegido, no cargues departamentos").
 //
 // Los endpoints de geo son datos ESTÁTICOS → pasan por la caché compartida
 // (staticCache): aunque el hook se instancie N veces en el mismo render

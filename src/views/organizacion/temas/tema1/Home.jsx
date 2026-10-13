@@ -36,7 +36,7 @@ const Home = () => {
           <div>
             <h1 className="text-2xl font-bold">{organizacion.nombre}</h1>
             <p className="text-sm text-gray-500">
-              {[organizacion.ciudad, organizacion.provincia]
+              {[organizacion.ciudad, organizacion.departamento]
                 .filter(Boolean)
                 .join(", ")}
             </p>
