@@ -3,6 +3,7 @@
 import { Suspense } from "react";
 import Page from "@/views/chat/Chat.jsx";
 import { RutaPrivada } from "@/components/guards/Guards.jsx";
+import { scrollbarStyles } from "@/data/data.styles.scrollbar";
 const Cargando = () => (
   <div className="flex min-h-screen items-center justify-center bg-primero text-segundo">
     Cargando...
@@ -12,7 +13,11 @@ const Cargando = () => (
 export default function RoutePage() {
   return (
     <Suspense fallback={<Cargando />}>
-      <RutaPrivada><Page /></RutaPrivada>
+      <RutaPrivada>
+        <Page />
+
+        <style>{scrollbarStyles.default}</style>
+      </RutaPrivada>
     </Suspense>
   );
 }
