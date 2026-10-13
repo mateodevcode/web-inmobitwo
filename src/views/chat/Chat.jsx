@@ -214,7 +214,7 @@ const Chat = () => {
           Reconectando…
         </p>
       )}
-      <div className="flex-1 min-h-0 flex justify-center w-9/12 mx-auto">
+      <div className="flex-1 min-h-0 flex justify-center w-11/12  md:w-9/12 mx-auto">
         <div className="flex flex-1 min-h-0 w-full md:w-9/12 md:py-4 md:px-0">
           {/* Columna izquierda */}
           <aside
@@ -264,7 +264,7 @@ const Chat = () => {
           <main
             className={`${
               seleccionadaId != null ? "flex" : "hidden md:flex"
-            } flex-1 min-h-0 flex-col bg-primero border border-segundo/10 md:rounded-md md:ml-4`}
+            } flex-1 min-h-0 flex-col bg-primero w-full border border-segundo/10 md:rounded-md md:ml-4`}
           >
             {cInvalido ? (
               <div className="flex-1 flex flex-col items-center justify-center gap-3 p-6 text-center">

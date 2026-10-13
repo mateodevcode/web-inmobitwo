@@ -118,7 +118,8 @@ const VentanaChat = ({
           <p className="font-semibold text-segundo truncate">
             {conv.otraPersona?.nombre || "Usuario"}
           </p>
-          {conv.propiedad?.disponible === false || conv.propiedad?.id == null ? (
+          {conv.propiedad?.disponible === false ||
+          conv.propiedad?.id == null ? (
             <p className="text-sm text-segundo/60 truncate">
               Anuncio no disponible
             </p>
@@ -159,7 +160,8 @@ const VentanaChat = ({
                 key={m.clientMsgId || m.id}
                 mensaje={{
                   ...m,
-                  onReintentar: m.estado === "error" ? () => onReintentar(m) : undefined,
+                  onReintentar:
+                    m.estado === "error" ? () => onReintentar(m) : undefined,
                 }}
                 miId={miId}
               />
