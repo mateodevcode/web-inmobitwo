@@ -33,7 +33,7 @@ const TYPE_LABELS = {
   garajes: "Garajes",
   terrenos: "Terrenos",
   edificios: "Edificios",
-  "casa-o-chalet": "Casas o chalets",
+  "casa-o-chalet": "Casas",
   "casa-rustica": "Casas rústicas",
   "obra-nueva": "Obra nueva",
   vacacional: "Vacacional",

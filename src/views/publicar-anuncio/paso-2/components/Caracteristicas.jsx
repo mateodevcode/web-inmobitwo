@@ -15,7 +15,7 @@ const Caracteristicas = () => {
 
   const categorias = Object.keys(features);
 
-  // Reglas, servicios y tecnología solo aplican para arriendo
+  // Reglas, servicios y tecnología solo aplican para alquiler
   // (ej: "no mascotas", "servicios incluidos", "tv cable").
   const CATEGORIAS_SOLO_ALQUILER = ["rules", "services", "technology"];
   const esAlquiler = formDataPropiedad.operacion === "alquiler";

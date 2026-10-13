@@ -65,7 +65,7 @@ export const rutasFrontend = [
     ],
   },
   {
-    seccion: "Búsqueda (dinámicas, tipo Idealista)",
+    seccion: "Búsqueda (dinámicas por ciudad y zona)",
     items: [
       {
         path: "/:operationAndType/:cityAndDepartment",

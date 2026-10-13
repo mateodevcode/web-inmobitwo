@@ -8,5 +8,5 @@ export const OPERATION_TYPE_IDS = {
   venta: 1,
   alquiler: 2,
   "alquiler-vacacional": 2,
-  arriendo: 2,
+  arriendo: 2, // alias legacy
 };

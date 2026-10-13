@@ -14,7 +14,7 @@ export function MobileApp() {
               También en tu bolsillo
             </span>
             <h2 className="mt-5 text-balance font-display text-3xl font-extrabold tracking-tight text-segundo sm:text-4xl">
-              Llévate inmobitwo en el móvil
+              Llévate inmobitwo en el celular
             </h2>
             <p className="mt-4 text-pretty leading-relaxed text-segundo/60">
               Gestiona tus inmuebles y no pierdas ninguna oportunidad estés

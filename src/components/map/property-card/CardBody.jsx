@@ -10,7 +10,7 @@ export function CardBody({ inmueble, titulo, ubicacion, tipoLabel, operacionLabe
           <p className="text-xl font-bold">
             {formatPrecioCompleto(inmueble.precio)}
           </p>
-          {inmueble.operacion_slug === "arriendo" && (
+          {inmueble.operacion_slug === "alquiler" && (
             <p className="text-xs text-gray-500">/mes</p>
           )}
         </div>

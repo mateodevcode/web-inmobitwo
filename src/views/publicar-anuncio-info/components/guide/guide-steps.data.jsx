@@ -56,7 +56,7 @@ const PhotoTips = () => (
       Si aún tienes dudas sobre cómo tomar las mejores fotos, puedes seguir los
       trucos y consejos prácticos que compartimos en un video sobre{" "}
       <Link href="#" className="text-decimo hover:underline">
-        cómo fotografiar viviendas con tu móvil
+        cómo fotografiar viviendas con tu celular
       </Link>
       .
     </p>
@@ -82,7 +82,7 @@ export const GUIDE_STEPS = [
           muy importante indicar la dirección correcta del inmueble
         </strong>
         . Si por algún motivo no quieres indicarla tienes a tu disposición la
-        posibilidad de <strong>ocultar la dirección por 9,90 €</strong>.
+        posibilidad de <strong>ocultar la dirección por $ 39.900</strong>.
       </p>
     ),
   },

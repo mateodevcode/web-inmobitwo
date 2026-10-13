@@ -10,7 +10,7 @@ const TIPOS_ALQUILER = [
 
 const TipoAlquiler = ({ operationSlug }) => {
   const esAlquiler =
-    operationSlug === "alquiler" || operationSlug === "arriendo";
+    operationSlug === "alquiler" || operationSlug === "arriendo" // legacy;
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();

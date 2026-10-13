@@ -27,7 +27,7 @@ export function DownloadHero() {
 
         <h1 className="mt-6 text-balance font-display text-4xl font-bold leading-tight tracking-tight text-segundo sm:text-6xl">
           Descarga inmobitwo
-          <br className="hidden sm:block" /> en tu ordenador
+          <br className="hidden sm:block" /> en tu computador
         </h1>
 
         <p className="mx-auto mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-segundo/60">

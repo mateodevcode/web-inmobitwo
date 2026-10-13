@@ -1,4 +1,4 @@
-export const PAISES_LINKS = ["inmobitwo Italia", "inmobitwo Portugal"];
+export const PAISES_LINKS = ["inmobitwo Colombia"];
 
 export const AYUDA_LINKS = [
   "Preguntas frecuentes (FAQs)",
@@ -13,54 +13,47 @@ export const SOBRE_LINKS = [
   "Quiénes somos",
   "Sala de prensa",
   "Trabaja con nosotros",
-  "inmobitwo/hipotecas",
+  "inmobitwo/crédito hipotecario",
   "inmobitwo/data",
   "inmobitwo/news",
   "inmobitwo/seguros",
 ];
 
 export const LANGUAGES = [
-  { id: "es", flag: "🇪🇸", label: "Español" },
+  { id: "es", flag: "🇨🇴", label: "Español" },
   { id: "en", flag: "🇬🇧", label: "English" },
-  { id: "it", flag: "🇮🇹", label: "Italiano" },
-  { id: "pt", flag: "🇵🇹", label: "Português" },
 ];
 
 export const BUSCAS_INMUEBLE_LINKS = [
   "Buscador principal",
   "Busca más rápido con nuestra app",
-  "Pisos de bancos",
-  "Vivienda protegida y VPO",
-  "Viviendas en venta en España",
-  "Viviendas en alquiler en España",
-  "Casas y pisos en alquiler",
-  "Pisos compartidos",
-  "Solicita tu Certificado de inquilino no moroso",
+  "Apartamentos de bancos",
+  "Viviendas en venta en Colombia",
+  "Viviendas en alquiler en Colombia",
+  "Casas y apartamentos en alquiler",
+  "Apartamentos compartidos",
+  "Solicita tu Certificado de arrendatario no moroso",
   "Oportunidades de inversión",
-  "Rentalia, alquiler vacacional",
   "Informe de precios",
   "inmobitwo maps",
-  "Pisos y casas de lujo en venta en España",
-  "Pisos y casas de lujo en alquiler en España",
-  "Contrata tu Seguro Garantía de Inquilino",
+  "Apartamentos y casas de lujo en venta en Colombia",
+  "Apartamentos y casas de lujo en alquiler en Colombia",
+  "Contrata tu Seguro de Arrendamiento",
 ];
 
 export const TIENES_INMUEBLE_LINKS = [
   "Pon tu anuncio gratis",
   "Área del propietario",
   "Mejorar las fotos de tu anuncio",
-  "Solicitar certificado energético",
-  "Crea gratis tu contrato de alquiler",
-  "Consulta si un inquilino es moroso",
+  "Crea gratis tu contrato de arrendamiento",
+  "Consulta si un arrendatario es moroso",
   "Valora gratis cualquier inmueble",
   "Buscar agencias para vender tu casa fácilmente",
-  "Notificar inquilino moroso",
+  "Notificar arrendatario moroso",
   "Guía sobre cómo vender tu casa",
   "Calcular ahorro instalando paneles solares",
   "Garantizar 12 mensualidades con un seguro de impago",
-  "Seguro Anti Okupas",
   "Reforma tu casa",
-  "Certicalia: trámites para tu vivienda",
 ];
 
 export const PROFESIONAL_LINKS = [
@@ -71,10 +64,7 @@ export const PROFESIONAL_LINKS = [
   "inmobitwo/tools: software de gestión para inmobiliarias",
   "Otros software recomendados",
   "Reserva online de habitaciones",
-  "Registro inquilinos morosos",
+  "Registro arrendatarios morosos",
   "inmobitwo/data: tecnología para el análisis inmobiliario",
-  "AvaiBook: software para gestionar tu alquiler vacacional",
-  "Inmovilla: El mejor CRM inmobiliario",
-  "Rentger: Software de gestión del alquiler",
   "inmobitwo/seguros para profesionales",
 ];

@@ -275,7 +275,7 @@ const DetalleInmuble = ({
           <span>Precio del inmueble:</span>
           <span className="font-bold text-gray-900">
             {formatPrecioCompleto(inmueble.precio)}
-            {inmueble.operacion === "arriendo" ? "/mes" : ""}
+            {inmueble.operacion === "alquiler" ? "/mes" : ""}
           </span>
         </div>
         {inmueble.price_per_sqm != null && (

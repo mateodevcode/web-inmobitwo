@@ -5,7 +5,7 @@ export const COLOR_POR_TIPO = {
 };
 
 export const formatearHora = (fecha) =>
-  new Date(fecha).toLocaleTimeString("es-ES", {
+  new Date(fecha).toLocaleTimeString("es-CO", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",

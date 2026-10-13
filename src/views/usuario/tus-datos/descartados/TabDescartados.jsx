@@ -40,7 +40,7 @@ function TarjetaDescartado({ p, onRestaurada }) {
 
   const oferta = p.ofertas?.[0];
   const precio = oferta?.precio ?? p.precio_base;
-  const esAlquiler = oferta?.operacion === "arriendo";
+  const esAlquiler = oferta?.operacion === "alquiler";
   const disponible = p.estado === "publicado" && (p.ofertas?.length ?? 0) > 0;
   const area = p.private_area ?? p.constructed_area;
   const ubicacion =

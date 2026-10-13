@@ -1,9 +1,9 @@
 export const MAPPING_OPERACIONES = {
   comprar: "venta",
   venta: "venta",
-  alquilar: "arriendo",
-  alquiler: "arriendo",
-  arriendo: "arriendo",
+  alquilar: "alquiler",
+  alquiler: "alquiler",
+  arriendo: "alquiler", // alias legacy
 };
 
 export const MAPPING_TIPOS = {

@@ -10,7 +10,7 @@ const EVENTOS = [
   {
     id: "visita",
     color: "text-red-600",
-    texto: "Nueva solicitud de visita para el ático en Goya",
+    texto: "Nueva solicitud de visita para el apartamento en Chapinero",
     tiempo: "Hace 45 min",
   },
   {

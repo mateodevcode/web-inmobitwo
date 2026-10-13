@@ -8,7 +8,7 @@ export function EmailPanel({ email, telefono }) {
         <h3 className="text-xl font-bold text-segundo">Email de acceso</h3>
         <p className="text-base md:text-lg mt-2 text-segundo/90">
           Tus datos cuentan con una seguridad adicional. Al iniciar sesión,
-          recibirás un código SMS en el móvil {phoneFormatter(telefono)} para
+          recibirás un código SMS en el celular {phoneFormatter(telefono)} para
           verificar tu identidad.
         </p>
       </div>

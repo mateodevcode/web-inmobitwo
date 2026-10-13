@@ -62,9 +62,9 @@ const geistArchivoBlack = Archivo_Black({
 export const metadata = {
   title: "Inmobitwo | Red social inmobiliaria",
   description:
-    "Inmobitwo es la red social inmobiliaria donde encuentras apartamentos, casas, lotes y locales en venta o arriendo, y conectas directamente con propietarios e inmobiliarias en Colombia.",
+    "Inmobitwo es la red social inmobiliaria donde encuentras apartamentos, casas, lotes y locales en venta o alquiler, y conectas directamente con propietarios e inmobiliarias en Colombia.",
   keywords:
-    "Inmobitwo, inmuebles, propiedades, apartamentos en venta, casas en arriendo, lotes, locales comerciales, inmobiliarias, red social inmobiliaria, publicar anuncio inmueble, Colombia",
+    "Inmobitwo, inmuebles, propiedades, apartamentos en venta, casas en alquiler, lotes, locales comerciales, inmobiliarias, red social inmobiliaria, publicar anuncio inmueble, Colombia",
   authors: [
     {
       name: "Seventwo Technologies",
