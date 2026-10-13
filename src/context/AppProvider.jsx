@@ -156,7 +156,7 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   // ─────────────────────────────────────────────
-  // TRACKING / CONSENTIMIENTO RGPD
+  // TRACKING / CONSENTIMIENTO (Habeas Data, Ley 1581 de 2012)
   // ─────────────────────────────────────────────
   const [consentimientoTracking, setConsentimientoTracking] = useState(null); // null = aún no ha decidido
 

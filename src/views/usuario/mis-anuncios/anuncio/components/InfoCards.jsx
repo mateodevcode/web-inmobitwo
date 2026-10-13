@@ -252,7 +252,7 @@ export function ServiciosCard({ propiedad }) {
   const [activos, setActivos] = useState(null); // { code: valor }
 
   const actuales = propiedad?.caracteristicas ?? {};
-  const esVentaServicios = propiedad?.operacion_slug !== "arriendo";
+  const esVentaServicios = propiedad?.operacion_slug !== "alquiler";
   // Sugerencia viva (solo venta): se recalcula al marcar/quitar servicios.
   const { sugerido, validacion, cargando } = usePrecioSugerido(
     armarPrecioInput(

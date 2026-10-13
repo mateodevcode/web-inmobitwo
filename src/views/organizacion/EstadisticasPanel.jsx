@@ -108,7 +108,7 @@ const EstadisticasPanel = () => {
             </p>
             <p className="text-black/50 text-xs mt-0.5">
               {new Date(ultimaPropiedad.created_at).toLocaleDateString(
-                "es-ES",
+                "es-CO",
                 {
                   day: "2-digit",
                   month: "short",

@@ -43,7 +43,7 @@ export function RoomProfileCard() {
   } = useRoomSeeker();
   const [confirmandoBorrado, setConfirmandoBorrado] = useState(false);
 
-  // /arriendo-habitaciones/{ciudad}-{depto}?max={millones}
+  // /alquiler-habitaciones/{ciudad}-{depto}?max={millones}
   const buscarConMiPerfil = () => {
     if (!perfil?.city_slug || !perfil?.state_slug) return;
     const base = buildGeoPath("alquilar", "habitaciones", {

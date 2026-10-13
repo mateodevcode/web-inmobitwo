@@ -32,7 +32,7 @@ const Precio = ({ operationSlug }) => {
   const router = useRouter();
   const pathname = usePathname();
   const esAlquiler =
-    operationSlug === "alquiler" || operationSlug === "arriendo";
+    operationSlug === "alquiler" || operationSlug === "arriendo" // legacy;
 
   const { min: minVals, max: maxVals } = esAlquiler
     ? OPCIONES_ALQUILER

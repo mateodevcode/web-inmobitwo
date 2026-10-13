@@ -107,7 +107,7 @@ const CardPrincipal = ({
             <p className="text-2xl font-bold text-gray-900 font-montserrat">
               {formatPrecioCompleto(inmueble.precio)}
             </p>
-            {inmueble.operacion_slug === "arriendo" && (
+            {inmueble.operacion_slug === "alquiler" && (
               <p className="text-base text-gray-500">/mes</p>
             )}
           </div>

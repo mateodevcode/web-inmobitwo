@@ -37,7 +37,7 @@ const Principal = () => {
         return true;
       if (filtroSeleccionado === "venta") return pro.operacion_slug === "venta";
       if (filtroSeleccionado === "alquiler")
-        return pro.operacion_slug === "arriendo";
+        return pro.operacion_slug === "alquiler";
       if (filtroSeleccionado === "pisos")
         return (
           pro.tipo_slug === "apartamento" ||

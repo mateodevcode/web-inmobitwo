@@ -46,7 +46,7 @@ const LocationCascadeSelect = ({
 
         <TipoSelect
           label="Ciudad"
-          placeholder={state ? "Selecciona" : "Primero elige una departamento"}
+          placeholder={state ? "Selecciona" : "Primero elige un departamento"}
           options={cities}
           value={city}
           onChange={onCityChange}

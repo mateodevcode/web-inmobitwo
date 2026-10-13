@@ -259,7 +259,7 @@ const SECCIONES = [
 const TODOS_CAMPOS = SECCIONES.flatMap((s) => s.campos.map((c) => c.campo));
 
 const esRental = (propiedad) =>
-  propiedad?.operacion_slug === "arriendo" ||
+  propiedad?.operacion_slug === "alquiler" ||
   propiedad?.operation_type_id === 2;
 
 const visibleEnSeccion = (def, propiedad) =>

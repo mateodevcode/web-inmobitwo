@@ -8,18 +8,18 @@ const pinSvg = `
   </svg>
 `;
 
-// Posición inicial: pin del usuario > geocodificado > ciudad > Madrid.
+// Posición inicial: pin del usuario > geocodificado > ciudad > Bogotá.
 const resolveInitial = (initialPosition, geocodeResult, fallbackPosition) => ({
   lat:
     initialPosition?.lat ??
     geocodeResult?.latitude ??
     fallbackPosition?.latitude ??
-    40.4168,
+    4.7110,
   lng:
     initialPosition?.lng ??
     geocodeResult?.longitude ??
     fallbackPosition?.longitude ??
-    -3.7038,
+    -74.0721,
 });
 
 const createMarker = (map, positionRef, setPosition) => {

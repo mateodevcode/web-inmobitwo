@@ -27,7 +27,7 @@ export function SiteFooter() {
 
           <div>
             <h3 className="mb-4 text-xl font-semibold text-segundo">
-              En tu móvil o tablet
+              En tu celular o tablet
             </h3>
             <AppStoreButtons />
             <SocialLinks />

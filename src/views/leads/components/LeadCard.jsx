@@ -2,7 +2,7 @@ import { LuPhone, LuMail, LuClock } from "react-icons/lu";
 import { ESTADOS, getEstadoInfo } from "../lib/estados";
 
 const formatFecha = (fecha) =>
-  new Date(fecha).toLocaleDateString("es-ES", {
+  new Date(fecha).toLocaleDateString("es-CO", {
     day: "numeric",
     month: "short",
     hour: "2-digit",

@@ -1,5 +1,5 @@
 // utils/validatePhone.js
-// Validación de teléfonos móviles de Colombia (por ahora solo CO).
+// Validación de celulares de Colombia (por ahora solo CO).
 
 // Deja solo dígitos. Devuelve "" si no tiene dígitos.
 export function limpiarTelefono(telefono) {
@@ -16,7 +16,7 @@ export function normalizarTelefonoColombia(telefono) {
   return limpio;
 }
 
-// Móvil colombiano válido: 10 dígitos y empieza por 3 (ej: 3001234567).
+// Celular colombiano válido: 10 dígitos y empieza por 3 (ej: 3001234567).
 export function validarTelefonoColombia(telefono) {
   const limpio = normalizarTelefonoColombia(telefono);
   if (limpio.length !== 10) return false;

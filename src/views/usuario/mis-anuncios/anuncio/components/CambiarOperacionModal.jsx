@@ -14,7 +14,7 @@ import { SugerenciaPrecio } from "./SugerenciaPrecio";
 
 const SOPORTADAS = [
   { code: "venta", label: "Venta" },
-  { code: "arriendo", label: "Arriendo" },
+  { code: "alquiler", label: "Alquiler" },
 ];
 
 const inputCls =
@@ -47,7 +47,7 @@ export function CambiarOperacionModal({
       : [String(propiedad?.operacion_slug || "").toLowerCase()].filter(Boolean);
   const desde = String(propiedad?.operacion_slug || actuales[0] || "");
   const opcionesDestino = SOPORTADAS.filter((o) => !actuales.includes(o.code));
-  const esArriendo = destino === "arriendo";
+  const esAlquiler = destino === "alquiler";
   const alquileres = Array.isArray(catalogos.alquiler)
     ? catalogos.alquiler
     : [];
@@ -64,7 +64,7 @@ export function CambiarOperacionModal({
 
   const precioLimpio = String(precio ?? "").replace(/[^\d]/g, "");
   const puedeGuardar =
-    !!destino && !!precioLimpio && Number(precioLimpio) > 0 && (!esArriendo || !!rentalId);
+    !!destino && !!precioLimpio && Number(precioLimpio) > 0 && (!esAlquiler || !!rentalId);
   // Sugerencia del algoritmo si el destino es venta (el algoritmo es de venta).
   const { sugerido, validacion, cargando } = usePrecioSugerido(
     armarPrecioInput(propiedad),
@@ -77,7 +77,7 @@ export function CambiarOperacionModal({
     setError(null);
     try {
       const datos = { precio: parseInt(precioLimpio, 10) };
-      if (esArriendo) datos.rental_type_id = Number(rentalId);
+      if (esAlquiler) datos.rental_type_id = Number(rentalId);
       if (String(parking ?? "").trim() !== "") {
         datos.parking_space_price = parseInt(
           String(parking).replace(/[^\d]/g, "") || "0",
@@ -190,19 +190,19 @@ export function CambiarOperacionModal({
               <>
                 <label className="flex flex-col gap-1">
                   <span className="text-sm text-segundo/70">
-                    Precio {esArriendo ? "mensual (COP)" : "de venta (COP)"} *
+                    Precio {esAlquiler ? "mensual (COP)" : "de venta (COP)"} *
                   </span>
                   <input
                     type="text"
                     inputMode="numeric"
                     value={precio}
                     onChange={(e) => setPrecio(e.target.value)}
-                    placeholder={esArriendo ? "Ej. 2.000.000" : "Ej. 500.000.000"}
+                    placeholder={esAlquiler ? "Ej. 2.000.000" : "Ej. 500.000.000"}
                     className={inputCls}
                   />
                 </label>
 
-                {esArriendo && (
+                {esAlquiler && (
                   <label className="flex flex-col gap-1">
                     <span className="text-sm text-segundo/70">
                       Tipo de alquiler *
@@ -247,7 +247,7 @@ export function CambiarOperacionModal({
                   ) : (
                     <>
                       Se añade la oferta de <strong>{destino}</strong> sin tocar
-                      la actual. El título pasará a “Venta y arriendo de…”.
+                      la actual. El título pasará a “Venta y alquiler de…”.
                     </>
                   )}
                 </div>

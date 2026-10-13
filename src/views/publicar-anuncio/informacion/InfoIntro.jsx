@@ -9,12 +9,12 @@ export function InfoIntro() {
       <br />
       <p className="text-base">
         Te regalamos tus primeros dos anuncios para que pruebes nuestro
-        servicio. Puedes publicar gratis pisos, chalets, garajes, parcelas,
+        servicio. Puedes publicar gratis apartamentos, casas, garajes, parcelas,
         locales, etc hasta que lo vendas o lo alquiles.
       </p>
       <br />
       <p className="text-base">
-        Además, puedes publicar hasta 5 habitaciones gratis en piso
+        Además, puedes publicar hasta 5 habitaciones gratis en apartamento
         compartido, no suman en el número de anuncios que te regalamos.
       </p>
       <br />
@@ -26,8 +26,8 @@ export function InfoIntro() {
       <ul className="list-disc mx-4 text-base">
         <li>anunciantes con más de dos inmuebles</li>
         <li>anuncios de inmuebles duplicados</li>
-        <li>inmuebles en venta de más de 1.000.000 €</li>
-        <li>inmuebles en alquiler de más de 3.000 €/mes</li>
+        <li>inmuebles en venta de más de $ 4.000.000.000</li>
+        <li>inmuebles en alquiler de más de $ 12.000.000/mes</li>
       </ul>
       <br />
     </div>

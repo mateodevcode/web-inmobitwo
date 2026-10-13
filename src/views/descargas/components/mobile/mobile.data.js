@@ -16,7 +16,7 @@ export const VENTAJAS_MOVIL = [
   {
     id: "publicar",
     Icon: Smartphone,
-    texto: "Publica tu anuncio desde el móvil en minutos",
+    texto: "Publica tu anuncio desde el celular en minutos",
   },
 ];
 

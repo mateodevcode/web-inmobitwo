@@ -75,8 +75,8 @@ export function PrecioCard({ propiedad }) {
   ];
   const { editando, loading, draft, iniciar, cancelar, set, guardar } =
     useCardEdit(propiedad, campos);
-  const esArriendo = propiedad?.operacion_slug === "arriendo";
-  const esVenta = !esArriendo;
+  const esAlquiler = propiedad?.operacion_slug === "alquiler";
+  const esVenta = !esAlquiler;
   // Sugerencia del algoritmo (solo venta): en lectura valida el precio actual,
   // en edición se recalcula con el draft y valida lo que escribes.
   const entradaPrecio = editando
@@ -152,7 +152,7 @@ export function PrecioCard({ propiedad }) {
             {propiedad?.precio != null ? (
               <>
                 {formatPrecioCompleto(propiedad.precio)}
-                {esArriendo ? "/mes" : ""}
+                {esAlquiler ? "/mes" : ""}
               </>
             ) : (
               "Sin precio"

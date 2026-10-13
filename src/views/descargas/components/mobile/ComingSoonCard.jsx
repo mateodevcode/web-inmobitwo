@@ -8,11 +8,11 @@ export function ComingSoonCard() {
           <Smartphone className="size-8" />
         </span>
         <p className="font-display text-lg font-bold text-segundo">
-          App móvil próximamente
+          App para tu celular próximamente
         </p>
         <p className="max-w-[16rem] text-sm leading-relaxed text-segundo/60">
           Mientras tanto, descarga la versión de escritorio y usa inmobitwo
-          desde tu ordenador.
+          desde tu computador.
         </p>
       </div>
     </div>
