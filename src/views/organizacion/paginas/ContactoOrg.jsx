@@ -12,9 +12,9 @@ const ContactoOrg = () => {
       <div className="space-y-2 text-gray-600">
         {organizacion.telefono && <p>Teléfono: {organizacion.telefono}</p>}
         {organizacion.email && <p>Email: {organizacion.email}</p>}
-        {(organizacion.ciudad || organizacion.provincia) && (
+        {(organizacion.ciudad || organizacion.departamento) && (
           <p>
-            {[organizacion.ciudad, organizacion.provincia]
+            {[organizacion.ciudad, organizacion.departamento]
               .filter(Boolean)
               .join(", ")}
           </p>

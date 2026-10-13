@@ -10,7 +10,7 @@ const estadoInicial = {
   website: "",
   descripcion: "",
   ciudad: "",
-  provincia: "",
+  departamento: "",
 };
 
 const CrearOrganizacionForm = () => {
@@ -102,10 +102,10 @@ const CrearOrganizacionForm = () => {
         className="w-full border rounded-lg px-3 py-2"
       />
       <input
-        name="provincia"
-        value={formData.provincia}
+        name="departamento"
+        value={formData.departamento}
         onChange={handleChange}
-        placeholder="Provincia"
+        placeholder="Departamento"
         className="w-full border rounded-lg px-3 py-2"
       />
       <textarea

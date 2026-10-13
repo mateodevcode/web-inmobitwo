@@ -1,6 +1,6 @@
 // src/pages/publicar-anuncio/paso-1/Locationcascadeselect.jsx
 //
-// Cascada País → Provincia → Ciudad (presentacional).
+// Cascada País → Departamento → Ciudad (presentacional).
 // El estado, los fetch (useGeo) y los handlers viven en useDatosBasicos.
 
 import TipoSelect from "@/views/publicar-anuncio/components/ui/TipoSelect";
@@ -35,7 +35,7 @@ const LocationCascadeSelect = ({
         />
 
         <TipoSelect
-          label="Provincia / Departamento"
+          label="Departamento"
           placeholder={country ? "Selecciona" : "Primero elige un país"}
           options={states}
           value={state}
@@ -46,7 +46,7 @@ const LocationCascadeSelect = ({
 
         <TipoSelect
           label="Ciudad"
-          placeholder={state ? "Selecciona" : "Primero elige una provincia"}
+          placeholder={state ? "Selecciona" : "Primero elige una departamento"}
           options={cities}
           value={city}
           onChange={onCityChange}

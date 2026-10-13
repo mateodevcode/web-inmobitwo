@@ -29,7 +29,7 @@ const MiInmobiliariaPanel = () => {
     website: organizacion?.website || "",
     descripcion: organizacion?.descripcion || "",
     ciudad: organizacion?.ciudad || "",
-    provincia: organizacion?.provincia || "",
+    departamento: organizacion?.departamento || "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -123,10 +123,10 @@ const MiInmobiliariaPanel = () => {
             className="w-full border rounded-lg px-3 py-2 disabled:bg-stone-100"
           />
           <input
-            name="provincia"
-            value={formData.provincia}
+            name="departamento"
+            value={formData.departamento}
             onChange={handleChange}
-            placeholder="Provincia"
+            placeholder="Departamento"
             disabled={!esAdmin}
             className="w-full border rounded-lg px-3 py-2 disabled:bg-stone-100"
           />
