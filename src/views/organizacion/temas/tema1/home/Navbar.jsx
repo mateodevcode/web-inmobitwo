@@ -1,6 +1,7 @@
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { IoHomeOutline } from "react-icons/io5";
 import { CgMenuLeft } from "react-icons/cg";
+import Image from "next/image";
 
 const items = [
   {
@@ -35,9 +36,11 @@ const Navbar = () => {
       <div className="flex w-11/12 md:w-10/12 px-4 md:px-8 items-center justify-between">
         <div className="w-44 md:w-60 h-16 flex items-center justify-center">
           <div className="w-44 md:w-60">
-            <img
+            <Image
               src="/logo/logo-hor.png"
               alt="logo"
+              width={500}
+              height={500}
               className="h-full w-full"
             />
           </div>

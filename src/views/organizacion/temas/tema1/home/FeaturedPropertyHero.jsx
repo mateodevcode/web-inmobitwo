@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { PiPlayFill, PiXBold, PiMapPinLine } from "react-icons/pi";
 import { FaBed, FaBath } from "react-icons/fa";
 import { BiArea } from "react-icons/bi";
+import Image from "next/image";
 
 const slides = [
   {
@@ -128,9 +129,11 @@ const FeaturedPropertyHero = () => {
   return (
     <div className="relative w-full h-[85vh] min-h-150 overflow-hidden">
       {/* Imagen de fondo */}
-      <img
+      <Image
         src={slide.image}
         alt={slide.title}
+        width={600}
+        height={600}
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-black/10" />
@@ -181,9 +184,11 @@ const FeaturedPropertyHero = () => {
         </div>
 
         <div className="flex items-center gap-3 mt-6">
-          <img
+          <Image
             src={slide.agent.avatar}
             alt={slide.agent.name}
+            width={600}
+            height={600}
             className="w-11 h-11 rounded-full object-cover"
           />
           <div>

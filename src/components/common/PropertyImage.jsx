@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { elegirTamano, construirSrcSet } from "../../utils/galeriaUtils";
 
 /**
@@ -9,7 +10,14 @@ import { elegirTamano, construirSrcSet } from "../../utils/galeriaUtils";
  * @param {'thumbnail'|'small'|'medium'|'large'|'xlarge'} tamañoBase - tamaño por defecto (fallback de src)
  * @param {string} sizes - atributo `sizes` de HTML (ver ejemplos de uso abajo)
  */
-export default function PropertyImage({ foto, tamañoBase = "medium", sizes, alt = "", className, ...props }) {
+export default function PropertyImage({
+  foto,
+  tamañoBase = "medium",
+  sizes,
+  alt = "",
+  className,
+  ...props
+}) {
   if (!foto) return null;
 
   const src = elegirTamano(foto, tamañoBase);
@@ -18,7 +26,9 @@ export default function PropertyImage({ foto, tamañoBase = "medium", sizes, alt
   if (!src) return null;
 
   return (
-    <img
+    <Image
+      width={1000}
+      height={1000}
       src={src}
       srcSet={srcSet}
       sizes={sizes}

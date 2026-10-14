@@ -21,6 +21,7 @@ import useDescartados from "@/hooks/useDescartados";
 import { useDescartadosStore } from "@/hooks/descartadosStore";
 import ImagenesCard from "./ImagenesCard";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const CardPropiedad = ({ propiedades, ultimaCardRef, esLaUltima }) => {
   const { id, publicador, created_at } = propiedades;
@@ -29,14 +30,11 @@ const CardPropiedad = ({ propiedades, ultimaCardRef, esLaUltima }) => {
   const { estaEnFavoritos, handleFavorito } = useFavoritos();
   const { dispararEventoYRevisar } = useTracking();
   const router = useRouter();
-  const {
-    setOpenModalConfirmarEliminarPropiedad,
-    setPropiedadAEliminar,
-  } = useAppContext();
+  const { setOpenModalConfirmarEliminarPropiedad, setPropiedadAEliminar } =
+    useAppContext();
   const favoritos = useFavoritosStore();
   const descartados = useDescartadosStore();
-  const { handleDescartar, handleRestaurar, estaDescartado } =
-    useDescartados();
+  const { handleDescartar, handleRestaurar, estaDescartado } = useDescartados();
   const descartado = estaDescartado(descartados, id);
 
   const esOrganizacion = publicador?.tipo === "organizacion";
@@ -69,9 +67,11 @@ const CardPropiedad = ({ propiedades, ultimaCardRef, esLaUltima }) => {
       <div className="flex items-start justify-between gap-2 p-4">
         <div className="flex gap-2">
           {imagenPublicador ? (
-            <img
+            <Image
               src={imagenPublicador}
               alt={nombrePublicador}
+              width={600}
+              height={600}
               className={`w-10 h-10 rounded-md object-cover ${
                 esOrganizacion ? "" : "rounded-full"
               }`}
@@ -126,7 +126,8 @@ const CardPropiedad = ({ propiedades, ultimaCardRef, esLaUltima }) => {
       <div className="flex flex-col p-4">
         <div className="">
           <p className="font-semibold text-black">
-            {propiedades.tipo_inmueble || "Inmueble"} · {propiedades.operacion || ""}
+            {propiedades.tipo_inmueble || "Inmueble"} ·{" "}
+            {propiedades.operacion || ""}
           </p>
           <div className="flex items-center gap-2 text-xs text-black/80">
             <BsGeoAlt />
@@ -147,7 +148,8 @@ const CardPropiedad = ({ propiedades, ultimaCardRef, esLaUltima }) => {
               <span>{propiedades.bathroom_count} Baños</span>
             </div>
           )}
-          {(propiedades.private_area ?? propiedades.constructed_area) != null && (
+          {(propiedades.private_area ?? propiedades.constructed_area) !=
+            null && (
             <div className="flex gap-2">
               <RxRulerSquare />
               <span>

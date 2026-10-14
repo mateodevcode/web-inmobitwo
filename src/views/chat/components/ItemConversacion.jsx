@@ -3,6 +3,7 @@
 import { MdOutlineImageNotSupported, MdDeleteOutline } from "react-icons/md";
 import Avatar from "@/components/usuario/Avatar";
 import { fechaCorta } from "../lib/fechaChat";
+import Image from "next/image";
 
 const ItemConversacion = ({ conv, activa, onSelect, onEliminar }) => {
   const ultimo = conv.ultimoMensaje;
@@ -27,9 +28,11 @@ const ItemConversacion = ({ conv, activa, onSelect, onEliminar }) => {
         />
         {conv.propiedad?.portadaUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={conv.propiedad.portadaUrl}
             alt=""
+            width={500}
+            height={500}
             className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full object-cover border-2 border-primero"
           />
         ) : (
@@ -60,7 +63,9 @@ const ItemConversacion = ({ conv, activa, onSelect, onEliminar }) => {
 
       <div className="shrink-0 flex flex-col items-end gap-1">
         {ultimo && (
-          <span className="text-xs text-segundo/60">{fechaCorta(ultimo.at)}</span>
+          <span className="text-xs text-segundo/60">
+            {fechaCorta(ultimo.at)}
+          </span>
         )}
         <div className="flex items-center gap-1">
           {conv.noLeidos > 0 && (

@@ -3,6 +3,7 @@
 import usePropiedadesOrganizacionData from "@/hooks/usePropiedadesOrganizacionData.js";
 import Loading from "@/components/loading/Loading";
 import { useOutletContext } from "@/views/organizacion/paginas/OrgOutletContext.jsx"; // TODO-NEXT Outlet
+import Image from "next/image";
 
 const Home = () => {
   const organizacionContext = useOutletContext();
@@ -27,9 +28,11 @@ const Home = () => {
       {organizacion && (
         <header className="flex items-center gap-4 mb-8 border-b pb-6">
           {organizacion.logo_url && (
-            <img
+            <Image
               src={organizacion.logo_url}
               alt={organizacion.nombre}
+              width={500}
+              height={500}
               className="w-16 h-16 rounded-full object-cover"
             />
           )}
@@ -53,9 +56,11 @@ const Home = () => {
           {propiedades.map((p) => (
             <article key={p.id} className="border rounded-xl overflow-hidden">
               {p.imagen_principal_url && (
-                <img
+                <Image
                   src={p.imagen_principal_url}
                   alt={p.titulo}
+                  width={1000}
+                  height={1000}
                   className="w-full h-48 object-cover"
                 />
               )}

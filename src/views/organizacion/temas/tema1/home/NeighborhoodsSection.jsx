@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const neighborhoods = [
   {
     id: 1,
@@ -31,9 +33,11 @@ const neighborhoods = [
 
 const NeighborhoodCard = ({ item, className = "" }) => (
   <div className={`relative rounded-3xl overflow-hidden group ${className}`}>
-    <img
+    <Image
       src={item.image}
       alt={item.city}
+      width={1000}
+      height={1000}
       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
     />
     <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />

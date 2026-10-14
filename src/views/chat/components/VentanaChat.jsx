@@ -19,7 +19,7 @@ const Burbuja = ({ mensaje, miId }) => {
           mio ? "bg-decimo/10" : "bg-segundo/5"
         }`}
       >
-        <p className="text-sm text-segundo whitespace-pre-wrap break-words">
+        <p className="text-sm text-segundo whitespace-pre-wrap wrap-break-word">
           {mensaje.contenido}
         </p>
         <p className="text-[11px] text-segundo/60 text-right mt-0.5 flex items-center justify-end gap-1">

@@ -2,26 +2,18 @@ import { useState } from "react";
 import { ChevronDown, HardDriveUpload, Plus, X } from "lucide-react";
 import usePropiedades from "@/hooks/usePropiedades";
 import { Listbox } from "@headlessui/react";
-import {
-  // agentes,
-  // departamentosCiudades,
-  estadosPropiedad,
-  // tiposPropiedad,
-} from "@/data/colombia-data";
+import { estadosPropiedad } from "@/data/colombia-data";
 import { useAppContext } from "@/context/AppContext";
 import useResetForm from "@/hooks/useResetForm";
+import Image from "next/image";
 
 export default function FormAgregarPropiedad() {
   const {
-    // propiedades,
-    // setPropiedades,
     formDataPropiedad,
     setFormDataPropiedad,
-    // usuario,
     setOpenModalAgregarPropiedad,
   } = useAppContext();
 
-  // const [propiedadId, setPropiedadId] = useState(null);
   const {
     crearPropiedad,
     handleChange,
@@ -31,7 +23,6 @@ export default function FormAgregarPropiedad() {
   } = usePropiedades();
   const { resetFormDataPropiedad } = useResetForm();
 
-  // const [ciudadesDisponibles, setCiudadesDisponibles] = useState([]);
   const [imagenPrincipal, setImagenPrincipal] = useState(null);
   const [previewPrincipal, setPreviewPrincipal] = useState(null);
   const [galeriaFiles, setGaleriaFiles] = useState([]);
@@ -39,20 +30,6 @@ export default function FormAgregarPropiedad() {
   const [planosFiles, setPlanosFiles] = useState([]);
   const [planosPreviews, setPlanosPreviews] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  // const handleDepartamentoChange = (departamento) => {
-  //   setFormDataPropiedad((prev) => ({
-  //     ...prev,
-  //     departamento,
-  //     ciudad: "",
-  //   }));
-  //   setCiudadesDisponibles(departamentosCiudades[departamento] || []);
-  // };
-
-  // const searchUsuario = (id) => {
-  //   const usuario = agentes.find((agent) => agent.id === id);
-  //   return usuario;
-  // };
 
   const handleCancel = () => {
     resetFormDataPropiedad();
@@ -169,7 +146,7 @@ export default function FormAgregarPropiedad() {
           <div className="h-80 rounded-md flex items-center justify-center">
             {previewPrincipal || formDataPropiedad.imagen_principal_url ? (
               <div className="relative w-full h-full">
-                <img
+                <Image
                   src={
                     previewPrincipal || formDataPropiedad.imagen_principal_url
                   }
@@ -249,7 +226,7 @@ export default function FormAgregarPropiedad() {
                 key={index}
                 className="relative group rounded-md overflow-hidden border border-gray-200 hover:border-rose-600 transition-colors"
               >
-                <img
+                <Image
                   src={preview.url}
                   alt={`Preview ${index + 1}`}
                   width={500}
@@ -281,9 +258,7 @@ export default function FormAgregarPropiedad() {
 
       <div className="mt-6">
         <div className="flex items-center justify-between mb-2">
-          <p className="text-sm text-gray-500 font-medium">
-            Planos (opcional)
-          </p>
+          <p className="text-sm text-gray-500 font-medium">Planos (opcional)</p>
           <span className="text-xs text-gray-400">
             {planosFiles.length} / 10 planos
           </span>
@@ -324,7 +299,7 @@ export default function FormAgregarPropiedad() {
                 key={index}
                 className="relative group rounded-md overflow-hidden border border-gray-200 hover:border-rose-600 transition-colors"
               >
-                <img
+                <Image
                   src={preview.url}
                   alt={`Plano ${index + 1}`}
                   width={500}

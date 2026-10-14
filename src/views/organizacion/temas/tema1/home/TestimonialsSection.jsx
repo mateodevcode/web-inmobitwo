@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState, useCallback } from "react";
 import { PiStarFill, PiArrowLeft, PiArrowRight } from "react-icons/pi";
 
@@ -65,9 +66,11 @@ const TrustScorePanel = () => (
         "https://i.pravatar.cc/60?img=53",
         "https://i.pravatar.cc/60?img=65",
       ].map((src, i) => (
-        <img
+        <Image
           key={i}
           src={src}
+          width={500}
+          height={500}
           alt="Cliente"
           className="w-11 h-11 rounded-full border-2 border-white object-cover -ml-3 first:ml-0"
         />
@@ -132,9 +135,11 @@ const TestimonialsSection = () => {
 
           <div className="flex items-center justify-between border-t border-gray-200 mt-8 pt-6">
             <div className="flex items-center gap-3">
-              <img
+              <Image
                 src={testimonial.avatar}
                 alt={testimonial.author}
+                width={500}
+                height={500}
                 className="w-14 h-14 rounded-full object-cover border-2 border-red-500"
               />
               <div>

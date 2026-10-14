@@ -1,7 +1,6 @@
-
+import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";// src/pages/organizacion/paginas/OrganizacionNav.jsx
-
+import { usePathname } from "next/navigation"; // src/pages/organizacion/paginas/OrganizacionNav.jsx
 
 // basePath: "" para dominio propio (rutas en raíz) | "/inmobiliarias/:slug" para el modo red-social
 const OrganizacionNav = ({ basePath, organizacion }) => {
@@ -18,9 +17,11 @@ const OrganizacionNav = ({ basePath, organizacion }) => {
     <header className="border-b">
       <div className="max-w-5xl mx-auto px-4 py-4 flex items-center gap-4">
         {organizacion?.logo_url && (
-          <img
+          <Image
             src={organizacion.logo_url}
             alt={organizacion.nombre}
+            width={600}
+            height={600}
             className="w-10 h-10 rounded-full object-cover"
           />
         )}

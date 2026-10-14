@@ -9,6 +9,7 @@ import { formatFirstTwoNames } from "@/lib/formatFirstTwoNames";
 import { MdLogout, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { items_menu } from "@/data/items_menu";
 import { irArriba } from "@/utils/irArriba";
+import Image from "next/image";
 
 const ConLogin = ({ tamano = "lg" }) => {
   const {
@@ -40,17 +41,24 @@ const ConLogin = ({ tamano = "lg" }) => {
       const count = await cargarCountMisAnuncios();
       setCountMisAnuncios(count);
     })();
-  }, [openModalHamburguesa, openModalUser, usuario?.id, cargarCountMisAnuncios]);
+  }, [
+    openModalHamburguesa,
+    openModalUser,
+    usuario?.id,
+    cargarCountMisAnuncios,
+  ]);
 
   const avatar = usuario?.image_url ? (
-    <img
+    <Image
       src={usuario.image_url}
       alt={name}
+      width={500}
+      height={500}
       className={`${sizeClass} rounded-full object-cover border-2 border-white shadow-sm shrink-0`}
     />
   ) : (
     <div
-      className={`${sizeClass} p-4 rounded-full font-semibold flex items-center justify-center hover:shadow shadow-black/10 active:scale-95 duration-75 transition shrink-0`}
+      className={`${sizeClass} p-4 rounded-full font-semibold flex items-center justify-center hover:shadow shadow-segundo/10 active:scale-95 duration-75 transition shrink-0`}
       style={color}
     >
       {getInitials(name)}
@@ -60,7 +68,7 @@ const ConLogin = ({ tamano = "lg" }) => {
   return (
     <>
       <div
-        className="flex gap-2 items-center mb-4 p-3 rounded-md hover:bg-black/5 text-black cursor-pointer select-none"
+        className="flex gap-2 items-center mb-4 p-3 rounded-md hover:bg-segundo/5 text-segundo cursor-pointer select-none"
         onClick={() => {
           setOpenModalHamburguesa(false);
           setOpenModalUser(false);
@@ -69,7 +77,7 @@ const ConLogin = ({ tamano = "lg" }) => {
       >
         {avatar}
         <div className="flex flex-col">
-          <p className="font-semibold text-black text-sm">
+          <p className="font-semibold text-segundo text-sm">
             {formatFirstTwoNames(name)}
           </p>
           <div className="flex items-center gap-2 -mt-1">
@@ -84,7 +92,7 @@ const ConLogin = ({ tamano = "lg" }) => {
           return (
             <div
               key={i}
-              className="flex items-center gap-4 p-4 rounded-md hover:bg-black/5 text-black cursor-pointer select-none text-sm"
+              className="flex items-center gap-4 p-4 rounded-md hover:bg-segundo/5 text-segundo cursor-pointer select-none text-sm"
               onClick={() => {
                 setOpenModalHamburguesa(false);
                 setOpenModalUser(false);
@@ -105,7 +113,7 @@ const ConLogin = ({ tamano = "lg" }) => {
       </div>
 
       <div
-        className="flex items-center gap-2 p-4 rounded-md hover:bg-black/5 text-black cursor-pointer select-none text-sm mt-4"
+        className="flex items-center gap-2 p-4 rounded-md hover:bg-segundo/5 text-segundo cursor-pointer select-none text-sm mt-2"
         onClick={() => {
           setOpenModalHamburguesa(false);
           setOpenModalUser(false);

@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { PiHeart, PiHeartFill, PiMapPinLine } from "react-icons/pi";
 import { FaBed, FaBath } from "react-icons/fa";
 import { BiArea } from "react-icons/bi";
+import Image from "next/image";
 
 const CATEGORIES = [
   "View All",
@@ -132,9 +133,11 @@ const PropertyCard = ({ property }) => {
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
       {/* Imagen */}
       <div className="relative h-56">
-        <img
+        <Image
           src={property.image}
           alt={property.title}
+          width={1000}
+          height={1000}
           className="w-full h-full object-cover"
         />
 

@@ -1,6 +1,7 @@
 import { PiHeart, PiMapPinLine } from "react-icons/pi";
 import { FaGooglePlay, FaApple, FaBed, FaBath } from "react-icons/fa";
 import { BiArea } from "react-icons/bi";
+import Image from "next/image";
 
 // Pequeño patrón de QR "falso" (solo decorativo, no escaneable) hecho con una grilla fija
 const QR_PATTERN = [
@@ -101,9 +102,11 @@ const Asterisk = ({ className = "" }) => (
 const MiniPropertyCard = () => (
   <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden w-32 shrink-0">
     <div className="relative h-20">
-      <img
+      <Image
         src="https://picsum.photos/id/1080/300/200"
         alt="Charming Beach House"
+        width={600}
+        height={600}
         className="w-full h-full object-cover"
       />
       <span className="absolute top-1.5 left-1.5 bg-gray-900/90 text-white text-[8px] font-medium px-1.5 py-0.5 rounded">
@@ -159,9 +162,11 @@ const PhoneMockup = () => (
       <div className="bg-white h-140 overflow-hidden relative">
         {/* Header con imagen de fondo */}
         <div className="relative h-40">
-          <img
+          <Image
             src="https://picsum.photos/id/1074/500/300"
             alt="App header"
+            width={600}
+            height={600}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40" />
@@ -215,9 +220,11 @@ const DownloadAppSection = () => (
           <Squiggle className="absolute left-0 top-8" />
 
           <div className="absolute top-8 left-16 w-64 h-64 rounded-full overflow-hidden shadow-lg">
-            <img
+            <Image
               src="https://i.pravatar.cc/500?img=68"
               alt="Pareja usando la app"
+              width={600}
+              height={600}
               className="w-full h-full object-cover"
             />
           </div>
@@ -225,17 +232,21 @@ const DownloadAppSection = () => (
           <Asterisk className="absolute left-56 top-75 w-8 h-8 text-red-500 z-10" />
 
           <div className="absolute left-0 top-75 w-44 h-44 rounded-full overflow-hidden shadow-lg">
-            <img
+            <Image
               src="https://i.pravatar.cc/500?img=47"
               alt="Persona usando el celular"
+              width={600}
+              height={600}
               className="w-full h-full object-cover"
             />
           </div>
 
           <div className="absolute left-40 top-70 w-52 h-52 rounded-full overflow-hidden shadow-lg">
-            <img
+            <Image
               src="https://i.pravatar.cc/500?img=59"
               alt="Persona usando el celular"
+              width={600}
+              height={600}
               className="w-full h-full object-cover"
             />
           </div>
@@ -252,7 +263,7 @@ const DownloadAppSection = () => (
             Scan QR for get latest Properties Over the time
           </h2>
           <p className="text-gray-500 mt-4 max-w-sm mx-auto">
-            Simply scan the QR code on the right with your phone's camera, then
+            Simply scan the QR code on the right with your phone&apos;s camera, then
             click to open the app download page.
           </p>
 

@@ -1,10 +1,14 @@
+import Image from "next/image";
+
 const DescargarApp = () => {
   return (
     <div className="w-full h-16 flex items-center gap-4 p-4">
       <div className="w-8 h-8" onClick={() => alert("descargando app...")}>
-        <img
+        <Image
           src="/logo/logo.png"
           alt="logo de inmobitwo"
+          width={500}
+          height={500}
           className="w-full h-full"
         />
       </div>

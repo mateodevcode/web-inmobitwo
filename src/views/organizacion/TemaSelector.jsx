@@ -2,6 +2,7 @@
 import { toast } from "sonner";
 import useOrganizaciones from "@/hooks/useOrganizaciones.js";
 import { TEMAS } from "@/views/organizacion/temas/temaRegistry.js";
+import Image from "next/image";
 
 const TemaSelector = ({ organizacion, onCambiado }) => {
   const { actualizarOrganizacion } = useOrganizaciones();
@@ -36,9 +37,11 @@ const TemaSelector = ({ organizacion, onCambiado }) => {
           >
             <div className="w-full h-20 bg-stone-100 rounded-lg mb-2 flex items-center justify-center text-xs text-black/30">
               {tema.thumbnail ? (
-                <img
+                <Image
                   src={tema.thumbnail}
                   alt={tema.nombre}
+                  width={500}
+                  height={500}
                   className="w-full h-full object-cover rounded-lg"
                 />
               ) : (

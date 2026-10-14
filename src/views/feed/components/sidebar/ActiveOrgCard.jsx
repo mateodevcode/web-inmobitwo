@@ -1,5 +1,6 @@
 import { HiBuildingOffice2 } from "react-icons/hi2";
 import { toCapitalize } from "@/lib/toCapitalize";
+import Image from "next/image";
 
 export function ActiveOrgCard({ organizacion }) {
   const dominio_dns = organizacion?.custom_domain
@@ -14,9 +15,11 @@ export function ActiveOrgCard({ organizacion }) {
         target="_blank"
       >
         {organizacion.logo_url ? (
-          <img
+          <Image
             src={organizacion.logo_url}
             alt={organizacion.nombre}
+            width={600}
+            height={600}
             className="w-9 h-9 rounded-full object-cover"
           />
         ) : (

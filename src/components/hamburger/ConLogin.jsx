@@ -16,7 +16,7 @@ const closeMenus = (setOpenModalHamburguesa, setOpenModalUser) => {
 
 const MenuRow = ({ onClick, icon, label, trailing }) => (
   <div
-    className="flex items-center gap-4 p-4 rounded-md hover:bg-segundo/5 text-segundo cursor-pointer select-none text-sm"
+    className="flex items-center gap-4 p-4 rounded-md hover:bg-tercero/5 text-segundo cursor-pointer select-none text-sm"
     onClick={onClick}
   >
     <div className="flex items-center gap-4">
@@ -93,7 +93,7 @@ const ConLogin = ({ tamano = "lg" }) => {
       </div>
 
       <div
-        className="flex items-center gap-4 p-4 rounded-md hover:bg-segundo/5 text-segundo cursor-pointer select-none text-sm mt-2"
+        className="flex items-center gap-4 p-4 rounded-md hover:bg-tercero/5 text-segundo cursor-pointer select-none text-sm"
         onClick={() => {
           close();
           handleCerrarSesion();

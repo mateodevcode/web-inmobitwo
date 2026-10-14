@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { PiLinkedinLogoFill, PiEnvelopeSimpleFill } from "react-icons/pi";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { MdKeyboardArrowLeft } from "react-icons/md";
+import Image from "next/image";
 
 const agents = [
   {
@@ -69,9 +70,11 @@ const AgentCard = ({ agent }) => {
         }`}
         style={{ clipPath: HOUSE_CLIP_PATH }}
       >
-        <img
+        <Image
           src={agent.image}
           alt={agent.name}
+          width={600}
+          height={600}
           className="absolute bottom-0 left-1/2 w-[78%] h-[88%] object-cover object-top rounded-t-full transition-transform duration-300"
           style={{
             transform: `translateX(-50%) scale(${isHovered ? 1.06 : 1})`,
@@ -200,7 +203,7 @@ const AgentsSlider = () => {
           and selling goals. Find the home of your dreams with an expert you can
           trust.{" "}
           <a href="#" className="text-red-500 font-medium hover:underline">
-            Let's chat
+            Let&apos;s chat
           </a>
         </p>
       </div>
