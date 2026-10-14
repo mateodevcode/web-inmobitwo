@@ -31,18 +31,6 @@ export const RutaPrivada = ({ children }) => {
   return children;
 };
 
-export const RutaAdmin = ({ children }) => {
-  const { estaAutenticado, esSuperAdmin, authListo } = useAppContext();
-  const router = useRouter();
-  useEffect(() => {
-    if (!authListo) return;
-    if (!estaAutenticado) router.replace(buildLoginUrl(obtenerOrigenActual()));
-    else if (!esSuperAdmin) router.replace("/");
-  }, [authListo, estaAutenticado, esSuperAdmin, router]);
-  if (!authListo || !estaAutenticado || !esSuperAdmin) return <Cargando />;
-  return children;
-};
-
 export const RutaPublica = ({ children }) => {
   const { estaAutenticado, authListo } = useAppContext();
   const router = useRouter();
