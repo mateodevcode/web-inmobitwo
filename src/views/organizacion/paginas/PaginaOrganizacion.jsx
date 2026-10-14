@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useTenant } from "@/context/TenantContext.js";
 import useOrganizaciones from "@/hooks/useOrganizaciones.js";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 // ────────────────────────────────────────────────────────────────
 // Esta página sirve para DOS rutas distintas con el mismo componente:
@@ -78,9 +79,11 @@ const PaginaOrganizacion = () => {
       {organizacion && (
         <header className="flex items-center gap-4 mb-8 border-b pb-6">
           {organizacion.logo_url && (
-            <img
+            <Image
               src={organizacion.logo_url}
               alt={organizacion.nombre}
+              width={500}
+              height={500}
               className="w-16 h-16 rounded-full object-cover"
             />
           )}
@@ -107,9 +110,11 @@ const PaginaOrganizacion = () => {
           {propiedades.map((p) => (
             <article key={p.id} className="border rounded-xl overflow-hidden">
               {p.imagen_principal_url && (
-                <img
+                <Image
                   src={p.imagen_principal_url}
                   alt={p.titulo}
+                  width={1000}
+                  height={1000}
                   className="w-full h-48 object-cover"
                 />
               )}

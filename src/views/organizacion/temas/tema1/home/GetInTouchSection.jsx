@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState } from "react";
 
 const marqueeItems = [
@@ -113,7 +114,7 @@ const ContactForm = () => {
         <div className="w-6 h-px bg-red-500" />
       </div>
       <h2 className="text-2xl font-bold text-gray-900 mt-2 mb-6">
-        Let's Talk Your Property Goal
+        Let&apos;s Talk Your Property Goal
       </h2>
 
       <div className="grid grid-cols-2 gap-4">
@@ -199,9 +200,11 @@ const GetInTouchSection = () => (
       {/* Ya NO tiene overflow-hidden: solo posiciona. El recorte/redondeado
           vive únicamente en la imagen, así el form puede sobresalir libre. */}
       <div className="relative h-135">
-        <img
+        <Image
           src="https://picsum.photos/id/1076/1600/1000"
           alt="Propiedad destacada"
+          width={1000}
+          height={1000}
           className="absolute inset-0 w-full h-full object-cover rounded-3xl"
         />
         <div className="absolute inset-0 bg-black/10 rounded-3xl pointer-events-none" />
@@ -213,9 +216,11 @@ const GetInTouchSection = () => (
           </span>
           <CurvedArrow />
           <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-white/70 shadow-xl -mt-2">
-            <img
+            <Image
               src="https://staticmap.openstreetmap.de/staticmap.php?center=40.73,-73.99&zoom=13&size=300x300&maptype=mapnik"
               alt="Mapa"
+              width={1000}
+              height={1000}
               className="w-full h-full object-cover"
             />
             <span className="absolute inset-0 flex items-center justify-center">

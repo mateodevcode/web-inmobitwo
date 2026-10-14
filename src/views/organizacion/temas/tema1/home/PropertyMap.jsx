@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PiHeart, PiHeartFill, PiMapPinLine } from "react-icons/pi";
 import { FaBed, FaBath } from "react-icons/fa";
 import { BiArea } from "react-icons/bi";
+import Image from "next/image";
 
 // Posiciones en % relativo al contenedor del mapa (top/left) para ubicar cada pin
 const properties = [
@@ -83,12 +84,14 @@ const PropertyPopup = ({ property }) => {
     <div className="w-72 bg-white rounded-2xl shadow-2xl overflow-hidden">
       {/* Imagen + precio */}
       <div className="relative h-40">
-        <img
+        <Image
           src={property.image}
           alt={property.title}
+          width={500}
+          height={500}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0" />
+        <div className="absolute inset-0 bg-linear-to-t from-segundo/60 via-segundo/0 to-segundo/0" />
 
         <button
           onClick={(e) => {
@@ -140,9 +143,11 @@ const PropertyMap = () => {
   return (
     <div className="w-full h-full">
       <div className="relative" style={{ height: "70vh", minHeight: 500 }}>
-        <img
+        <Image
           src="/tema/tema1/mapa.png"
           alt="Mapa de propiedades"
+          width={500}
+          height={500}
           className="w-full h-full object-cover rounded-3xl"
         />
 

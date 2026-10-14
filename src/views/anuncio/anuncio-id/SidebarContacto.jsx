@@ -7,6 +7,7 @@ import useTracking from "@/hooks/useTracking";
 import { useAppContext } from "@/context/AppContext";
 import { iniciarConversacion } from "@/actions/chat";
 import { useState } from "react";
+import Image from "next/image";
 
 const SidebarContacto = ({ inmueble }) => {
   const { dispararEventoYRevisar } = useTracking();
@@ -51,8 +52,7 @@ const SidebarContacto = ({ inmueble }) => {
     <div className="border-t-4 border-tercero shadow-md bg-white">
       <div className="p-4">
         <h3 className="font-semibold text-gray-900 mb-3 text-center text-lg">
-          Pregunta al{" "}
-          {inmueble?.es_de_organizacion ? "anunciante" : "vendedor"}
+          Pregunta al {inmueble?.es_de_organizacion ? "anunciante" : "vendedor"}
         </h3>
 
         <div className="flex items-start gap-2 border-2 border-blue-300 bg-blue-50 rounded-sm p-3 mb-3">
@@ -115,11 +115,13 @@ const SidebarContacto = ({ inmueble }) => {
                 </div>
 
                 <div className="border border-segundo/10 w-32 h-16">
-                  <img
+                  <Image
                     src={
                       inmueble?.organizacion_logo_url || "/logo/logo-hor.png"
                     }
                     alt={inmueble?.organizacion_nombre || "Inmobiliaria"}
+                    width={600}
+                    height={600}
                     className="w-full h-full object-contain"
                   />
                 </div>

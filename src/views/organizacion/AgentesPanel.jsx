@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useAppContext } from "@/context/AppContext.js";
 import useOrganizaciones from "@/hooks/useOrganizaciones.js";
+import Image from "next/image";
 
 const AgentesPanel = () => {
   const { organizaciones } = useAppContext();
@@ -150,9 +151,11 @@ const AgentesPanel = () => {
             >
               <div className="flex items-center gap-3 min-w-0">
                 {m.image_url ? (
-                  <img
+                  <Image
                     src={m.image_url}
                     alt={m.name}
+                    width={500}
+                    height={500}
                     className="w-9 h-9 rounded-full object-cover"
                   />
                 ) : (

@@ -28,6 +28,7 @@ import PropertyImage from "@/components/common/PropertyImage";
 import { formatPrecioCompleto } from "@/utils/formatPrecio";
 import SmartLoader from "@/components/loader/SmartLoader";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 
 const AUTOPLAY_SECONDS = 10;
 
@@ -190,7 +191,7 @@ const PropiedadId = () => {
               }}
             >
               <div className="border-black/10 border rounded-full w-10 h-10 flex items-center justify-center shadow-xl bg-white">
-                <img src={logo.src} alt={logo.alt} width={25} height={25} />
+                <Image src={logo.src} alt={logo.alt} width={25} height={25} />
               </div>
             </div>
 
