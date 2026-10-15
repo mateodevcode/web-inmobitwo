@@ -21,7 +21,7 @@ const InfoCardItem = ({ card, onNavigate }) => (
       </div>
       <button
         onClick={onNavigate}
-        className="text-decimo hover:text-decimo/80 text-left text-sm lg:text-xs xl:text-sm font-medium hover:underline w-fit font-montserrat"
+        className="text-decimo hover:text-decimo/80 text-left text-sm lg:text-xs xl:text-sm font-medium hover:underline w-fit font-montserrat cursor-pointer select-none"
       >
         {card.linkLabel}
       </button>

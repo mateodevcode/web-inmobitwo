@@ -56,6 +56,7 @@ const Login = () => {
                 onChange={handleChange}
                 onSubmit={(e) => handleValidateEmail(e, nextRaw)}
                 registerHref={agregarNext("/registro", nextRaw)}
+                next={nextRaw}
               />
             )}
 

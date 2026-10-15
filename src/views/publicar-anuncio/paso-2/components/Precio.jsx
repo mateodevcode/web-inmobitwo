@@ -1,6 +1,7 @@
 import Bloque from "@/views/publicar-anuncio/components/ui/Bloque";
 import InputField from "@/views/publicar-anuncio/components/ui/InputField";
 import useDetalles from "@/hooks/useDetalles";
+import { formatPrecioCompleto } from "@/utils/formatPrecio.js";
 
 const COLORES_NIVEL = {
   sobrevalorado: "text-red-600",
@@ -47,6 +48,11 @@ const Precio = () => {
           unit="COP"
           numeric
         />
+        {Number(formDataPropiedad.precio) > 0 && (
+          <p className="-mt-4 text-xl font-bold text-tercero" aria-live="polite">
+            {formatPrecioCompleto(formDataPropiedad.precio)}
+          </p>
+        )}
 
         {validacionPrecio && (
           <p

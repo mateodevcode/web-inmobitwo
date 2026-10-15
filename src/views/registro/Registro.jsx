@@ -5,6 +5,7 @@ import BarraNavegacionTauri from "@/components/barra-navegacion/BarraNavegacionT
 import { RegisterHeader } from "./components/RegisterHeader";
 import { RegisterForm } from "./components/form/RegisterForm";
 import { LoginLink } from "./components/LoginLink";
+import { GoogleButton } from "@/views/login/components/email-step/GoogleButton.jsx";
 
 const Registro = () => {
   const { handleRegistro, handleChange, formDataUsuario } = useAuth();
@@ -22,6 +23,10 @@ const Registro = () => {
           onChange={handleChange}
           onSubmit={(e) => handleRegistro(e, nextRaw)}
         />
+
+        <div className="mt-4">
+          <GoogleButton next={nextRaw} />
+        </div>
 
         <LoginLink nextRaw={nextRaw} />
       </div>

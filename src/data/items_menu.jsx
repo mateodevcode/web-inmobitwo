@@ -1,6 +1,9 @@
 import { FaRegHeart } from "react-icons/fa";
 import { FaBell } from "react-icons/fa";
-import { IoMdCloseCircleOutline, IoMdNotificationsOutline } from "react-icons/io";
+import {
+  IoMdCloseCircleOutline,
+  IoMdNotificationsOutline,
+} from "react-icons/io";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { LuBuilding2 } from "react-icons/lu";
 
@@ -30,9 +33,9 @@ export const items_menu = [
     id: "mis-busquedas",
     icon: <FaBell className="text-xl" />,
   },
-  {
-    label: "Descartados",
-    id: "descartados",
-    icon: <IoMdCloseCircleOutline className="text-xl" />,
-  },
+  // {
+  //   label: "Descartados",
+  //   id: "descartados",
+  //   icon: <IoMdCloseCircleOutline className="text-xl" />,
+  // },
 ];

@@ -49,13 +49,20 @@ function FilaNumero({ campo, valor, draft, editando, onChange }) {
     <label className="flex flex-col gap-1 min-w-40 flex-1">
       <span className="text-sm text-segundo/70">{ETIQUETAS[campo]}</span>
       {editando ? (
-        <input
-          type="number"
-          min={0}
-          value={draft?.[campo] ?? ""}
-          onChange={(e) => onChange(campo, e.target.value)}
-          className={inputCls}
-        />
+        <>
+          <input
+            type="number"
+            min={0}
+            value={draft?.[campo] ?? ""}
+            onChange={(e) => onChange(campo, e.target.value)}
+            className={inputCls}
+          />
+          {(campo === "precio" || campo === "administracion") && Number(draft?.[campo]) > 0 && (
+            <span className="text-base font-bold text-tercero" aria-live="polite">
+              {formatPrecioCompleto(draft[campo])}
+            </span>
+          )}
+        </>
       ) : (
         <Stat>
           {campo === "precio" || campo === "administracion"
