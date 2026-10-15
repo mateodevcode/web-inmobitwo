@@ -12,7 +12,7 @@ import {
   obtenerOrigenActual,
 } from "@/utils/authRedirect.js";
 
-const Cargando = ({ texto = "Cargando..." }) => (
+const Cargando = ({ texto = "Cargando sesión…" }) => (
   <div className="flex min-h-screen items-center justify-center bg-primero text-segundo">
     {texto}
   </div>
