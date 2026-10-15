@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SubmitButton } from "../common/SubmitButton";
 import { GoogleButton } from "./GoogleButton";
 
-export function EmailStep({ email, onChange, onSubmit, registerHref = "/registro" }) {
+export function EmailStep({ email, onChange, onSubmit, registerHref = "/registro", next }) {
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-2">
       <div>
@@ -33,7 +33,7 @@ export function EmailStep({ email, onChange, onSubmit, registerHref = "/registro
         <p className="text-sm font-semibold">También puedes continuar</p>
       </div>
 
-      <GoogleButton />
+      <GoogleButton next={next} />
 
       <p className="text-sm text-black/60 mt-2 text-center font-semibold">
         ¿No tienes cuenta?{" "}
