@@ -27,7 +27,6 @@ const ItemConversacion = ({ conv, activa, onSelect, onEliminar }) => {
           tamano="lg"
         />
         {conv.propiedad?.portadaUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <Image
             src={conv.propiedad.portadaUrl}
             alt=""

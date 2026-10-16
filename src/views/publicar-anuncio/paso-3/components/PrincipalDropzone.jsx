@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { Plus, HardDriveUpload, Image as ImageIcon, Star } from "lucide-react";
 
 const PrincipalDropzone = ({ preview, onFileSelected }) => {
@@ -57,9 +58,12 @@ const PrincipalDropzone = ({ preview, onFileSelected }) => {
       <div className="h-72 rounded-md flex items-center justify-center overflow-hidden border border-slate-200">
         {preview ? (
           <div className="relative w-full h-full">
-            <img
+            <Image
               src={preview}
               alt="Vista previa de la foto principal"
+              fill
+              sizes="100vw"
+              unoptimized
               className="w-full h-full object-cover"
             />
             <span className="absolute top-2 left-2 flex items-center gap-1 rounded-full bg-white/90 px-2.5 py-1 text-xs font-semibold text-slate-900">

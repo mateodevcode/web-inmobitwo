@@ -42,7 +42,13 @@ const PropiedadId = () => {
   const router = useRouter();
   const { id } = useParams();
   const { dispararEventoYRevisar } = useTracking();
-  const tiempoEntrada = useRef(Date.now());
+  const tiempoEntrada = useRef(null);
+  // cargarPropiedad no está memoizada: ref para no re-disparar el efecto
+  // (agregarla a deps crearía loop de recargas).
+  const cargarPropiedadRef = useRef(cargarPropiedad);
+  useEffect(() => {
+    cargarPropiedadRef.current = cargarPropiedad;
+  }, [cargarPropiedad]);
 
   // ─────────────────────────────────────────────
   // tiempo_en_pagina — se registra al desmontar / cambiar de propiedad
@@ -57,7 +63,7 @@ const PropiedadId = () => {
         dispararEventoYRevisar(id, "tiempo_en_pagina", { segundos });
       }
     };
-  }, [id]);
+  }, [id, dispararEventoYRevisar]);
 
   // ─────────────────────────────────────────────
   const idVistaRegistradaRef = useRef(null);
@@ -66,11 +72,11 @@ const PropiedadId = () => {
       dispararEventoYRevisar(id, "vista_propiedad");
       idVistaRegistradaRef.current = id;
     }
-  }, [id]);
+  }, [id, dispararEventoYRevisar]);
 
   useEffect(() => {
     if (id) {
-      cargarPropiedad(id);
+      cargarPropiedadRef.current(id);
     }
   }, [id]);
 
@@ -91,9 +97,12 @@ const PropiedadId = () => {
   const [fade, setFade] = useState(true);
   const autoTimerRef = useRef(null);
 
-  // Si cambiamos de propiedad, volvemos a la primera imagen
+  // Si cambiamos de propiedad, volvemos a la primera imagen.
+  // (reset por cambio de id: caso legítimo de setState en efecto)
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- reset carrusel al cambiar de propiedad */
     setCurrentIndex(0);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [id]);
 
   const goTo = useCallback(

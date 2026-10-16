@@ -24,8 +24,11 @@ const calcularTiempoRelativo = (fecha) => {
 export const useTiempoRelativo = (fecha) => {
   const [texto, setTexto] = useState(() => calcularTiempoRelativo(fecha));
 
+  // Recalcula si cambia la fecha (otra card) + ticker cada minuto.
   useEffect(() => {
-    setTexto(calcularTiempoRelativo(fecha)); // recalcula si cambia la fecha (otra card)
+    /* eslint-disable react-hooks/set-state-in-effect -- recálculo al cambiar fecha */
+    setTexto(calcularTiempoRelativo(fecha));
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     const interval = setInterval(() => {
       setTexto(calcularTiempoRelativo(fecha));

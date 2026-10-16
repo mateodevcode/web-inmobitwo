@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { irArriba } from "@/utils/irArriba";
 
 export function AnuncioPhoto({ propiedad }) {
@@ -7,9 +8,11 @@ export function AnuncioPhoto({ propiedad }) {
   if (propiedad.imagen_principal_url !== null) {
     return (
       <div className="flex items-center justify-center w-full h-full bg-rose-50">
-        <img
+        <Image
           src={propiedad.imagen_principal_url}
           alt={propiedad.titulo}
+          width={800}
+          height={600}
           className="object-cover object-center w-full h-full"
         />
       </div>

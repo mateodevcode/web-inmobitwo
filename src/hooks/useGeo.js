@@ -21,6 +21,7 @@ export function useGeo(endpoint) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- reset al quedarse sin endpoint + fetch con cancelación */
     if (!endpoint) {
       setData([]);
       setError(null);
@@ -52,6 +53,7 @@ export function useGeo(endpoint) {
     return () => {
       cancelled = true;
     };
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [endpoint]);
 
   return { data, loading, error };

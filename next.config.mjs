@@ -14,6 +14,17 @@ const nextConfig = {
         hostname: "seventwo.s3.us-east-1.amazonaws.com",
         pathname: "/**",
       },
+      {
+        // Decorativas estáticas de los temas de org (avatares/testimonios).
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "i.pravatar.cc",
+        pathname: "/**",
+      },
     ],
   },
 };

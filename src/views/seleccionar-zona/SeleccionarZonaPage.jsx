@@ -1,5 +1,14 @@
 // views/seleccionar-zona/SeleccionarZonaPage.jsx
-import { useState } from "react";
+// MAPA PRINCIPAL: un solo mapa con dos modos de uso —
+//   1) "seleccionar" (default): elegir zona/depto/ciudad sobre el mapa.
+//   2) "dibujar" (?draw=true): polígono a mano con geoman → zona personalizada.
+// Cuando el usuario diga "mapa principal", se refiere a este componente.
+//
+// Persistencia: la "zona activa" (último dibujo o última selección) se
+// guarda en localStorage (lib/zonaPersistente.js) y se precarga al volver
+// (atrás desde la ficha, "Seleccionar en Mapa", recarga). Se borra al
+// borrar el polígono, al limpiar la zona o al armar una nueva.
+import { useEffect, useState, useRef } from "react";
 import { useSelectZona } from "@/hooks/useSelectZona";
 import { buildSearchUrl } from "./utils/urlBuilder";
 import SelectZonaMap from "./components/map/SelectZonaMap";
@@ -9,6 +18,12 @@ import { ZonaPageHeader } from "./components/header/ZonaPageHeader";
 import { SelectedZoneCard } from "./components/header/SelectedZoneCard";
 import { useDeptNames } from "./hooks/useDeptNames";
 import { usePolygonSearch } from "./hooks/usePolygonSearch";
+import {
+  leerZonaGuardada,
+  guardarZona,
+  limpiarZonaGuardada,
+  esZonaCompatible,
+} from "./lib/zonaPersistente";
 
 function parseOperationAndType(raw) {
   if (!raw) return { operation: "venta", tipoInmueble: "viviendas" };
@@ -31,22 +46,80 @@ export default function SeleccionarZonaPage() {
 
   const {
     selectedZone,
-    setSelectedZone: selectZone,
-    clearZone,
+    setSelectedZone: selectZoneBase,
+    clearZone: clearZoneBase,
     propertyCount,
     loading,
   } = useSelectZona();
+
+  // Persistencia: guardar la selección nueva y borrar lo guardado al limpiar.
+  const clearZone = () => {
+    limpiarZonaGuardada();
+    clearZoneBase();
+  };
+  const selectZone = (zone, op, tipo) => {
+    if (zone) {
+      guardarZona({
+        kind: "seleccion",
+        operation: op ?? operation,
+        tipoInmueble: tipo ?? tipoInmueble,
+        zone,
+      });
+    }
+    selectZoneBase(zone, op, tipo);
+  };
   const deptNames = useDeptNames();
-  const [drawMode, setDrawMode] = useState(drawFromUrl);
+  // Restauración perezosa (sin efecto): si hay zona guardada compatible con
+  // la operación+tipo de la URL, el mapa arranca con ella precargada.
+  const [zonaRestaurada] = useState(() => {
+    if (typeof window === "undefined") return null;
+    const guardada = leerZonaGuardada();
+    return guardada && esZonaCompatible(guardada, operation, tipoInmueble)
+      ? guardada
+      : null;
+  });
+  const [drawMode, setDrawMode] = useState(
+    () =>
+      drawFromUrl ||
+      (zonaRestaurada?.kind === "dibujo" && !!zonaRestaurada?.polygon),
+  );
+  const [initialPolygon] = useState(() =>
+    zonaRestaurada?.kind === "dibujo" ? (zonaRestaurada.polygon ?? null) : null,
+  );
+  // Aviso de "sin resultados" centrado arriba (reemplaza al toast).
+  const [avisoSinResultados, setAvisoSinResultados] = useState(null);
+  const avisoTimerRef = useRef(null);
+  useEffect(() => () => clearTimeout(avisoTimerRef.current), []);
   const {
     customPolygon,
     polygonProps,
     polygonPropCount,
     polygonLoading,
-    clearPolygon,
-    handlePolygonChange,
+    clearPolygon: clearPolygonBase,
+    handlePolygonChange: handlePolygonChangeBase,
   } = usePolygonSearch(operation, tipoInmueble);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+
+  // Persistencia: guardar el dibujo nuevo y borrar lo guardado al limpiar.
+  const clearPolygon = () => {
+    limpiarZonaGuardada();
+    clearPolygonBase();
+  };
+  const handlePolygonChange = (geojson) => {
+    if (geojson) {
+      guardarZona({
+        kind: "dibujo",
+        operation,
+        tipoInmueble,
+        polygon: geojson,
+      });
+    } else {
+      // Borrar el polígono (botón borrar, Geoman remove) también limpia
+      // lo guardado: si no, al volver reaparecía el dibujo borrado.
+      limpiarZonaGuardada();
+    }
+    handlePolygonChangeBase(geojson);
+  };
 
   const handleToggleDrawMode = (active) => {
     setDrawMode(active);
@@ -69,8 +142,39 @@ export default function SeleccionarZonaPage() {
     selectZone(zone, op, tipo);
   };
 
+  // Restaurar la zona guardada al entrar (una sola vez por montaje).
+  // Es sincronización con un sistema externo (localStorage → estado),
+  // el caso legítimo para setState en efecto.
+  useEffect(() => {
+    if (
+      zonaRestaurada?.kind === "seleccion" &&
+      zonaRestaurada.zone &&
+      !drawFromUrl
+    ) {
+      selectZone(zonaRestaurada.zone, operation, tipoInmueble);
+    }
+    if (zonaRestaurada?.kind === "dibujo" && !drawFromUrl) {
+      router.replace(`${pathname}?draw=true`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleVerInmuebles = () => {
+    // Sin resultados no se redirige: se muestra el aviso centrado arriba
+    // (estilo badges del mapa) y el usuario sigue en el mapa.
+    const avisarSinResultados = (sugerencia) => {
+      setAvisoSinResultados(
+        `Ups, parece que no hemos encontrado ningún anuncio en esta zona. ${sugerencia}`,
+      );
+      clearTimeout(avisoTimerRef.current);
+      avisoTimerRef.current = setTimeout(() => setAvisoSinResultados(null), 4500);
+    };
+
     if (customPolygon) {
+      if (polygonPropCount === 0) {
+        avisarSinResultados("Prueba dibujar un área más grande.");
+        return;
+      }
       const polygonKey = `poly_${Date.now()}`;
       try {
         sessionStorage.setItem(polygonKey, JSON.stringify(customPolygon));
@@ -83,6 +187,10 @@ export default function SeleccionarZonaPage() {
       return;
     }
 
+    if (propertyCount === 0) {
+      avisarSinResultados("Prueba con otra zona cercana.");
+      return;
+    }
     const url = buildSearchUrl(
       { ...selectedZone, operation, tipoInmueble },
       deptNames,
@@ -116,6 +224,8 @@ export default function SeleccionarZonaPage() {
           polygonPropCount={polygonPropCount}
           polygonLoading={polygonLoading}
           onVerInmuebles={handleVerInmuebles}
+          initialPolygon={initialPolygon}
+          avisoSinResultados={avisoSinResultados}
         />
       </div>
 

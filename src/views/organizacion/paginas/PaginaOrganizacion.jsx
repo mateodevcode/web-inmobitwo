@@ -48,11 +48,14 @@ const PaginaOrganizacion = () => {
     [slug, cargarPropiedadesOrganizacion],
   );
 
+  // Reset de paginación + recarga al cambiar de organización.
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- reset paginación al cambiar slug */
     setPropiedades([]);
     setCursor(null);
     setHasMore(true);
     setNotFound(false);
+    /* eslint-enable react-hooks/set-state-in-effect */
     if (slug) cargar(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);

@@ -6,12 +6,23 @@ export function DrawGuide({
   drawArmed,
   hasPolygon,
   onStartDrawing,
+  onCancelDrawing,
 }) {
   return (
     <>
       {drawMode && mapReady && drawArmed && (
-        <div className="absolute top-16 md:top-4 left-1/2 -translate-x-1/2 bg-segundo/80 text-primero px-5 py-2 rounded-md text-sm z-40 pointer-events-none font-poppins w-80 md:w-130 text-center">
-          Haz clic para marcar vértices. Doble clic para cerrar el polígono.
+        <div className="absolute top-16 md:top-4 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-2 pointer-events-none">
+          <div className="bg-segundo/80 text-primero px-5 py-2 rounded-md text-sm font-poppins w-80 md:w-130 text-center">
+            Haz clic para marcar vértices. Doble clic para cerrar el polígono.
+          </div>
+          {/* Trazo en curso (mínimo una línea): permite cancelarlo sin
+              tener que terminar el polígono para borrarlo después. */}
+          <button
+            className="pointer-events-auto flex items-center gap-2 px-5 py-2 rounded-md shadow-lg border-2 border-segundo/80 bg-primero text-segundo/80 cursor-pointer text-sm font-montserrat font-semibold hover:bg-primero/80 transition-colors"
+            onClick={onCancelDrawing}
+          >
+            <span>Cancelar dibujo</span>
+          </button>
         </div>
       )}
 

@@ -25,8 +25,9 @@ export const useAnuncioDetalle = () => {
         dispararEventoYRevisar(id, "tiempo_en_pagina", { segundos });
       }
     };
-  }, [id]);
+  }, [id, dispararEventoYRevisar]);
 
+  // Carga por segmento (cargarPropiedad no memoizada: a deps = loop).
   useEffect(() => {
     if (segmento) {
       cargarPropiedad(segmento);

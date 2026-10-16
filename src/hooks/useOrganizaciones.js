@@ -116,7 +116,7 @@ const useOrganizaciones = () => {
       console.error("Error cargando organizaciones:", error);
       return [];
     }
-  }, [setOrganizaciones]);
+  }, [setOrganizaciones, iniciarCarga, terminarCarga]);
 
   // ─────────────────────────────────────────────
   // Consultar organización por slug (para /inmobiliarias/:slug)

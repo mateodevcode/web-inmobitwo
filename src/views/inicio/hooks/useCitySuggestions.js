@@ -18,10 +18,13 @@ export const useCitySuggestions = ({ query, operation, tipoSlug }) => {
   const text = query.trim();
   const isShort = text.length < MIN_QUERY_LENGTH;
 
+  // Debounce de sugerencias (suscripción con cleanup).
   useEffect(() => {
     if (isShort) return;
 
+    /* eslint-disable react-hooks/set-state-in-effect -- spinner del debounce */
     setLoading(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     const timer = setTimeout(async () => {
       const operacionDb = MAPPING_OPERACIONES[operation] || operation;

@@ -89,7 +89,7 @@ export function useMapaCenter({ lat, lng, zoom, cityAndDepartment }) {
     }
 
     init();
-  }, [cityAndDepartment]);
+  }, [cityAndDepartment, hasPoint]);
 
   return { center, boundary, geocoding };
 }

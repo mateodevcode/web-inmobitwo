@@ -14,8 +14,11 @@ export default function useCarruselFotos(totalImagenes, inmuebleId) {
   const [fade, setFade] = useState(true);
   const autoTimerRef = useRef(null);
 
+  // Reset al cambiar de inmueble (caso legítimo de setState en efecto).
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- reset carrusel al cambiar de inmueble */
     setCurrentIndex(0);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [inmuebleId]);
 
   const goTo = useCallback(
@@ -40,6 +43,7 @@ export default function useCarruselFotos(totalImagenes, inmuebleId) {
     }, AUTOPLAY_SECONDS * 1000);
   }, [currentIndex, goTo, totalImagenes]);
 
+  // Armado/limpieza del timer de autoplay (suscripción con cleanup).
   useEffect(() => {
     resetAutoPlay();
     return () => clearTimeout(autoTimerRef.current);

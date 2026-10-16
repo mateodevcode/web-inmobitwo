@@ -192,11 +192,13 @@ const CardAnuncioCompra = ({
           </>
         )}
 
-        <div className="bg-black/70 absolute top-2 right-2 p-1.5 px-2 rounded-md z-10">
-          <span className="text-white/80 font-semibold text-sm">
-            {currentIndex + 1}/{totalImagenes}
-          </span>
-        </div>
+        {totalImagenes > 0 && (
+          <div className="bg-black/70 absolute top-2 right-2 p-1.5 px-2 rounded-md z-10">
+            <span className="text-white/80 font-semibold text-sm">
+              {currentIndex + 1}/{totalImagenes}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="w-full md:w-[50%] min-w-0 bg-primero min-h-72 md:h-full rounded-r-md relative pb-3 flex flex-col justify-between">

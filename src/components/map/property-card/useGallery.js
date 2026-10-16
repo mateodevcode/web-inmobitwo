@@ -14,10 +14,24 @@ export function useGallery(inmueble) {
 
   // Una "foto" = filas con el mismo orden (5 tamaños). La portada (orden -1)
   // ya viene dentro de galeria y queda primera.
-  const fotos = [
+  // Fallback: los items del mapa (bbox) no traen `galeria`, solo
+  // `imagen_principal_url`. Sin esto el modal quedaba sin imagen.
+  const fotosGaleria = [
     ...agruparPorOrden(galeria),
     ...agruparPorOrden(planos),
   ].filter((f) => f.tamaños && Object.keys(f.tamaños).length > 0);
+  const fotos =
+    fotosGaleria.length > 0
+      ? fotosGaleria
+      : inmueble?.imagen_principal_url
+        ? [
+            {
+              orden: -1,
+              esPortada: true,
+              tamaños: { medium: inmueble.imagen_principal_url },
+            },
+          ]
+        : [];
   const totalImagenes = fotos.length;
 
   const goTo = useCallback(

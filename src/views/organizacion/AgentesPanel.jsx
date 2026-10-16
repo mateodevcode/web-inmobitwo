@@ -34,10 +34,13 @@ const AgentesPanel = () => {
 
   useEffect(() => {
     cargarMisOrganizaciones();
-  }, []);
+  }, [cargarMisOrganizaciones]);
 
+  // Carga de miembros al cambiar de organización (fetch estándar).
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- fetch miembros al cambiar org */
     cargar();
+    /* eslint-enable react-hooks/set-state-in-effect */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [organizacion?.id]);
 

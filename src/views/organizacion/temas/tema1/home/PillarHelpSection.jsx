@@ -152,8 +152,11 @@ const PillarHelpSection = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Recorta el índice si al redimensionar caben más items.
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- clamp índice al redimensionar */
     setScrollIndex((prev) => Math.min(prev, maxIndex));
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [maxIndex]);
 
   useEffect(() => {

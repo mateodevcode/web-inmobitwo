@@ -1,28 +1,86 @@
 import { apiBackend } from "@/actions/apiBackend.js";
 import { MAPPING_TIPOS } from "@/data/mappings_busqueda.js";
 
+// ─────────────────────────────────────────────
+// Caché de GeoJSON estáticos (regiones/departamentos de Colombia no
+// cambian): evita re-pedirlos en cada montaje del mapa y tumbar el
+// rate-limit (429 "Demasiadas solicitudes"). Memoria + sessionStorage,
+// con promesas en vuelo compartidas para no duplicar peticiones.
+// ─────────────────────────────────────────────
+const geoCache = new Map();
+const geoPending = new Map();
+
+const leerCacheSesion = (clave) => {
+  try {
+    const raw = sessionStorage.getItem(`geo:${clave}`);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
+const guardarCacheSesion = (clave, datos) => {
+  try {
+    sessionStorage.setItem(`geo:${clave}`, JSON.stringify(datos));
+  } catch {}
+};
+
+async function fetchGeoCacheado(clave, fetcher) {
+  if (geoCache.has(clave)) return geoCache.get(clave);
+  const deSesion = leerCacheSesion(clave);
+  if (deSesion) {
+    geoCache.set(clave, deSesion);
+    return deSesion;
+  }
+  if (geoPending.has(clave)) return geoPending.get(clave);
+  const promesa = (async () => {
+    try {
+      const datos = await fetcher();
+      geoCache.set(clave, datos);
+      guardarCacheSesion(clave, datos);
+      return datos;
+    } finally {
+      geoPending.delete(clave);
+    }
+  })();
+  geoPending.set(clave, promesa);
+  return promesa;
+}
+
 export async function fetchRegionsGeoJSON() {
-  const res = await apiBackend("/api/regions/geojson");
-  if (!res.success) throw new Error(res.error || "Error cargando regiones");
-  return res.data;
+  return fetchGeoCacheado("regions", async () => {
+    const res = await apiBackend("/api/regions/geojson");
+    if (!res.success) throw new Error(res.error || "Error cargando regiones");
+    return res.data;
+  });
 }
 
 export async function fetchStatesGeoJSON() {
-  const res = await apiBackend("/api/states/geojson");
-  if (!res.success) throw new Error(res.error || "Error cargando departamentos");
-  return res.data;
+  return fetchGeoCacheado("states", async () => {
+    const res = await apiBackend("/api/states/geojson");
+    if (!res.success) throw new Error(res.error || "Error cargando departamentos");
+    return res.data;
+  });
 }
 
 export async function fetchCitiesGeoJSON(stateDaneCode) {
-  const res = await apiBackend(`/api/cities/geojson?stateDaneCode=${stateDaneCode}`);
-  if (!res.success) throw new Error(res.error || "Error cargando municipios");
-  return res.data;
+  return fetchGeoCacheado(`cities:${stateDaneCode}`, async () => {
+    const res = await apiBackend(`/api/cities/geojson?stateDaneCode=${stateDaneCode}`);
+    if (!res.success) throw new Error(res.error || "Error cargando municipios");
+    return res.data;
+  });
 }
 
 export async function fetchBarrios(cityDaneCode) {
-  const res = await apiBackend(`/api/barrios?cityDaneCode=${cityDaneCode}`);
-  if (!res.success) return { type: "FeatureCollection", features: [] };
-  return res.data;
+  try {
+    return await fetchGeoCacheado(`barrios:${cityDaneCode}`, async () => {
+      const res = await apiBackend(`/api/barrios?cityDaneCode=${cityDaneCode}`);
+      if (!res.success) return { type: "FeatureCollection", features: [] };
+      return res.data;
+    });
+  } catch {
+    return { type: "FeatureCollection", features: [] };
+  }
 }
 
 function expandTipoInmueble(slug) {
@@ -46,9 +104,17 @@ export async function fetchInmueblesEnPoligono(polygon, operation, tipoInmuebleS
     operation: operation || undefined,
     tipoInmueble: inmueble || undefined,
   };
-  const res = await apiBackend("/api/inmuebles-en-poligono", "POST", body);
-  if (!res.success) return { total: 0, propiedades: [] };
-  return res.data;
+  // Reintentos con backoff: al restaurar un dibujo se dispara el fetch junto
+  // a otras peticiones y un 429 momentáneo dejaba el área sin anuncios.
+  let ultimoError = null;
+  for (let intento = 0; intento < 3; intento++) {
+    const res = await apiBackend("/api/inmuebles-en-poligono", "POST", body);
+    if (res.success) return res.data;
+    ultimoError = res.error;
+    if (intento < 2) await new Promise((r) => setTimeout(r, 500 * (intento + 1)));
+  }
+  console.warn("[Zona] inmuebles-en-poligono falló tras 3 intentos:", ultimoError);
+  return { total: 0, propiedades: [] };
 }
 
 export async function fetchInmueblesEnBbox({ minLat, minLng, maxLat, maxLng, operation, tipoInmueble }) {

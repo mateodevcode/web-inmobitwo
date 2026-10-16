@@ -19,8 +19,10 @@ const MisAnuncios = () => {
     (pro) => pro.publicado_por_id === usuario?.id,
   );
 
+  // Carga inicial una sola vez (fn no memoizada: a deps = loop).
   useEffect(() => {
     cargarPropiedadesMisAnuncios();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

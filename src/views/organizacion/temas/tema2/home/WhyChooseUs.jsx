@@ -1,4 +1,5 @@
 import { House, Handshake, KeyRound, Star } from "lucide-react";
+import Image from "next/image";
 
 const SECTION_IMAGE =
   "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?fm=jpg&q=80&w=2400&auto=format&fit=crop";
@@ -88,10 +89,12 @@ export default function WhyChooseUs() {
 
             <div className="flex items-center -space-x-3">
               {AVATARS.map((src, i) => (
-                <img
+                <Image
                   key={i}
                   src={src}
                   alt=""
+                  width={36}
+                  height={36}
                   className="w-9 h-9 rounded-full border-2 border-white object-cover"
                 />
               ))}

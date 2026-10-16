@@ -23,10 +23,12 @@ const Acceso = () => {
 
   const { email } = usuario ?? {};
 
+  // Carga datos al tener usuario (fn no memoizada: a deps = loop).
   useEffect(() => {
     if (usuario?.id) {
       cargarUsuario(usuario.id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usuario?.id]); 
 
   return (

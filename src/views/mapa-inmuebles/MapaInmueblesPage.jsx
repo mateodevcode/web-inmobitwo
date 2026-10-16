@@ -1,4 +1,10 @@
 // views/mapa-inmuebles/MapaInmueblesPage.jsx
+// MAPA DE UBICACION CON CHINCHETAS: se entra desde el hero (flujo "ubicación").
+// Comportamiento esperado: busca los anuncios más cercanos a la ubicación del
+// cliente (geolocalización) o, en su defecto, a lo escrito en el input de
+// búsqueda. Al hacer clic en una chincheta se abre un modal con el anuncio
+// seleccionado. Cuando el usuario diga "mapa de ubicación con chinchetas",
+// se refiere a este componente.
 
 import MapaInmuebles from "./MapaInmuebles";
 import { useParams } from "next/navigation";
@@ -15,6 +21,11 @@ export default function MapaInmueblesPage() {
     zoom,
     cityAndDepartment,
   });
+
+  // La ruta /point/... viene del hero con las coords del usuario
+  // ("buscar alrededor de mí"): el centro YA es su ubicación, así que el
+  // punto azul se pinta solo al entrar, sin pulsar "Tu ubicación".
+  const esUbicacionPropia = lat != null && lng != null;
 
   return (
     <div className="flex flex-col w-screen h-screen font-poppins relative">
@@ -33,6 +44,7 @@ export default function MapaInmueblesPage() {
             operation={operation}
             tipoInmueble={tipoInmueble}
             boundary={boundary}
+            autoMarcarUbicacion={esUbicacionPropia}
           />
         )}
       </div>

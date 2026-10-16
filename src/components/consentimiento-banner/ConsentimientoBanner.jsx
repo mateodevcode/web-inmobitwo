@@ -11,8 +11,11 @@ const ConsentimientoBanner = () => {
     useAppContext();
   const [montado, setMontado] = useState(false);
 
+  // Guard de montaje anti-mismatch de hidratación (ver comentario arriba).
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- guard de montaje anti-hidratación */
     setMontado(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   if (!montado || consentimientoTracking !== null) return null;

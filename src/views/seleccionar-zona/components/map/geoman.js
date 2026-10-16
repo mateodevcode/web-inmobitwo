@@ -1,4 +1,5 @@
 import { Geoman } from "@geoman-io/maplibre-geoman-free";
+import * as maplibregl from "maplibre-gl";
 import { getRingClosePoint, placeCloseMarker, removeCloseMarker } from "./polygon";
 
 function stripElevation(ring) {
@@ -44,25 +45,43 @@ export async function setupGeoman(map, ctx) {
     const gm = new Geoman(map, {
       settings: { useControlsUi: false },
       layerStyles: {
+        // NOTA: mientras se dibuja, Geoman traza con el shape `line`
+        // (LineDrawer) y solo al cerrar convierte a `polygon`. Por eso el
+        // color tercero va en ambos; si no, la línea en curso sale naranja
+        // (default #ff5600) aunque el polígono terminado sí salga tercero.
+        line: {
+          gm_main: [
+            {
+              type: "line",
+              paint: { "line-color": "#FF1053", "line-width": 2 },
+            },
+          ],
+          gm_temporary: [
+            {
+              type: "line",
+              paint: { "line-color": "#FF1053", "line-width": 2 },
+            },
+          ],
+        },
         polygon: {
           gm_main: [
             {
               type: "fill",
-              paint: { "fill-color": "#e6007a", "fill-opacity": 0.15 },
+              paint: { "fill-color": "#FF1053", "fill-opacity": 0.15 },
             },
             {
               type: "line",
-              paint: { "line-color": "#e6007a", "line-width": 2 },
+              paint: { "line-color": "#FF1053", "line-width": 2 },
             },
           ],
           gm_temporary: [
             {
               type: "fill",
-              paint: { "fill-color": "#e6007a", "fill-opacity": 0.25 },
+              paint: { "fill-color": "#FF1053", "fill-opacity": 0.25 },
             },
             {
               type: "line",
-              paint: { "line-color": "#e6007a", "line-width": 2 },
+              paint: { "line-color": "#FF1053", "line-width": 2 },
             },
           ],
         },
@@ -134,5 +153,46 @@ export function handleStartDrawing(gmRef, setDrawArmed) {
     setDrawArmed(true);
   } catch (e) {
     console.error("[SelectZonaMap] enableDraw ERROR:", e);
+  }
+}
+
+// Restaura un polígono guardado (persistencia) como capa editable de Geoman.
+// ctx: { gmRef, drawLayerRef, closeMarkerRef, setDrawArmed, setHasDrawLayer, onPolygonChange, onDeletePolygon }
+export async function restaurarPoligono(map, ctx, geojson) {
+  const gm = ctx.gmRef.current;
+  if (!map || !gm || !geojson?.geometry) return false;
+  try {
+    const feature = await gm.features?.importGeoJsonFeature?.(geojson);
+    if (!feature) {
+      console.log("[Zona] restore: importGeoJsonFeature devolvió null");
+      return false;
+    }
+    if (ctx.drawLayerRef.current) {
+      try {
+        ctx.drawLayerRef.current.delete?.();
+      } catch {}
+    }
+    ctx.drawLayerRef.current = feature;
+    ctx.setDrawArmed(false);
+    ctx.setHasDrawLayer(true);
+    console.log("[Zona] restore: polígono importado, disparando onPolygonChange");
+    if (ctx.onPolygonChange) ctx.onPolygonChange(geojson);
+    const closeCoord = getRingClosePoint(geojson);
+    if (closeCoord && ctx.onDeletePolygon) {
+      placeCloseMarker(map, ctx.closeMarkerRef, closeCoord, ctx.onDeletePolygon);
+    }
+    try {
+      const bounds = new maplibregl.LngLatBounds();
+      const anillos =
+        geojson.geometry.type === "Polygon"
+          ? geojson.geometry.coordinates
+          : geojson.geometry.coordinates.flat(1);
+      anillos.flat().forEach((c) => bounds.extend([c[0], c[1]]));
+      map.fitBounds(bounds, { padding: 40 });
+    } catch {}
+    return true;
+  } catch (e) {
+    console.error("[SelectZonaMap] restaurarPoligono ERROR:", e);
+    return false;
   }
 }

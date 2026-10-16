@@ -31,13 +31,25 @@ const useTypingPlaceholder = (
           setIndiceTexto((prev) => prev - 1);
         }, velocidadBorrado);
       } else {
+        // Frase borrada del todo: pasar a la siguiente (transición de la
+        // máquina de estados del typing).
+        /* eslint-disable react-hooks/set-state-in-effect -- transición typing */
         setEsBorrando(false);
         setIndiceFrase((prev) => (prev + 1) % frases.length);
+        /* eslint-enable react-hooks/set-state-in-effect */
       }
     }
 
     return () => clearTimeout(timeout);
-  }, [indiceTexto, esBorrando, indiceFrase, frases]);
+  }, [
+    indiceTexto,
+    esBorrando,
+    indiceFrase,
+    frases,
+    tiempoEspera,
+    velocidadBorrado,
+    velocidadEscritura,
+  ]);
 
   return placeholderTexto;
 };

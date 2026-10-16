@@ -15,7 +15,9 @@ import { useEffect, useRef } from "react";
 export default function useScrollSentinel(onCambioVisibilidad) {
   const sentinelRef = useRef(null);
   const callbackRef = useRef(onCambioVisibilidad);
-  callbackRef.current = onCambioVisibilidad;
+  useEffect(() => {
+    callbackRef.current = onCambioVisibilidad;
+  });
 
   useEffect(() => {
     const el = sentinelRef.current;

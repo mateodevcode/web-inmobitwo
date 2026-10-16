@@ -17,22 +17,21 @@ const GaleriaInmuebles = ({ totalImagenes, fotos, inmueble }) => {
 
   return (
     <div className="relative w-full h-105 bg-gray-100 overflow-hidden">
-      {totalImagenes > 0 && (
-        <PropertyImage
-          foto={fotos[currentIndex]}
-          tamañoBase="large"
-          sizes="(max-width: 768px) 100vw, 800px"
-          alt={inmueble.titulo}
-          className="w-full h-full object-cover select-none cursor-pointer"
-          onClick={() =>
-            router.push(`/inmueble/${inmueble.id}/foto/${currentIndex + 1}`)
-          }
-          style={{
-            opacity: fade ? 1 : 0,
-            transition: "opacity 0.3s ease",
-          }}
-        />
-      )}
+      <PropertyImage
+        foto={totalImagenes > 0 ? fotos[currentIndex] : null}
+        tamañoBase="large"
+        sizes="(max-width: 768px) 100vw, 800px"
+        alt={inmueble.titulo}
+        className="w-full h-full object-cover select-none cursor-pointer"
+        onClick={() =>
+          totalImagenes > 0 &&
+          router.push(`/inmueble/${inmueble.id}/foto/${currentIndex + 1}`)
+        }
+        style={{
+          opacity: fade ? 1 : 0,
+          transition: "opacity 0.3s ease",
+        }}
+      />
 
       {totalImagenes > 1 && (
         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 items-center">

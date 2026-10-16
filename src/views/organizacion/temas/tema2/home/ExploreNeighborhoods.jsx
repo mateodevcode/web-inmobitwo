@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const CITIES = [
@@ -45,9 +46,11 @@ const TOTAL_PAGES = 12;
 function CityCard({ city, properties, image }) {
   return (
     <div className="relative shrink-0 w-[78%] sm:w-[46%] lg:w-[23%] h-[420px] rounded-2xl overflow-hidden snap-start">
-      <img
+      <Image
         src={image}
         alt={city}
+        fill
+        sizes="(max-width: 640px) 78vw, (max-width: 1024px) 46vw, 23vw"
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/10 to-transparent" />
