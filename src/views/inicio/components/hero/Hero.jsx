@@ -12,8 +12,9 @@ import SelectorTipo from "./type/SelectorTipo";
 import InputSearchPrincipal from "./search/InputSearchPrincipal";
 import { useResponsiveFrases } from "../../hooks/useResponsiveFrases";
 import { FRASES } from "@/data/inicio/frases.hero";
+import { usePortada } from "../../hooks/usePortada";
 import { buildGeoPath } from "../../lib/geoPath";
-import { URL_BACKEND, URL_CRM } from "@/config/config";
+import { URL_CRM } from "@/config/config";
 
 // Sin destacado del superadmin: fondo en blanco hasta que cargue la imagen.
 const Hero = ({
@@ -27,21 +28,7 @@ const Hero = ({
 }) => {
   const router = useRouter();
   const { esSuperAdmin, authListo } = useContext(AppContext) ?? {};
-  const [destacado, setDestacado] = useState(null);
-
-  // Anuncio destacado por el superadmin (GET /portada público).
-  useEffect(() => {
-    let vivo = true;
-    fetch(`${URL_BACKEND}/portada`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j) => {
-        if (vivo && j?.success && j.data) setDestacado(j.data);
-      })
-      .catch(() => {});
-    return () => {
-      vivo = false;
-    };
-  }, []);
+  const { destacado } = usePortada();
 
   const imagenFinal = image ?? destacado?.imagen ?? null;
   const etiquetaFinal = propertyLabel ?? destacado?.etiqueta ?? null;
