@@ -5,6 +5,7 @@ import { fetchInmueblesEnBbox } from "@/lib/geoApi";
 import { apiBackend } from "@/actions/apiBackend.js";
 import { useSelectZona } from "@/hooks/useSelectZona";
 import { createOsmMap } from "@/components/map/mapUtils";
+import { pintarMiUbicacion } from "@/components/map/MapControls";
 import { clearMarkers, renderMarkers } from "./markers";
 import { renderBoundary } from "./boundary";
 
@@ -18,7 +19,7 @@ function slugify(text) {
     .replace(/^-+|-+$/g, "");
 }
 
-export function useMapaInmuebles({ lat, lng, zoom, operation, tipoInmueble, boundary }) {
+export function useMapaInmuebles({ lat, lng, zoom, operation, tipoInmueble, boundary, autoMarcarUbicacion = false }) {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const clusterIndexRef = useRef(new Supercluster({ radius: 60, maxZoom: 16 }));
@@ -81,6 +82,12 @@ export function useMapaInmuebles({ lat, lng, zoom, operation, tipoInmueble, boun
       loadedRef.current = true;
       setMapReady(true);
       setMapInstance(map);
+
+      // Entrada desde el hero con coords propias: pintar el punto azul de
+      // una vez (el centro ya es la ubicación del usuario).
+      if (autoMarcarUbicacion && lat && lng) {
+        pintarMiUbicacion(map, [Number(lng), Number(lat)]);
+      }
 
       map.on("moveend", () => {
         clearTimeout(debounceRef.current);

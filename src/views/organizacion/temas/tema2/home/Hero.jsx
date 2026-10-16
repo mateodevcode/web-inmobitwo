@@ -1,4 +1,5 @@
 import { Play, Star, ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 const avatars = [
   "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&h=100&fit=crop&q=60",
@@ -41,10 +42,12 @@ export default function Hero() {
                 <div className="flex items-center gap-3">
                   <div className="flex items-center -space-x-3">
                     {avatars.map((src, i) => (
-                      <img
+                      <Image
                         key={i}
                         src={src}
                         alt="Cliente satisfecho"
+                        width={48}
+                        height={48}
                         className="w-12 h-12 rounded-full border-2 border-white/80 object-cover"
                       />
                     ))}

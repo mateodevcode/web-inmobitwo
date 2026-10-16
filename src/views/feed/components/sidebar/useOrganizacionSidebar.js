@@ -17,7 +17,7 @@ export const useOrganizacionSidebar = () => {
     return () => {
       vivo = false;
     };
-  }, [usuario]);
+  }, [usuario, cargadoPara, cargarMisOrganizaciones]);
 
   return { organizaciones, cargando: !!usuario && cargadoPara !== usuario.id };
 };

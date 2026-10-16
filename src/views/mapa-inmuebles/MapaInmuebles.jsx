@@ -9,6 +9,7 @@ export default function MapaInmuebles({
   operation,
   tipoInmueble,
   boundary,
+  autoMarcarUbicacion = false,
 }) {
   const {
     mapContainerRef,
@@ -18,7 +19,15 @@ export default function MapaInmuebles({
     selectedInmueble,
     setSelectedInmueble,
     flyToZone,
-  } = useMapaInmuebles({ lat, lng, zoom, operation, tipoInmueble, boundary });
+  } = useMapaInmuebles({
+    lat,
+    lng,
+    zoom,
+    operation,
+    tipoInmueble,
+    boundary,
+    autoMarcarUbicacion,
+  });
 
   return (
     <div className="relative w-full h-full">

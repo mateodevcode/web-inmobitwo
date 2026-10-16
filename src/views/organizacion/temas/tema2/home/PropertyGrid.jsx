@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import Image from "next/image";
 import { PiHeart, PiHeartFill, PiMapPinLine } from "react-icons/pi";
 import { FaBed, FaBath } from "react-icons/fa";
 import { BiArea } from "react-icons/bi";
@@ -132,9 +133,11 @@ const PropertyCard = ({ property }) => {
     <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
       {/* Imagen */}
       <div className="relative h-56">
-        <img
+        <Image
           src={property.image}
           alt={property.title}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="w-full h-full object-cover"
         />
 

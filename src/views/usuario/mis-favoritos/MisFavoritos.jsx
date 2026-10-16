@@ -20,9 +20,10 @@ const MisFavoritos = () => {
   const cargandoFavoritos = useFavoritosLoadingStore();
   const { cargarMisFavoritos } = useFavoritos();
 
-  // Cargar favoritos al montar la página
+  // Cargar favoritos al montar la página (fn no memoizada: a deps = loop).
   useEffect(() => {
     cargarMisFavoritos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

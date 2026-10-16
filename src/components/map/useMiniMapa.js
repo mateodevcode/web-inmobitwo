@@ -81,5 +81,5 @@ export function useMiniMapa(mapRef, locationInfo, polyKey) {
         instanceRef.current = null;
       }
     };
-  }, [locationInfo, polyKey]);
+  }, [mapRef, locationInfo, polyKey]);
 }

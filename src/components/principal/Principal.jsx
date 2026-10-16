@@ -67,12 +67,15 @@ const Principal = () => {
       );
     });
 
+  // Carga inicial una sola vez (las cargar* no están memoizadas: agregarlas
+  // a deps crearía loop de refetches).
   useEffect(() => {
     if (cargaInicialHecha.current) return; // 👈 nuevo
     cargaInicialHecha.current = true; // 👈 nuevo
     cargarPropiedades();
     cargarMisFavoritos();
     cargarDescartados();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 👇 Observer que detecta cuándo la última card entra en pantalla

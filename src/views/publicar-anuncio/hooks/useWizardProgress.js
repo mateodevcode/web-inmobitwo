@@ -75,6 +75,8 @@ export const useWizardProgress = () => {
     }
   };
 
+  // Restauración del wizard al montar/cambiar id (cargarPropiedad no está
+  // memoizada: agregarla a deps crearía loop de recargas).
   useEffect(() => {
     if (id) {
       // Hay id en la URL => flujo normal, traer datos y ubicarse según el paso
@@ -107,6 +109,7 @@ export const useWizardProgress = () => {
       }
       // contentNumber se queda en 0 (paso 1)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, progresoInicial]);
 
   // Autosave: mientras esté en pasos 1-2 (sin propiedad creada), guarda un

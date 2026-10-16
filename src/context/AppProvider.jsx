@@ -33,8 +33,13 @@ export const AppProvider = ({ children }) => {
   // ─────────────────────────────────────────────
   const [usuario, setUsuario] = useState(null);
   const [authListo, setAuthListo] = useState(false);
+  // Declarado arriba: el efecto de hidratación lo usa y no puede ir después.
+  const [consentimientoTracking, setConsentimientoTracking] = useState(null); // null = aún no ha decidido
 
+  // Hidratación post-montaje (localStorage → estado): sincronización con un
+  // sistema externo, el caso legítimo de setState en efecto.
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- hidratación localStorage */
     try {
       const guardado = leerLocal("usuario");
       if (guardado) setUsuario(JSON.parse(guardado));
@@ -48,6 +53,7 @@ export const AppProvider = ({ children }) => {
       /* se queda en null = aún no ha decidido */
     }
     setAuthListo(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   const [loadingAuth, setLoadingAuth] = useState(false);
@@ -158,7 +164,7 @@ export const AppProvider = ({ children }) => {
   // ─────────────────────────────────────────────
   // TRACKING / CONSENTIMIENTO (Habeas Data, Ley 1581 de 2012)
   // ─────────────────────────────────────────────
-  const [consentimientoTracking, setConsentimientoTracking] = useState(null); // null = aún no ha decidido
+  // (estado declarado arriba, junto a AUTH)
 
   const aceptarTracking = () => {
     localStorage.setItem("consentimiento_tracking", "true");

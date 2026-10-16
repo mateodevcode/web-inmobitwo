@@ -9,11 +9,13 @@ export const useLogsAutoRefresh = () => {
   const [autoRefresh, setAutoRefresh] = useState(true);
   const intervaloRef = useRef(null);
 
-  // Carga inicial
+  // Carga inicial (cargarLogsTracking no está memoizada: agregarla a deps
+  // crearía loop de refetches).
   useEffect(() => {
     if (cargaInicialHecha.current) return;
     cargaInicialHecha.current = true;
     cargarLogsTracking();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Auto-refresh cada 4 segundos, sin mostrar loading
@@ -24,6 +26,7 @@ export const useLogsAutoRefresh = () => {
       }, REFRESH_MS);
     }
     return () => clearInterval(intervaloRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoRefresh]);
 
   return { autoRefresh, setAutoRefresh };

@@ -1,4 +1,5 @@
 import { Briefcase, House, MessageSquareText, Smile, Play } from "lucide-react";
+import Image from "next/image";
 
 const HOUSE_IMAGE =
   "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?fm=jpg&q=80&w=1600&auto=format&fit=crop";
@@ -44,9 +45,11 @@ export default function MarketProperty() {
           className="relative h-105 md:h-140 overflow-hidden"
           style={{ borderRadius: "0 260px 260px 0" }}
         >
-          <img
+          <Image
             src={HOUSE_IMAGE}
             alt="Featured property"
+            fill
+            sizes="(max-width: 1024px) 100vw, 40vw"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/10" />
@@ -81,9 +84,11 @@ export default function MarketProperty() {
 
         {/* Right: agent portrait */}
         <div className="relative hidden lg:flex justify-center items-end h-140 pr-6">
-          <img
+          <Image
             src={AGENT_IMAGE}
             alt="Real estate agent"
+            width={600}
+            height={800}
             className="h-full w-auto object-cover object-top"
           />
         </div>

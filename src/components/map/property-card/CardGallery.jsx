@@ -40,6 +40,16 @@ export function CardGallery({
     if (inmueble?.id) irAInmueble(router, inmueble.id, navState, tab);
   };
 
+  // Igual que el listado (MediaToolbar): cada botón solo sale si el anuncio
+  // realmente tiene ese contenido. `video_3d` aún no existe en BD, así que el
+  // 3D queda oculto igual que en el listado hasta que el backend lo envíe.
+  const tieneFotos = totalImagenes > 0;
+  const tienePlanos = !!hasPlanos;
+  const tieneVideo = !!inmueble?.video_3d;
+  const tieneMapa =
+    (inmueble?.latitude ?? inmueble?.lat) != null &&
+    (inmueble?.longitude ?? inmueble?.lng) != null;
+
   return (
     <div className="relative w-full h-48 bg-gray-100 group">
       <PropertyImage
@@ -62,20 +72,26 @@ export function CardGallery({
       </button>
 
       <div className="absolute left-2 bottom-2 flex items-center justify-center gap-2">
-        <ShortcutButton title="Ver fotos" onClick={() => goTab("fotos")}>
-          <BsImage className="text-sm text-black" />
-        </ShortcutButton>
-        <ShortcutButton title="Visita 3D" onClick={() => goTab("3d")}>
-          <FiVideo className="text-sm text-black" />
-        </ShortcutButton>
-        {hasPlanos && (
+        {tieneFotos && (
+          <ShortcutButton title="Ver fotos" onClick={() => goTab("fotos")}>
+            <BsImage className="text-sm text-black" />
+          </ShortcutButton>
+        )}
+        {tieneVideo && (
+          <ShortcutButton title="Visita 3D" onClick={() => goTab("3d")}>
+            <FiVideo className="text-sm text-black" />
+          </ShortcutButton>
+        )}
+        {tienePlanos && (
           <ShortcutButton title="Ver planos" onClick={() => goTab("planos")}>
             <FaArchway className="text-sm text-black" />
           </ShortcutButton>
         )}
-        <ShortcutButton title="Ver en mapa" onClick={() => goTab("mapa")}>
-          <BsFillGeoAltFill className="text-sm text-black" />
-        </ShortcutButton>
+        {tieneMapa && (
+          <ShortcutButton title="Ver en mapa" onClick={() => goTab("mapa")}>
+            <BsFillGeoAltFill className="text-sm text-black" />
+          </ShortcutButton>
+        )}
       </div>
 
       {totalImagenes > 1 && (
@@ -101,11 +117,13 @@ export function CardGallery({
         </>
       )}
 
-      <div className="bg-black/70 absolute bottom-2 right-2 p-1 px-2 rounded-md">
-        <span className="text-white/90 font-semibold text-xs">
-          {currentIndex + 1}/{totalImagenes}
-        </span>
-      </div>
+      {totalImagenes > 0 && (
+        <div className="bg-black/70 absolute bottom-2 right-2 p-1 px-2 rounded-md">
+          <span className="text-white/90 font-semibold text-xs">
+            {currentIndex + 1}/{totalImagenes}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

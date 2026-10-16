@@ -22,7 +22,7 @@ import {
   clearPropMarkers,
   handleDeletePolygon,
 } from "./polygon";
-import { setupGeoman, handleStartDrawing } from "./geoman";
+import { setupGeoman, handleStartDrawing, restaurarPoligono } from "./geoman";
 import { setupInteractivity } from "./interactivity";
 
 export function useZonaMap({
@@ -33,6 +33,7 @@ export function useZonaMap({
   drawMode,
   onPolygonChange,
   polygonProperties,
+  initialPolygon = null,
 }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
@@ -56,6 +57,12 @@ export function useZonaMap({
   const gmRef = useRef(null);
   const propMarkersRef = useRef([]);
   const closeMarkerRef = useRef(null);
+  // Polígono inicial restaurado una sola vez (persistencia localStorage).
+  const restauradoRef = useRef(false);
+  const initialPolygonRef = useRef(initialPolygon);
+  useEffect(() => {
+    initialPolygonRef.current = initialPolygon;
+  }, [initialPolygon]);
 
   const [loading, setLoading] = useState(false);
   const [mapReady, setMapReady] = useState(false);
@@ -66,6 +73,9 @@ export function useZonaMap({
   // Espejo en estado del drawLayerRef imperativo (para render condicional).
   // Se sincroniza en cada punto que muta el ref (ver abajo).
   const [hasDrawLayer, setHasDrawLayer] = useState(false);
+  // Tick para re-pintar marcadores cuando el estilo termina de cargar
+  // después de que los datos ya llegaron (carrera restore vs style).
+  const [styleTick, setStyleTick] = useState(0);
 
   // Mirrors para los handlers imperativos del mapa (eventos maplibre/geoman
   // fuera del ciclo React). Se sincronizan tras cada render.
@@ -73,6 +83,18 @@ export function useZonaMap({
     selRef.current = selectedZone;
     drawModeRef.current = drawMode;
   });
+
+  // onPolygonChange cambia de identidad en cada render de la página (no es
+  // useCallback). Los setups imperativos (geoman, restauración) capturan la
+  // primera versión y el restore llamaría a un closure obsoleto: por eso los
+  // anuncios del polígono restaurado no se cargaban. Espejo estable:
+  const onPolygonChangeRef = useRef(onPolygonChange);
+  useEffect(() => {
+    onPolygonChangeRef.current = onPolygonChange;
+  });
+  const emitPolygonChange = (geojson) => {
+    onPolygonChangeRef.current?.(geojson);
+  };
 
   const doRefresh = (hov) => {
     // No repintar capas de selección en modo dibujo: cierra la carrera de
@@ -99,10 +121,19 @@ export function useZonaMap({
       closeMarkerRef,
       setDrawArmed,
       setHasDrawLayer,
-      onPolygonChange,
+      onPolygonChange: emitPolygonChange,
     });
 
   const doStartDrawing = () => handleStartDrawing(gmRef, setDrawArmed);
+
+  // Cancela el trazo en curso (línea a medio dibujar): desarma Geoman sin
+  // borrar nada (no hay polígono todavía) y vuelve al estado "Dibujar tu zona".
+  const doCancelDrawing = () => {
+    try {
+      gmRef.current?.disableDraw();
+    } catch {}
+    setDrawArmed(false);
+  };
 
   // ──── crear mapa ────
   useEffect(() => {
@@ -117,6 +148,9 @@ export function useZonaMap({
     map.on("load", () => {
       setMapReady(true);
       setMapInstance(map);
+      // Si los datos llegaron antes que el estilo, este tick hace que el
+      // efecto de marcadores se repita y los pinte.
+      setStyleTick((t) => t + 1);
       setupInteractivity(map, {
         selRef,
         drawModeRef,
@@ -264,19 +298,48 @@ export function useZonaMap({
           closeMarkerRef,
           setDrawArmed,
           setHasDrawLayer,
-          onPolygonChange,
+          onPolygonChange: emitPolygonChange,
           onDeletePolygon: doDeletePolygon,
         });
+      }
+
+      // Restaurar el dibujo guardado (una sola vez por montaje).
+      // Geoman tarda en estar listo (gm:loaded): se reintenta hasta 8s.
+      if (!restauradoRef.current && initialPolygonRef.current) {
+        restauradoRef.current = true;
+        const pendiente = initialPolygonRef.current;
+        initialPolygonRef.current = null;
+        let intentos = 0;
+        const intentar = () => {
+          if (!mapRef.current) return;
+          if (gmRef.current) {
+            restaurarPoligono(mapRef.current, {
+              gmRef,
+              drawLayerRef,
+              closeMarkerRef,
+              setDrawArmed,
+              setHasDrawLayer,
+              onPolygonChange: emitPolygonChange,
+              onDeletePolygon: doDeletePolygon,
+            }, pendiente);
+            return;
+          }
+          if (++intentos < 16) setTimeout(intentar, 500);
+        };
+        setTimeout(intentar, 500);
       }
 
       // zoom listener para cargar barrios dinámicamente
       const onZoom = () => {
         const z = map.getZoom();
         if (z >= 10.5) {
-          const center = map.getCenter();
-          const features = map.queryRenderedFeatures(undefined, {
-            layers: ["mpio-draw-line"],
-          });
+          // La capa puede no existir aún (estilo sin cargar del todo):
+          // sin guardia, queryRenderedFeatures lanza y rompe el handler.
+          const features = map.getLayer("mpio-draw-line")
+            ? map.queryRenderedFeatures(undefined, {
+                layers: ["mpio-draw-line"],
+              })
+            : [];
           if (features.length) {
             const f = features[0];
             const mpioCode = f.properties.MPIO_CCNCT;
@@ -328,35 +391,66 @@ export function useZonaMap({
     }
   }, [drawMode, mapReady]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ──── actualizar marcadores de propiedades en modo dibujo ────
+  // ──── reintentar marcadores cuando el estilo termine de cargar ────
+  // Si los datos llegaron antes que el estilo (restore), el efecto de
+  // marcadores sale temprano y nada lo repetía. Este efecto espera al
+  // primer `idle` (estilo + tiles asentados) y dispara la repetición.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapReady) return;
+    if (map.isStyleLoaded()) return;
+    let vivo = true;
+    const avisar = () => {
+      if (vivo) setStyleTick((t) => t + 1);
+    };
+    map.once("idle", avisar);
+    return () => {
+      vivo = false;
+      try {
+        map.off("idle", avisar);
+      } catch {}
+    };
+  }, [mapReady, styleTick, polygonProperties]);
+  // OJO: depende también de mapReady. Al restaurar un dibujo guardado, el
+  // fetch puede resolverse ANTES de que el estilo cargue: sin mapReady en
+  // deps, el efecto salía temprano por !isStyleLoaded() y no se repetía
+  // (las chinchetas nunca aparecían aunque el conteo sí llegaba).
   useEffect(() => {
     const map = mapRef.current;
     clearPropMarkers(propMarkersRef);
-    if (
-      !map ||
-      !map.isStyleLoaded() ||
-      !drawMode ||
-      !polygonProperties?.length
-    ) {
+    const listo =
+      map &&
+      mapReady &&
+      map.isStyleLoaded() &&
+      drawMode &&
+      (polygonProperties?.length ?? 0) > 0;
+    console.log(
+      `[Zona] pines: props=${polygonProperties?.length ?? 0} draw=${drawMode} ready=${mapReady} style=${map?.isStyleLoaded?.()} pinta=${!!listo}`,
+    );
+    if (!listo) {
       return;
     }
 
     polygonProperties.forEach((p) => {
-      if (p.longitude == null || p.latitude == null) return;
-      const isSelected = selectedInmueble?.id === p.id;
-      const el = createPricePin(p, isSelected);
-      el.addEventListener("click", (ev) => {
-        ev.stopPropagation();
-        setSelectedInmueble(p);
-      });
-      const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
-        .setLngLat([p.longitude, p.latitude])
-        .addTo(map);
-      propMarkersRef.current.push(marker);
+      try {
+        if (p.longitude == null || p.latitude == null) return;
+        const isSelected = selectedInmueble?.id === p.id;
+        const el = createPricePin(p, isSelected);
+        el.addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          setSelectedInmueble(p);
+        });
+        const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
+          .setLngLat([p.longitude, p.latitude])
+          .addTo(map);
+        propMarkersRef.current.push(marker);
+      } catch (e) {
+        console.warn("[Zona] pin ignorado (dato inválido):", p?.id, e?.message);
+      }
     });
 
     return () => clearPropMarkers(propMarkersRef);
-  }, [polygonProperties, drawMode, selectedInmueble]);
+  }, [polygonProperties, drawMode, selectedInmueble, mapReady, styleTick]);
 
   return {
     containerRef,
@@ -370,5 +464,6 @@ export function useZonaMap({
     doRefresh,
     doDeletePolygon,
     doStartDrawing,
+    doCancelDrawing,
   };
 }

@@ -20,7 +20,7 @@ const MiInmobiliariaPanel = () => {
 
   useEffect(() => {
     cargarMisOrganizaciones();
-  }, []);
+  }, [cargarMisOrganizaciones]);
 
   const [formData, setFormData] = useState({
     nombre: organizacion?.nombre || "",

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { ArrowLeft, ArrowRight, Star, Building2, Home } from "lucide-react";
 
 const TESTIMONIALS = [
@@ -100,9 +101,11 @@ function TestimonialCard({ item, active }) {
         </div>
 
         <div className="relative shrink-0">
-          <img
+          <Image
             src={item.avatar}
             alt={item.name}
+            width={56}
+            height={56}
             className={`w-14 h-14 rounded-full object-cover ${
               active ? "ring-4 ring-white shadow-lg shadow-black/20" : ""
             }`}

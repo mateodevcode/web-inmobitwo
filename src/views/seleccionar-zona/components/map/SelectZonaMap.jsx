@@ -4,6 +4,7 @@
 // layers.js, polygon.js, geoman.js e interactivity.js.
 import { PropertyCard } from "@/components/map/property-card/PropertyCard";
 import MapHintBanner from "./overlays/MapHintBanner";
+import { AvisoMapa } from "./overlays/AvisoMapa";
 import { LoadingBadge } from "./overlays/LoadingBadge";
 import { DrawToolbar } from "./overlays/DrawToolbar";
 import { DrawGuide } from "./overlays/DrawGuide";
@@ -23,6 +24,8 @@ export default function SelectZonaMap({
   polygonPropCount,
   polygonLoading,
   onVerInmuebles,
+  initialPolygon = null,
+  avisoSinResultados = null,
 }) {
   const {
     containerRef,
@@ -35,6 +38,7 @@ export default function SelectZonaMap({
     setSelectedInmueble,
     doDeletePolygon,
     doStartDrawing,
+    doCancelDrawing,
   } = useZonaMap({
     selectedZone,
     onSelectZone,
@@ -43,11 +47,13 @@ export default function SelectZonaMap({
     drawMode,
     onPolygonChange,
     polygonProperties,
+    initialPolygon,
   });
 
   return (
     <div className="relative w-full h-full">
       {loading && <LoadingBadge />}
+      <AvisoMapa mensaje={avisoSinResultados} />
 
       <div
         ref={containerRef}
@@ -67,6 +73,7 @@ export default function SelectZonaMap({
         drawArmed={drawArmed}
         hasPolygon={hasDrawLayer}
         onStartDrawing={doStartDrawing}
+        onCancelDrawing={doCancelDrawing}
       />
       <VerInmueblesBar
         drawMode={drawMode}

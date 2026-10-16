@@ -1,3 +1,4 @@
+import Image from "next/image";
 // src/pages/organizacion/temas/tema1/Home.jsx
 
 import usePropiedadesOrganizacionData from "@/hooks/usePropiedadesOrganizacionData.js";
@@ -26,10 +27,12 @@ const Home = () => {
       {organizacion && (
         <header className="flex items-center gap-4 mb-8 border-b pb-6">
           {organizacion.logo_url && (
-            <img
-              src={organizacion.logo_url}
+            <Image
+              unoptimized src={organizacion.logo_url}
               alt={organizacion.nombre}
-              className="w-16 h-16 rounded-full object-cover"
+              width={64}
+              height={64}
+              className=""
             />
           )}
           <div>
@@ -52,10 +55,12 @@ const Home = () => {
           {propiedades.map((p) => (
             <article key={p.id} className="border rounded-xl overflow-hidden">
               {p.imagen_principal_url && (
-                <img
-                  src={p.imagen_principal_url}
+                <Image
+                  unoptimized src={p.imagen_principal_url}
                   alt={p.titulo}
-                  className="w-full h-48 object-cover"
+                  width={800}
+                  height={600}
+                  className=""
                 />
               )}
               <div className="p-4">

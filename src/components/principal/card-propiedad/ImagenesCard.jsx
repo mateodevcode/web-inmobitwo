@@ -69,8 +69,11 @@ const ImagenesCard = ({ propiedades }) => {
     }, AUTOPLAY_SECONDS * 1000);
   }, [currentIndex, goTo, totalImagenes]);
 
+  // Armado/limpieza de timers del autoplay (suscripción con cleanup).
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- armado de timers autoplay */
     resetAutoPlay();
+    /* eslint-enable react-hooks/set-state-in-effect */
     return () => {
       clearTimeout(autoTimerRef.current);
       clearInterval(progressIntervalRef.current);
@@ -113,13 +116,15 @@ const ImagenesCard = ({ propiedades }) => {
       )}
 
       {/* Badge fotos */}
-      <div className="flex bg-black/50 absolute text-white text-xs px-2 py-1.5 rounded-md items-center gap-2 top-2 left-2">
-        <MdOutlinePhotoCamera />
-        <span>
-          {currentIndex + 1} / {totalImagenes}{" "}
-          {totalImagenes === 1 ? "foto" : "fotos"}
-        </span>
-      </div>
+      {totalImagenes > 0 && (
+        <div className="flex bg-black/50 absolute text-white text-xs px-2 py-1.5 rounded-md items-center gap-2 top-2 left-2">
+          <MdOutlinePhotoCamera />
+          <span>
+            {currentIndex + 1} / {totalImagenes}{" "}
+            {totalImagenes === 1 ? "foto" : "fotos"}
+          </span>
+        </div>
+      )}
 
       {/* icons */}
       <div className="flex bg-white absolute text-black text-xs px-4 py-1.5 rounded-full items-center gap-2 top-2 right-2 font-semibold">

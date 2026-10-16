@@ -1,4 +1,5 @@
 import { Star, X } from "lucide-react";
+import Image from "next/image";
 
 const GaleriaPreviewGrid = ({ previews, onDelete, onMakePrincipal }) => {
   if (previews.length === 0) return null;
@@ -10,9 +11,12 @@ const GaleriaPreviewGrid = ({ previews, onDelete, onMakePrincipal }) => {
           key={index}
           className="relative group rounded-md overflow-hidden border border-slate-200 hover:border-tercero transition-colors"
         >
-          <img
+          <Image
             src={preview.url}
             alt={`Vista previa ${index + 1}`}
+            width={800}
+            height={600}
+            unoptimized
             className="w-full h-32 object-cover"
           />
           <div className="absolute inset-0 flex items-start justify-between p-1.5 opacity-0 group-hover:opacity-100 transition-opacity bg-black/10">

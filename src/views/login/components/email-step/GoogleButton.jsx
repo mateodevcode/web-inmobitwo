@@ -9,6 +9,9 @@ export function GoogleButton({ next }) {
 
   const irAGoogle = () => {
     const qs = next ? `?next=${encodeURIComponent(next)}` : "";
+    // OAuth contra el backend (URL externa): requiere carga completa de
+    // página, router.push no sirve aquí.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- OAuth externo
     window.location.href = `${URL_BACKEND}/auth/oauth/google${qs}`;
   };
 

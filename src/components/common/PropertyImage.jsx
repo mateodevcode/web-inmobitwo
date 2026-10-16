@@ -6,10 +6,16 @@ import { elegirTamano, construirSrcSet } from "../../utils/galeriaUtils";
  * correcto según el contexto y usando srcSet para que el navegador elija
  * automáticamente la mejor versión según pantalla/densidad de píxeles.
  *
+ * Sin foto (anuncio sin imágenes): muestra el placeholder
+ * `/propiedades/imagen_no_disponible.png` en vez de null, para no dejar
+ * huecos vacíos/grises en listados, mapa, ficha y visores.
+ *
  * @param {Object} foto - foto agrupada (de agruparPorOrden)
  * @param {'thumbnail'|'small'|'medium'|'large'|'xlarge'} tamañoBase - tamaño por defecto (fallback de src)
  * @param {string} sizes - atributo `sizes` de HTML (ver ejemplos de uso abajo)
  */
+const PLACEHOLDER = "/propiedades/imagen_no_disponible.png";
+
 export default function PropertyImage({
   foto,
   tamañoBase = "medium",
@@ -18,12 +24,23 @@ export default function PropertyImage({
   className,
   ...props
 }) {
-  if (!foto) return null;
+  const src = foto ? elegirTamano(foto, tamañoBase) : null;
 
-  const src = elegirTamano(foto, tamañoBase);
+  if (!src) {
+    return (
+      <Image
+        width={1000}
+        height={1000}
+        src={PLACEHOLDER}
+        alt="Imagen no disponible"
+        className={className}
+        loading="lazy"
+        {...props}
+      />
+    );
+  }
+
   const srcSet = construirSrcSet(foto);
-
-  if (!src) return null;
 
   return (
     <Image

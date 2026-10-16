@@ -1,4 +1,5 @@
 import { TiHeartFullOutline } from "react-icons/ti";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { irArriba } from "@/utils/irArriba";
 
@@ -34,9 +35,11 @@ export function FavoritoPhoto({ propiedad }) {
         <TiHeartFullOutline />
         Favorito
       </div>
-      <img
+      <Image
         src={propiedad.imagen_principal_url}
         alt={propiedad.titulo}
+        width={800}
+        height={600}
         className="object-cover object-center w-full h-full"
       />
     </div>

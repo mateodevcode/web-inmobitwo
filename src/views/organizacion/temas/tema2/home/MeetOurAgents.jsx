@@ -1,4 +1,6 @@
 import { Search } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa6";
 
@@ -45,9 +47,11 @@ function AgentCard({ name, role, image }) {
           backgroundImage: `url("${HEX_PATTERN_URL}")`,
         }}
       >
-        <img
+        <Image
           src={image}
           alt={name}
+          width={600}
+          height={800}
           className="h-full w-auto object-cover object-top"
         />
       </div>
@@ -57,14 +61,14 @@ function AgentCard({ name, role, image }) {
 
       <div className="flex items-center gap-2.5">
         {SOCIALS.map((Icon, i) => (
-          <a
+          <Link
             key={i}
             href="/"
             aria-label={Icon.displayName || "social link"}
             className="w-8 h-8 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-700 hover:bg-[#FF1B1C] hover:border-[#FF1B1C] hover:text-white transition-colors duration-200"
           >
             <Icon size={14} />
-          </a>
+          </Link>
         ))}
       </div>
     </div>
@@ -98,9 +102,9 @@ export default function MeetOurAgents() {
           Explore Property agents are here to help with all your buying, renting
           and selling goals. Find the home of your dreams with an expert you can
           trust.{" "}
-          <a href="/" className="text-[#FF1B1C] font-medium hover:underline">
+          <Link href="/" className="text-[#FF1B1C] font-medium hover:underline">
             Let&rsquo;s chat
-          </a>
+          </Link>
         </p>
 
         <button
