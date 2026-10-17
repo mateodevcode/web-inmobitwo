@@ -10,8 +10,8 @@
     "semantic_hash": ""
   },
   "next.config.mjs": {
-    "mtime": 1790929880.6821969,
-    "ast_hash": "4367ead9e9b2ea2c6655f78bc8dfb617",
+    "mtime": 1792184858.4038985,
+    "ast_hash": "419c61bd0119320916de4c85e13d0505",
     "semantic_hash": ""
   },
   "package.json": {
@@ -54,16 +54,6 @@
     "ast_hash": "27241ba8c0da83af98bb0ec6a8e407b5",
     "semantic_hash": ""
   },
-  "src/app/admin/organizaciones/page.js": {
-    "mtime": 1790853397.2625024,
-    "ast_hash": "126db45c47452b47f5e68d1e83d5ae81",
-    "semantic_hash": ""
-  },
-  "src/app/admin/rutas/page.js": {
-    "mtime": 1790853397.31316,
-    "ast_hash": "c2f5cbf7410145f76de2981e2b03059b",
-    "semantic_hash": ""
-  },
   "src/app/busqueda-multizona/[operationAndType]/page.js": {
     "mtime": 1790695574.7671344,
     "ast_hash": "dd75301eab6ab1db677c42f486bd3ba5",
@@ -100,8 +90,8 @@
     "semantic_hash": ""
   },
   "src/app/inmobiliarias/[slug]/layout.js": {
-    "mtime": 1790695270.846112,
-    "ast_hash": "4f0f2e05722e8907dfcb21ddd55e5b68",
+    "mtime": 1791718978.0600233,
+    "ast_hash": "291911c0a9925f206f7a10458421728c",
     "semantic_hash": ""
   },
   "src/app/inmobiliarias/[slug]/page.js": {
@@ -125,13 +115,13 @@
     "semantic_hash": ""
   },
   "src/app/inmueble/[id]/page.js": {
-    "mtime": 1790695574.7660317,
-    "ast_hash": "eb8f779e4817b053260358cf9826ff4e",
+    "mtime": 1792183357.0262272,
+    "ast_hash": "3870c1251a0d2040a16f903473dedaf0",
     "semantic_hash": ""
   },
   "src/app/layout.js": {
-    "mtime": 1790700337.9572985,
-    "ast_hash": "8c9fdf696ae662be1741f870f77036f1",
+    "mtime": 1792056830.9161775,
+    "ast_hash": "abb69dc97a233a2e461819eccb2c617a",
     "semantic_hash": ""
   },
   "src/app/leads/page.js": {
@@ -180,8 +170,8 @@
     "semantic_hash": ""
   },
   "src/app/page.js": {
-    "mtime": 1790695944.516667,
-    "ast_hash": "06eb7a9e169ae1c6754364f87171fb94",
+    "mtime": 1792217480.8831387,
+    "ast_hash": "374e3d326a44a7d3801cf881fb525ec2",
     "semantic_hash": ""
   },
   "src/app/point/[operationAndType]/[lat]/[lng]/[zoom]/[mapa]/page.js": {
@@ -195,8 +185,8 @@
     "semantic_hash": ""
   },
   "src/app/providers.jsx": {
-    "mtime": 1790700662.770375,
-    "ast_hash": "c66a27292ce15f14d88da215c5b8c269",
+    "mtime": 1791795493.5122323,
+    "ast_hash": "b8716c1945c40aa1acd3f4564e557540",
     "semantic_hash": ""
   },
   "src/app/registro/page.js": {
@@ -210,8 +200,8 @@
     "semantic_hash": ""
   },
   "src/app/robots.js": {
-    "mtime": 1790670356.2629356,
-    "ast_hash": "400b01bd45a1b3f1e614d2aa0ae85c72",
+    "mtime": 1791970863.5728004,
+    "ast_hash": "fe7251d1dc84f2843b022623af88e364",
     "semantic_hash": ""
   },
   "src/app/sitemap.js": {
@@ -260,13 +250,13 @@
     "semantic_hash": ""
   },
   "src/components/common/PropertyImage.jsx": {
-    "mtime": 1790693890.3918493,
-    "ast_hash": "eff1f13abee3b409dc557328a0d6bb0f",
+    "mtime": 1792182987.9862716,
+    "ast_hash": "3340bf434ab6f962621028fc23172eb8",
     "semantic_hash": ""
   },
   "src/components/consentimiento-banner/ConsentimientoBanner.jsx": {
-    "mtime": 1790697075.5283768,
-    "ast_hash": "a13b2da7cfa6852b4969d5c0786bc03c",
+    "mtime": 1792184041.5028648,
+    "ast_hash": "e238747f7476621a78b2d66e645f9150",
     "semantic_hash": ""
   },
   "src/components/en-construccion/EnConstruccion.jsx": {
@@ -295,8 +285,8 @@
     "semantic_hash": ""
   },
   "src/components/footer/SiteFooter.jsx": {
-    "mtime": 1790872750.181218,
-    "ast_hash": "1b163b2fabe9f61fb82c962b2fd60b7c",
+    "mtime": 1791916828.486595,
+    "ast_hash": "cc8c079649ec993c8f3fad0d4001e6b7",
     "semantic_hash": ""
   },
   "src/components/footer/SocialLinks.jsx": {
@@ -305,13 +295,13 @@
     "semantic_hash": ""
   },
   "src/components/guards/Guards.jsx": {
-    "mtime": 1790884149.6856914,
-    "ast_hash": "6ebdba094e1378f5d24b487e7e61984d",
+    "mtime": 1792055892.9349227,
+    "ast_hash": "a41e203d6e0d3a70401e25e2c44a2e69",
     "semantic_hash": ""
   },
   "src/components/hamburger/ConLogin.jsx": {
-    "mtime": 1790842229.0328627,
-    "ast_hash": "803c3c69dbc0af5424903d015d5257b6",
+    "mtime": 1791935596.27933,
+    "ast_hash": "756191d9aee4239677ae15346c2f0753",
     "semantic_hash": ""
   },
   "src/components/hamburger/DescargarApp.jsx": {
@@ -390,8 +380,8 @@
     "semantic_hash": ""
   },
   "src/components/header-inmobitwo/UserNavLinks.jsx": {
-    "mtime": 1790840065.738948,
-    "ast_hash": "eb64d777f06c0828f9515a1e2c24637d",
+    "mtime": 1791795964.6821697,
+    "ast_hash": "6c32b266ac44a0aaff2fd6e06393463b",
     "semantic_hash": ""
   },
   "src/components/loader/LoaderGlobal.jsx": {
@@ -405,7 +395,7 @@
     "semantic_hash": ""
   },
   "src/components/logo/Logo.jsx": {
-    "mtime": 1790692385.2498362,
+    "mtime": 1792217472.6158416,
     "ast_hash": "f3f619181d40d8f6a635b8899cd7527a",
     "semantic_hash": ""
   },
@@ -415,8 +405,8 @@
     "semantic_hash": ""
   },
   "src/components/map/MapControls.jsx": {
-    "mtime": 1790876660.8004854,
-    "ast_hash": "1e8ac3a30bcab485657743c739cfb847",
+    "mtime": 1792155469.409656,
+    "ast_hash": "c7b67b035e7c7952fd26f34ce5993490",
     "semantic_hash": ""
   },
   "src/components/map/MiniMapaUbicacion.jsx": {
@@ -445,13 +435,13 @@
     "semantic_hash": ""
   },
   "src/components/map/property-card/CardBody.jsx": {
-    "mtime": 1790860468.3815105,
-    "ast_hash": "0f4d561e361274efc4526a15581b767d",
+    "mtime": 1791917129.815461,
+    "ast_hash": "97fb2ff4b410cb1c5252f561ffa24635",
     "semantic_hash": ""
   },
   "src/components/map/property-card/CardGallery.jsx": {
-    "mtime": 1790860417.8623748,
-    "ast_hash": "738df8464fc9e5ccd3a7a07079c43356",
+    "mtime": 1792182997.3308322,
+    "ast_hash": "4b1fa1c02290cfae9e5109feef10f1af",
     "semantic_hash": ""
   },
   "src/components/map/property-card/PropertyCard.jsx": {
@@ -465,13 +455,13 @@
     "semantic_hash": ""
   },
   "src/components/map/property-card/useGallery.js": {
-    "mtime": 1790860401.035519,
-    "ast_hash": "fc79c61479c82a3985ce02e3e28f3d24",
+    "mtime": 1792151258.9206505,
+    "ast_hash": "43e86df91163fff8e700d5fc29aefb50",
     "semantic_hash": ""
   },
   "src/components/map/useMiniMapa.js": {
-    "mtime": 1790857134.2473147,
-    "ast_hash": "cef29f1257d3553f57336991ca12d2b6",
+    "mtime": 1792184420.982486,
+    "ast_hash": "c45cc0c8d3513854fb8a3527d924068c",
     "semantic_hash": ""
   },
   "src/components/map/useZonaSuggest.js": {
@@ -515,13 +505,13 @@
     "semantic_hash": ""
   },
   "src/components/modales/modal-hamburguesa/ConLogin.jsx": {
-    "mtime": 1790711911.981989,
-    "ast_hash": "bcfba865d1d75d11da9e59ddb49baf46",
+    "mtime": 1791935496.9526367,
+    "ast_hash": "b9297ef94c87a48cdebf6114b38a7e7a",
     "semantic_hash": ""
   },
   "src/components/modales/modal-hamburguesa/DescargarApp.jsx": {
-    "mtime": 1790711651.5257943,
-    "ast_hash": "7143d4cdb3a8f2198c1e786d36d33905",
+    "mtime": 1791935710.2957487,
+    "ast_hash": "dc9e50cf96d3cfd5b02731f32f747c4b",
     "semantic_hash": ""
   },
   "src/components/modales/modal-hamburguesa/EnlacesHamburguesa.jsx": {
@@ -540,18 +530,18 @@
     "semantic_hash": ""
   },
   "src/components/principal/Principal.jsx": {
-    "mtime": 1790693893.0262296,
-    "ast_hash": "04054591238625d67d009439015e4196",
+    "mtime": 1792184391.691416,
+    "ast_hash": "ca6899f3407019e9446399114f42f1ac",
     "semantic_hash": ""
   },
   "src/components/principal/card-propiedad/CardPropiedad.jsx": {
-    "mtime": 1790694061.4379435,
-    "ast_hash": "0e75649347e9da77b55fdf8cc2453361",
+    "mtime": 1791935733.927389,
+    "ast_hash": "472ceb0da08b5f5b7f7a6902ae823ec8",
     "semantic_hash": ""
   },
   "src/components/principal/card-propiedad/ImagenesCard.jsx": {
-    "mtime": 1790694061.4379435,
-    "ast_hash": "ba8171c33a064b31217506e95534ece5",
+    "mtime": 1792184122.2271137,
+    "ast_hash": "d9e220e9d0643f9c4ae31719a5b4005c",
     "semantic_hash": ""
   },
   "src/components/principal/card-propiedad/MenuOpciones.jsx": {
@@ -580,8 +570,8 @@
     "semantic_hash": ""
   },
   "src/components/propiedades/agregar-propiedad/FormAgregarPropiedad.jsx": {
-    "mtime": 1790693893.1999514,
-    "ast_hash": "bfa8dee828e0d1d3fa4f0d6f1d986a42",
+    "mtime": 1791935788.992673,
+    "ast_hash": "9acb7b54974f43ac1cbc7a1372329619",
     "semantic_hash": ""
   },
   "src/components/propiedades/propiedadId/HeaderPropiedadId.jsx": {
@@ -590,18 +580,18 @@
     "semantic_hash": ""
   },
   "src/components/propiedades/propiedadId/PropiedadId.jsx": {
-    "mtime": 1790694061.44995,
-    "ast_hash": "34e5f685f9717284ddc5445502c8bed4",
+    "mtime": 1792183957.9946802,
+    "ast_hash": "bcf4462209766c29013baea067145650",
     "semantic_hash": ""
   },
   "src/components/usuario/BotonUsuario.jsx": {
-    "mtime": 1790872940.7664018,
-    "ast_hash": "9f68c1430eb70967337fa5bf41c19c96",
+    "mtime": 1791795748.8898733,
+    "ast_hash": "e1c8c8dbb5ed0fad05ebdf33f9e99b50",
     "semantic_hash": ""
   },
   "src/config/config.js": {
-    "mtime": 1790693259.7803638,
-    "ast_hash": "d370a35885a53b07b473e5bbbc9ce022",
+    "mtime": 1791966250.5278647,
+    "ast_hash": "3eb69122a509b9672e5dcdf0158078f1",
     "semantic_hash": ""
   },
   "src/config/tenantConfig.js": {
@@ -615,8 +605,8 @@
     "semantic_hash": ""
   },
   "src/context/AppProvider.jsx": {
-    "mtime": 1790928223.4814982,
-    "ast_hash": "7f1da8f2b0654e2791763fc8d6adfd2a",
+    "mtime": 1792183683.962729,
+    "ast_hash": "1f275bd7ee61f1662c8b94872f74d5cf",
     "semantic_hash": ""
   },
   "src/context/TenantContext.js": {
@@ -645,8 +635,8 @@
     "semantic_hash": ""
   },
   "src/data/contact_options.js": {
-    "mtime": 1790929975.722154,
-    "ast_hash": "5d047a5bab1abd4b4137e9e46bb73526",
+    "mtime": 1791877763.2401614,
+    "ast_hash": "67dbccc3866b49a9ea01b72161ee5ace",
     "semantic_hash": ""
   },
   "src/data/data.styles.scrollbar.js": {
@@ -685,8 +675,8 @@
     "semantic_hash": ""
   },
   "src/data/info-publicar.js": {
-    "mtime": 1782160067.5457559,
-    "ast_hash": "310230095146a8ce08c2bb8146b34779",
+    "mtime": 1791916723.5580277,
+    "ast_hash": "5fb85358a53ee68c700d775beba79b7f",
     "semantic_hash": ""
   },
   "src/data/inicio/frases.hero.js": {
@@ -705,13 +695,13 @@
     "semantic_hash": ""
   },
   "src/data/items_menu.jsx": {
-    "mtime": 1784557504.6662147,
-    "ast_hash": "0bf5687c6917ce8c516a7f1f540736e1",
+    "mtime": 1792048934.574043,
+    "ast_hash": "a2716591ea165a54d13ed64ea39bf3d0",
     "semantic_hash": ""
   },
   "src/data/items_sidebar.jsx": {
-    "mtime": 1790850998.3218753,
-    "ast_hash": "43423f4a20bf0245e8270d84664977ff",
+    "mtime": 1791970851.2908366,
+    "ast_hash": "7c01285dd7a0fa93f7527e88ba82780e",
     "semantic_hash": ""
   },
   "src/data/links_inicio.js": {
@@ -729,14 +719,9 @@
     "ast_hash": "792bafba6819b71939cac224f722c5aa",
     "semantic_hash": ""
   },
-  "src/data/mapaRutas.js": {
-    "mtime": 1790890140.2436411,
-    "ast_hash": "d64e805e0b079bf35ae60f6d20769b57",
-    "semantic_hash": ""
-  },
   "src/data/mappings_busqueda.js": {
-    "mtime": 1786215077.7710876,
-    "ast_hash": "1c654bab11b424ada222bbe75b0acc97",
+    "mtime": 1791917153.1564796,
+    "ast_hash": "4fcc293e3467d5ded139e28bc889329b",
     "semantic_hash": ""
   },
   "src/data/menus.js": {
@@ -755,8 +740,8 @@
     "semantic_hash": ""
   },
   "src/data/operation_options.js": {
-    "mtime": 1786103856.841888,
-    "ast_hash": "5153d73df628f1b9fdc2efe3b3f1df91",
+    "mtime": 1791917153.1564796,
+    "ast_hash": "b1c85cb59f6944f133cb5832b07b51df",
     "semantic_hash": ""
   },
   "src/data/parqueadero.js": {
@@ -795,8 +780,8 @@
     "semantic_hash": ""
   },
   "src/data/tabs_busqueda.js": {
-    "mtime": 1786215070.6956806,
-    "ast_hash": "d6e2b84580ad0e88ed0a3b990c686b15",
+    "mtime": 1791917224.4977448,
+    "ast_hash": "97313d50a0ec25c921e2af7d757bdf26",
     "semantic_hash": ""
   },
   "src/data/tipos_vivienda.js": {
@@ -825,8 +810,8 @@
     "semantic_hash": ""
   },
   "src/hooks/useAbrirFotoVisorDesdeState.js": {
-    "mtime": 1790694648.3722785,
-    "ast_hash": "3e48db70d1867261bf45f4bbc72460e8",
+    "mtime": 1792156738.710442,
+    "ast_hash": "1c56cb4a975286a81b875279f0f0d26f",
     "semantic_hash": ""
   },
   "src/hooks/useAsyncState.js": {
@@ -840,13 +825,13 @@
     "semantic_hash": ""
   },
   "src/hooks/useCarruselFotos.js": {
-    "mtime": 1785793485.494196,
-    "ast_hash": "ce38042b5506b6fa4a940f0787010e0e",
+    "mtime": 1792184195.1782415,
+    "ast_hash": "7536a4333157b2b09281817e90091b81",
     "semantic_hash": ""
   },
   "src/hooks/useDatosBasicos.js": {
-    "mtime": 1790695271.472415,
-    "ast_hash": "fb3301992128eac29a263f4a283cc090",
+    "mtime": 1791875144.9967139,
+    "ast_hash": "c61f18e7666b237e2d78e008c3c48100",
     "semantic_hash": ""
   },
   "src/hooks/useDetallePropiedad.js": {
@@ -870,8 +855,8 @@
     "semantic_hash": ""
   },
   "src/hooks/useGeo.js": {
-    "mtime": 1786798929.1276662,
-    "ast_hash": "ec4350146d1c94a22990f37870a1fdd4",
+    "mtime": 1792184211.2814088,
+    "ast_hash": "a77be962f9e00c17aea8d107e620d61f",
     "semantic_hash": ""
   },
   "src/hooks/useLeads.js": {
@@ -900,8 +885,8 @@
     "semantic_hash": ""
   },
   "src/hooks/useOrganizaciones.js": {
-    "mtime": 1790694061.4847612,
-    "ast_hash": "3c91442231238c516d255701aa60a2b3",
+    "mtime": 1792184437.536486,
+    "ast_hash": "132717b542a4c42409a2f37bce07462a",
     "semantic_hash": ""
   },
   "src/hooks/usePreloadData.js": {
@@ -925,8 +910,8 @@
     "semantic_hash": ""
   },
   "src/hooks/usePropiedadesOrganizacionData.js": {
-    "mtime": 1784028456.4224994,
-    "ast_hash": "e1ef513e4745965b1b854f1ba6fbdc88",
+    "mtime": 1792184229.2603545,
+    "ast_hash": "65e7eb78fb1152b16e5ad00cc2251fc6",
     "semantic_hash": ""
   },
   "src/hooks/useResetForm.js": {
@@ -935,8 +920,8 @@
     "semantic_hash": ""
   },
   "src/hooks/useScrollSentinel.js": {
-    "mtime": 1785793558.417895,
-    "ast_hash": "2cec8df39225f5f4242a8ee8ed216b45",
+    "mtime": 1792184298.2856128,
+    "ast_hash": "16406a53a61aeb92c9b6094bf79f6304",
     "semantic_hash": ""
   },
   "src/hooks/useSelectZona.js": {
@@ -950,8 +935,8 @@
     "semantic_hash": ""
   },
   "src/hooks/useTiempoRelativo.js": {
-    "mtime": 1781735441.8231735,
-    "ast_hash": "fb4515f1fa05456ec75622fce9fdec0c",
+    "mtime": 1792184245.5282116,
+    "ast_hash": "98f6e5ec9cec1c22be21d50af8c5685c",
     "semantic_hash": ""
   },
   "src/hooks/useTracking.js": {
@@ -960,8 +945,8 @@
     "semantic_hash": ""
   },
   "src/hooks/useTypingPlaceholder.js": {
-    "mtime": 1780224908.3726277,
-    "ast_hash": "1749daecf501a475bd5d1c7ec8cc4134",
+    "mtime": 1792184264.916967,
+    "ast_hash": "4df448164080075050a4ee9beafc85e7",
     "semantic_hash": ""
   },
   "src/hooks/useUsuarios.js": {
@@ -980,8 +965,8 @@
     "semantic_hash": ""
   },
   "src/lib/geoApi.js": {
-    "mtime": 1790860327.3074093,
-    "ast_hash": "3ee25fe5df8554994607d88ab03bbdc5",
+    "mtime": 1792223949.775867,
+    "ast_hash": "617ede96a4767893cbd5e9a436e26150",
     "semantic_hash": ""
   },
   "src/lib/geoUtils.js": {
@@ -1065,53 +1050,8 @@
     "semantic_hash": ""
   },
   "src/utils/validatePhone.js": {
-    "mtime": 1786127881.1890664,
-    "ast_hash": "21da9311270c819968d289955a7b334d",
-    "semantic_hash": ""
-  },
-  "src/views/admin/organizaciones/AdminOrganizacionesPage.jsx": {
-    "mtime": 1790853665.173881,
-    "ast_hash": "0e4f7a47193cec55ede9965eef1f7888",
-    "semantic_hash": ""
-  },
-  "src/views/admin/organizaciones/components/EstadoFilter.jsx": {
-    "mtime": 1790853514.1516964,
-    "ast_hash": "56f77e518daf1f39e05510fb4b5f1035",
-    "semantic_hash": ""
-  },
-  "src/views/admin/organizaciones/components/OrgActions.jsx": {
-    "mtime": 1790853569.307886,
-    "ast_hash": "0ab8e113d45d69ea714c7b8e5ec9723e",
-    "semantic_hash": ""
-  },
-  "src/views/admin/organizaciones/components/OrgList.jsx": {
-    "mtime": 1790853648.7212362,
-    "ast_hash": "6294fdb0fc74f9d36c9e917ad2c11009",
-    "semantic_hash": ""
-  },
-  "src/views/admin/organizaciones/hooks/useOrganizacionesAdmin.js": {
-    "mtime": 1790853945.397775,
-    "ast_hash": "a40ebd7fbe0378acf2b395080b30efdc",
-    "semantic_hash": ""
-  },
-  "src/views/admin/rutas/AdminRutasPage.jsx": {
-    "mtime": 1790853793.0009518,
-    "ast_hash": "72eebe6c1bbe65664e55e202ecd7cf6c",
-    "semantic_hash": ""
-  },
-  "src/views/admin/rutas/components/BackendRoutes.jsx": {
-    "mtime": 1790853764.0173707,
-    "ast_hash": "448fda912a37e4956feb4d682ac70c4d",
-    "semantic_hash": ""
-  },
-  "src/views/admin/rutas/components/FrontendRoutes.jsx": {
-    "mtime": 1790853718.5141673,
-    "ast_hash": "7821d889fc2f936bb3cea7afa21dc82f",
-    "semantic_hash": ""
-  },
-  "src/views/admin/rutas/components/RouteGroup.jsx": {
-    "mtime": 1790853692.540139,
-    "ast_hash": "0d2a2b1ae63ba21f8e5eae7f4eaf21ad",
+    "mtime": 1791916848.346475,
+    "ast_hash": "e5b03985e02d3b4f7a3c6e3b89a28631",
     "semantic_hash": ""
   },
   "src/views/anuncio/PageAnuncio.jsx": {
@@ -1120,33 +1060,33 @@
     "semantic_hash": ""
   },
   "src/views/anuncio/UbicacionMapa.jsx": {
-    "mtime": 1790970140.78326,
-    "ast_hash": "41201fc415ff471fd821f04d6af3bbe2",
+    "mtime": 1791966805.630962,
+    "ast_hash": "a1b73a7661abd11921fbc212385a7dac",
     "semantic_hash": ""
   },
   "src/views/anuncio/anuncio-id/BarraNavegacion.jsx": {
-    "mtime": 1790695310.904639,
-    "ast_hash": "88969ea530381478412aa31c89ec20f8",
+    "mtime": 1791705143.3987505,
+    "ast_hash": "b0680af49d01835866e93a5bc54b1bf6",
     "semantic_hash": ""
   },
   "src/views/anuncio/anuncio-id/BotonDescartar.jsx": {
-    "mtime": 1790695310.919355,
-    "ast_hash": "b6d7a6bc0fe5a434dc3b7d675b4e5c90",
+    "mtime": 1791712083.4347887,
+    "ast_hash": "bc616588223cbe8dc0a4eb625d41385e",
     "semantic_hash": ""
   },
   "src/views/anuncio/anuncio-id/BotonFavorito.jsx": {
-    "mtime": 1790695310.9069438,
-    "ast_hash": "c460d6193f3cd4ec7e12b40e1bf856a4",
+    "mtime": 1791710585.1498206,
+    "ast_hash": "102553eba8b588538827d6adf8174dc8",
     "semantic_hash": ""
   },
   "src/views/anuncio/anuncio-id/CardPrincipal.jsx": {
-    "mtime": 1790695310.9084558,
-    "ast_hash": "f1f5578dda014eaa6f87521f766098d4",
+    "mtime": 1791917129.8786435,
+    "ast_hash": "cc8266813c0828c3fec151793fb8866b",
     "semantic_hash": ""
   },
   "src/views/anuncio/anuncio-id/DetalleInmuble.jsx": {
-    "mtime": 1790695310.9163425,
-    "ast_hash": "48780118ee3103fc1d03b8744ec4faa7",
+    "mtime": 1791917129.891569,
+    "ast_hash": "82ced6c587251309afdc1ce2247cc6fb",
     "semantic_hash": ""
   },
   "src/views/anuncio/anuncio-id/DetallePropiedad.jsx": {
@@ -1155,28 +1095,28 @@
     "semantic_hash": ""
   },
   "src/views/anuncio/anuncio-id/GaleriaInmuebles.jsx": {
-    "mtime": 1790695310.9118023,
-    "ast_hash": "9ce249313547f5a92315dbded6bdc3f7",
+    "mtime": 1792183344.1251328,
+    "ast_hash": "06683f69fa7f8d0fd4b74e6306d10311",
     "semantic_hash": ""
   },
   "src/views/anuncio/anuncio-id/HeaderDinamico.jsx": {
-    "mtime": 1790695310.9150412,
-    "ast_hash": "18e99e7c48b574590899d93e76749dc7",
+    "mtime": 1791917129.910059,
+    "ast_hash": "22457c697ee029434551e0b3a00092f7",
     "semantic_hash": ""
   },
   "src/views/anuncio/anuncio-id/SidebarContacto.jsx": {
-    "mtime": 1790695310.9188492,
-    "ast_hash": "5279e88e52f3b2a71bf9f75ed2643f26",
+    "mtime": 1791935817.5887764,
+    "ast_hash": "25a3f9fb84a2487bdd3b2949fa3a98b6",
     "semantic_hash": ""
   },
   "src/views/anuncio/foto-visor/FotoVisor.jsx": {
-    "mtime": 1790855647.255332,
-    "ast_hash": "c2e632a32155db283bccf74d7f4b5189",
+    "mtime": 1791709821.383644,
+    "ast_hash": "bdb1bf58f6f5a5f92e81b3f102f36bda",
     "semantic_hash": ""
   },
   "src/views/chat/Chat.jsx": {
-    "mtime": 1790874063.0175767,
-    "ast_hash": "0f0c5df35b22cea08bf09345193079de",
+    "mtime": 1791935062.9888275,
+    "ast_hash": "5e1495451a235988c3e3075ace28d64b",
     "semantic_hash": ""
   },
   "src/views/descargas/DescargarApp.jsx": {
@@ -1210,8 +1150,8 @@
     "semantic_hash": ""
   },
   "src/views/descargas/components/hero/DownloadHero.jsx": {
-    "mtime": 1790842753.6916487,
-    "ast_hash": "6132823a6dcc8298a80657ed124e6564",
+    "mtime": 1791916828.486595,
+    "ast_hash": "c37b0478ce990ec15f4354c9085c0ea6",
     "semantic_hash": ""
   },
   "src/views/descargas/components/hero/OtherSystems.jsx": {
@@ -1280,13 +1220,13 @@
     "semantic_hash": ""
   },
   "src/views/descargas/components/mobile/ComingSoonCard.jsx": {
-    "mtime": 1790842856.3497026,
-    "ast_hash": "11c1f8d19f5f40eb1bcc808ae35a9927",
+    "mtime": 1791916828.4965205,
+    "ast_hash": "641c7430a288a2a0eaf52c98bbf2720f",
     "semantic_hash": ""
   },
   "src/views/descargas/components/mobile/MobileApp.jsx": {
-    "mtime": 1790842889.3548493,
-    "ast_hash": "4290b933b248c639793a9c623f64687a",
+    "mtime": 1791916828.5300841,
+    "ast_hash": "f23d94fe6bb1994ecee7a7b6169a76c2",
     "semantic_hash": ""
   },
   "src/views/descargas/components/mobile/MobilePerks.jsx": {
@@ -1300,8 +1240,8 @@
     "semantic_hash": ""
   },
   "src/views/descargas/components/mobile/mobile.data.js": {
-    "mtime": 1790842836.5622451,
-    "ast_hash": "72f220255d7efc5037cc9a90599202ab",
+    "mtime": 1791916828.5166426,
+    "ast_hash": "737dece7a5b3ef9a59449fd9e373e883",
     "semantic_hash": ""
   },
   "src/views/descargas/hooks/useCopyClipboard.js": {
@@ -1330,8 +1270,8 @@
     "semantic_hash": ""
   },
   "src/views/feed/components/actividad/RecentActivity.jsx": {
-    "mtime": 1790849603.2478397,
-    "ast_hash": "9f00250aff8161318568d79d258970fa",
+    "mtime": 1791916828.5484593,
+    "ast_hash": "30fde595877beb933495b6700842bd9c",
     "semantic_hash": ""
   },
   "src/views/feed/components/actividad/StatsGrid.jsx": {
@@ -1365,13 +1305,13 @@
     "semantic_hash": ""
   },
   "src/views/feed/components/sidebar/ActiveOrgCard.jsx": {
-    "mtime": 1790849544.781124,
-    "ast_hash": "9d01811790f0f8d5db8f24efa60e4a65",
+    "mtime": 1791935867.9462316,
+    "ast_hash": "4b71a391866689b94923a97c88f599a6",
     "semantic_hash": ""
   },
   "src/views/feed/components/sidebar/BotonAdminOrganizaciones.jsx": {
-    "mtime": 1790694061.4509566,
-    "ast_hash": "59ced336bae272356f910a71e1e435ef",
+    "mtime": 1791970858.8928459,
+    "ast_hash": "71be6e44e7936625109ab1d2fba0747c",
     "semantic_hash": ""
   },
   "src/views/feed/components/sidebar/EmptyOrgCard.jsx": {
@@ -1385,13 +1325,13 @@
     "semantic_hash": ""
   },
   "src/views/feed/components/sidebar/HeaderSidebar.jsx": {
-    "mtime": 1790693893.7346897,
-    "ast_hash": "da2e9f75ed92731e9944bcfa0b2255ec",
+    "mtime": 1791935875.6061654,
+    "ast_hash": "6a83253b50e088f4a82bb6618a9336b2",
     "semantic_hash": ""
   },
   "src/views/feed/components/sidebar/ItemsSidebar.jsx": {
-    "mtime": 1790849512.3175652,
-    "ast_hash": "6976f170f15071343be538ef6d42c0ef",
+    "mtime": 1791970851.1844947,
+    "ast_hash": "67775bf923cb8e4562efcb4e11659eda",
     "semantic_hash": ""
   },
   "src/views/feed/components/sidebar/MiOrganizacionesSidebar.jsx": {
@@ -1410,13 +1350,13 @@
     "semantic_hash": ""
   },
   "src/views/feed/components/sidebar/SidebarItemRow.jsx": {
-    "mtime": 1790849487.7308378,
-    "ast_hash": "b55705793ad4c2b81715f640ef5c77b4",
+    "mtime": 1791795974.1876159,
+    "ast_hash": "01d9f8bc9041bb299be7cd6448c5abcd",
     "semantic_hash": ""
   },
   "src/views/feed/components/sidebar/useOrganizacionSidebar.js": {
-    "mtime": 1790849755.2042296,
-    "ast_hash": "bb9bcfe278c74401bde6007daf50c872",
+    "mtime": 1792184471.8873305,
+    "ast_hash": "39446d3411244351b192546cb27a5a6c",
     "semantic_hash": ""
   },
   "src/views/inicio/PageInicio.jsx": {
@@ -1430,13 +1370,13 @@
     "semantic_hash": ""
   },
   "src/views/inicio/components/hero/Hero.jsx": {
-    "mtime": 1790840326.8377452,
-    "ast_hash": "8db09fd210d8d0a4bcb216ea585707f2",
+    "mtime": 1792135390.4145944,
+    "ast_hash": "48ed1636ab17774b24a3208fa505b015",
     "semantic_hash": ""
   },
   "src/views/inicio/components/hero/HeroSearchButton.jsx": {
-    "mtime": 1790839321.0521696,
-    "ast_hash": "5c9eb650a7cbcceabfcf1a07046ae014",
+    "mtime": 1792047620.0150912,
+    "ast_hash": "c896bc8193f002c6e915c38695e0befa",
     "semantic_hash": ""
   },
   "src/views/inicio/components/hero/HeroTabs.jsx": {
@@ -1465,8 +1405,8 @@
     "semantic_hash": ""
   },
   "src/views/inicio/components/info-cards/InfoCardItem.jsx": {
-    "mtime": 1790839343.2470777,
-    "ast_hash": "0f4c4c523fb86f59d1ddf71d46b16181",
+    "mtime": 1792049032.7110362,
+    "ast_hash": "d1363d2a692e88871507cee211bf26db",
     "semantic_hash": ""
   },
   "src/views/inicio/components/info-cards/InfoCards.jsx": {
@@ -1480,8 +1420,8 @@
     "semantic_hash": ""
   },
   "src/views/inicio/hooks/useCitySuggestions.js": {
-    "mtime": 1790842468.4558375,
-    "ast_hash": "59987e2099e6ee27a77085e83e5a2056",
+    "mtime": 1792184282.5849588,
+    "ast_hash": "b88ffe99b23abaae13c22ee0ac98d46c",
     "semantic_hash": ""
   },
   "src/views/inicio/hooks/useInicioSearch.js": {
@@ -1515,13 +1455,13 @@
     "semantic_hash": ""
   },
   "src/views/leads/components/LeadCard.jsx": {
-    "mtime": 1790852423.5071783,
-    "ast_hash": "6308ca2a57050e63ea220f0b9ad54c02",
+    "mtime": 1791916828.566615,
+    "ast_hash": "c945d743de8165cfb480dd732c5bd75b",
     "semantic_hash": ""
   },
   "src/views/leads/hooks/useLeadsFilter.js": {
-    "mtime": 1790852389.001631,
-    "ast_hash": "e38d9c23b01aa67a3adac00de07265da",
+    "mtime": 1792184497.1213913,
+    "ast_hash": "9f99bbba7a2ca83fa989ed7112d4bacc",
     "semantic_hash": ""
   },
   "src/views/leads/lib/estados.js": {
@@ -1535,13 +1475,13 @@
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/card-anuncio/CardAnuncio.jsx": {
-    "mtime": 1791548272.126918,
-    "ast_hash": "3934ae7d3b8410cae3569e4ede7bcc06",
+    "mtime": 1791712083.4981024,
+    "ast_hash": "28579435af2b6e07c40f15aa7775129e",
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/card-anuncio/CardAnuncioCompra.jsx": {
-    "mtime": 1791548272.1305363,
-    "ast_hash": "71baf3ff1b22d33cb301e07c582f419f",
+    "mtime": 1792182997.0257807,
+    "ast_hash": "f0e746d52f1a7d7c1f3730b6f86ef1f5",
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/content/FiltroRelevante.jsx": {
@@ -1550,13 +1490,13 @@
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/content/ListadoDePropiedades.jsx": {
-    "mtime": 1791547031.3135672,
-    "ast_hash": "407aaedadaa49b8423d4536f7a267c0d",
+    "mtime": 1791916766.4904928,
+    "ast_hash": "1422f67c2e5960d685a6d67a66fe6503",
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/header-lista/BotonGuardarBusqueda.jsx": {
-    "mtime": 1790695310.9505177,
-    "ast_hash": "7c094adde714250e5794e4e4f27b7fcd",
+    "mtime": 1791576828.3616471,
+    "ast_hash": "3a8bd94c76512c5d85f2c2c38fdf3048",
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/header-lista/BreadcrumbUbicacion.jsx": {
@@ -1565,8 +1505,8 @@
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/header-lista/EncabezadoBusqueda.jsx": {
-    "mtime": 1791548704.6473649,
-    "ast_hash": "a6ec9a9c0775f5821adff96722c48358",
+    "mtime": 1791916766.4765737,
+    "ast_hash": "b47066ae1ca3fcd6fd5048fbc9ed1019",
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/header-lista/HeadListaPropiedades.jsx": {
@@ -1650,8 +1590,8 @@
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/sidebar/filtros/Precio.jsx": {
-    "mtime": 1790695310.9880378,
-    "ast_hash": "0f4d81a4d61190b694549882998f5d5e",
+    "mtime": 1791917153.1762555,
+    "ast_hash": "2971517753586ec16d283280e6f0b717",
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/sidebar/filtros/Tamano.jsx": {
@@ -1660,8 +1600,8 @@
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/sidebar/filtros/TipoAlquiler.jsx": {
-    "mtime": 1790695311.000016,
-    "ast_hash": "4c383e1d0d6e3d4b0b64b20a82c36ab9",
+    "mtime": 1791917153.1882396,
+    "ast_hash": "e6f247e794bd6eae673ac86614b2d2c7",
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/sidebar/filtros/TipoAnunciante.jsx": {
@@ -1675,13 +1615,13 @@
     "semantic_hash": ""
   },
   "src/views/lista-propiedades/sidebar/filtros/TipoVivienda.jsx": {
-    "mtime": 1790695310.9825056,
-    "ast_hash": "a3372bb74e6da06b1932b5ec5d9a4d80",
+    "mtime": 1791917153.201858,
+    "ast_hash": "1508d1cd1c71eeaef9955d9352121d47",
     "semantic_hash": ""
   },
   "src/views/login/Login.jsx": {
-    "mtime": 1790890340.309327,
-    "ast_hash": "a3c264e0d75f0c768a659b97a2f9f7a8",
+    "mtime": 1792050565.8485293,
+    "ast_hash": "08a108f472729da69f2d52d23ae303c8",
     "semantic_hash": ""
   },
   "src/views/login/components/common/ProfessionalFooter.jsx": {
@@ -1695,13 +1635,13 @@
     "semantic_hash": ""
   },
   "src/views/login/components/email-step/EmailStep.jsx": {
-    "mtime": 1790884244.0715382,
-    "ast_hash": "b5a95c63d47c8aab35aad568dda82437",
+    "mtime": 1792050565.896695,
+    "ast_hash": "c0dbf846c9e89dc1d2f68dbfc8585b95",
     "semantic_hash": ""
   },
   "src/views/login/components/email-step/GoogleButton.jsx": {
-    "mtime": 1790843799.5017695,
-    "ast_hash": "6ee85b89fec8fd1e45aed969f7d86fde",
+    "mtime": 1792183828.4149556,
+    "ast_hash": "0c6b5f460f69bcd820b70b8d28ed387e",
     "semantic_hash": ""
   },
   "src/views/login/components/otp-step/OtpStep.jsx": {
@@ -1735,28 +1675,28 @@
     "semantic_hash": ""
   },
   "src/views/logs/hooks/useLogsAutoRefresh.js": {
-    "mtime": 1790852302.2253358,
-    "ast_hash": "28ee1946ba6b581017a0a6ae6ea03a31",
+    "mtime": 1792184497.1203928,
+    "ast_hash": "e3741713a04535ddeb57adcc0d558504",
     "semantic_hash": ""
   },
   "src/views/logs/lib/logFormat.js": {
-    "mtime": 1790852312.9332824,
-    "ast_hash": "b9cc0ed4fcee41dbfbc09259ee2d7216",
+    "mtime": 1791916828.5834208,
+    "ast_hash": "6666325388e05c6394c2b869eea1aab3",
     "semantic_hash": ""
   },
   "src/views/mapa-inmuebles/MapaInmuebles.jsx": {
-    "mtime": 1790860660.9495802,
-    "ast_hash": "f5b2f3def044a4c6d712b74debd593c9",
+    "mtime": 1792152306.4738994,
+    "ast_hash": "57f9e2dfe9847406f3a69314ac5e8215",
     "semantic_hash": ""
   },
   "src/views/mapa-inmuebles/MapaInmueblesPage.jsx": {
-    "mtime": 1790860791.4979365,
-    "ast_hash": "bc2a8e1a191c4310aee7c623241f1579",
+    "mtime": 1792152300.8635147,
+    "ast_hash": "48cd5c2eac6402238ed207784789bad6",
     "semantic_hash": ""
   },
   "src/views/mapa-inmuebles/components/map/MapOverlays.jsx": {
-    "mtime": 1790875054.878264,
-    "ast_hash": "2a8391a3274218b7c72848e1234457e3",
+    "mtime": 1792155796.3843024,
+    "ast_hash": "cf533b87ea1137589c508db1864c247b",
     "semantic_hash": ""
   },
   "src/views/mapa-inmuebles/components/map/boundary.js": {
@@ -1770,13 +1710,13 @@
     "semantic_hash": ""
   },
   "src/views/mapa-inmuebles/components/map/useMapaInmuebles.js": {
-    "mtime": 1790860875.8683283,
-    "ast_hash": "c11e98bd202cc817d064398af06bdf14",
+    "mtime": 1792152319.7533302,
+    "ast_hash": "0ef1391487fff4a8b7457c995a2f4bdc",
     "semantic_hash": ""
   },
   "src/views/mapa-inmuebles/hooks/useMapaCenter.js": {
-    "mtime": 1790860759.7365122,
-    "ast_hash": "68576f47c73741c081b558d8517f8619",
+    "mtime": 1792184508.133488,
+    "ast_hash": "4debd0c4f780fb25e21f7ca2e7347407",
     "semantic_hash": ""
   },
   "src/views/mapa-inmuebles/lib/routeParams.js": {
@@ -1810,23 +1750,23 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/AgentesPanel.jsx": {
-    "mtime": 1790695311.072859,
-    "ast_hash": "905767b49397e05083dc5e285dde4b6a",
+    "mtime": 1792184325.5419488,
+    "ast_hash": "9ddda9ba459db4aa24e0faaaf895802a",
     "semantic_hash": ""
   },
   "src/views/organizacion/CrearOrganizacionForm.jsx": {
-    "mtime": 1790695311.074872,
-    "ast_hash": "d863588650a5cbee6507656cbe8858ab",
+    "mtime": 1791875144.9967139,
+    "ast_hash": "b234baca792d3bbff13c7bbbe1d8fd4c",
     "semantic_hash": ""
   },
   "src/views/organizacion/EstadisticasPanel.jsx": {
-    "mtime": 1790695311.278126,
-    "ast_hash": "db3385c22d61fc517afd701f1062820c",
+    "mtime": 1791916828.5962315,
+    "ast_hash": "2a94cc37db246ee6ec50c9c2ab820bbf",
     "semantic_hash": ""
   },
   "src/views/organizacion/MiInmobiliariaPanel.jsx": {
-    "mtime": 1790695311.2801588,
-    "ast_hash": "97a4495f1c86664aa251fc11abeb65a3",
+    "mtime": 1792184329.8086362,
+    "ast_hash": "d8652db84867291f0dc75c9d15ae55b7",
     "semantic_hash": ""
   },
   "src/views/organizacion/SolicitarDominioForm.jsx": {
@@ -1835,13 +1775,13 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/TemaSelector.jsx": {
-    "mtime": 1790695311.278126,
-    "ast_hash": "d86f0dec53f681670a751802be4f9ec8",
+    "mtime": 1791935904.3205876,
+    "ast_hash": "4de30ff36794dd8ad0e9d55e22fd40a8",
     "semantic_hash": ""
   },
   "src/views/organizacion/paginas/ContactoOrg.jsx": {
-    "mtime": 1790695311.0900505,
-    "ast_hash": "6b5c34dcc5f4e6e7020da7c859c78921",
+    "mtime": 1791875145.0046773,
+    "ast_hash": "0564f9da8736908ec15323ea4ef3a484",
     "semantic_hash": ""
   },
   "src/views/organizacion/paginas/ContactoTemaSlot.jsx": {
@@ -1855,8 +1795,8 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/paginas/LayoutPublicoResolver.jsx": {
-    "mtime": 1790695311.0832422,
-    "ast_hash": "8fba49f0468b4f6d90bbf152b1f39cab",
+    "mtime": 1791718978.0497625,
+    "ast_hash": "965030389478af1243a22c8ec930496c",
     "semantic_hash": ""
   },
   "src/views/organizacion/paginas/LayoutResolver.jsx": {
@@ -1874,24 +1814,14 @@
     "ast_hash": "b8f42cdf0749d65377e2fef513b7b40e",
     "semantic_hash": ""
   },
-  "src/views/organizacion/paginas/OrganizacionLayout.jsx": {
-    "mtime": 1790695311.084527,
-    "ast_hash": "5085e5fcc91bdbd42c2aa39cc84c5781",
-    "semantic_hash": ""
-  },
   "src/views/organizacion/paginas/OrganizacionNav.jsx": {
-    "mtime": 1790695311.081251,
-    "ast_hash": "4fa61f1862d65f2ccd2b308aa6bef79d",
-    "semantic_hash": ""
-  },
-  "src/views/organizacion/paginas/OrganizacionPublicaLayout.jsx": {
-    "mtime": 1790695311.0865364,
-    "ast_hash": "bd1e7334ab5e35aebd6527d8728f8a20",
+    "mtime": 1791935917.8403344,
+    "ast_hash": "24ea02a75d5fd0ff1028ed1509bfb293",
     "semantic_hash": ""
   },
   "src/views/organizacion/paginas/PaginaOrganizacion.jsx": {
-    "mtime": 1790695311.0822432,
-    "ast_hash": "d620ae06a6c33d58cc05a43b7de90ceb",
+    "mtime": 1792184348.7257712,
+    "ast_hash": "043037852397f2f0fade59a46e30469a",
     "semantic_hash": ""
   },
   "src/views/organizacion/paginas/SobreNosotrosOrg.jsx": {
@@ -1904,24 +1834,19 @@
     "ast_hash": "96a6f59f2c20836a8aac85623b0e7594",
     "semantic_hash": ""
   },
-  "src/views/organizacion/temas/loading/Loading.jsx": {
-    "mtime": 1790873504.8588777,
-    "ast_hash": "b03ebc02eed4b4f4f11b4fb4803aca65",
-    "semantic_hash": ""
-  },
   "src/views/organizacion/temas/tema1/Contacto.jsx": {
     "mtime": 1790695311.214752,
     "ast_hash": "31eb7f3f89449125d378454179590485",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/Home.jsx": {
-    "mtime": 1790695311.238063,
-    "ast_hash": "e3dd323820d10ea93fc5e823bf7f6a09",
+    "mtime": 1791935986.9917307,
+    "ast_hash": "f9e2d07eceb7b11b992af683098079db",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/Layout.jsx": {
-    "mtime": 1790695311.2106907,
-    "ast_hash": "9038aed531c2b9b6b2ffaa7e70afe182",
+    "mtime": 1791936074.9258564,
+    "ast_hash": "6993b9cc1099700a4d514626f4d8b13b",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/SobreNosotros.jsx": {
@@ -1930,13 +1855,13 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/AgentsSlider.jsx": {
-    "mtime": 1790695311.1647,
-    "ast_hash": "7e73e8158cb3d92e1b0d74e9c1c763f0",
+    "mtime": 1792184348.7666557,
+    "ast_hash": "f2b153bcae30f21bba4177e7d7e896fb",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/DownloadAppSection.jsx": {
-    "mtime": 1790695311.1953666,
-    "ast_hash": "40e2aacfad27280de78fe3f9ad42ac6a",
+    "mtime": 1791936207.8711958,
+    "ast_hash": "1fc94e126c03de7a2031abb72cdfcdf9",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/FAQSection.jsx": {
@@ -1945,8 +1870,8 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/FeaturedPropertyHero.jsx": {
-    "mtime": 1790695311.175492,
-    "ast_hash": "9129b779a91f8061acf5523b6a2f3bac",
+    "mtime": 1791936239.7922225,
+    "ast_hash": "e84f6e4b3810e3e8727ab34336f9549f",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/FooterSection.jsx": {
@@ -1955,8 +1880,8 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/GetInTouchSection.jsx": {
-    "mtime": 1790695311.183105,
-    "ast_hash": "65acaf2d62caa2445653ab384b93c07d",
+    "mtime": 1791936361.4495351,
+    "ast_hash": "fa210ee02b31a30ca70c42fc7b4a1b36",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/Hero.jsx": {
@@ -1970,28 +1895,28 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/Navbar.jsx": {
-    "mtime": 1790695311.1858907,
-    "ast_hash": "6de2133da791656462c0a4140a08664a",
+    "mtime": 1791936324.7666247,
+    "ast_hash": "7a68d2f0ffbb64d5ce2cfb447979c0c1",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/NeighborhoodsSection.jsx": {
-    "mtime": 1790695311.2072966,
-    "ast_hash": "05379073cce2ed435672ed1ea956655b",
+    "mtime": 1791936387.955499,
+    "ast_hash": "17074f9aa086e59113d7b14ce31d46ec",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/PillarHelpSection.jsx": {
-    "mtime": 1790695311.2000296,
-    "ast_hash": "fef08eeaec4acd634470f0182479e5a9",
+    "mtime": 1792184360.2937958,
+    "ast_hash": "b4dac238c7152df1f201c2ca26bda3b0",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/PropertyGrid.jsx": {
-    "mtime": 1790695311.1877003,
-    "ast_hash": "6431d575b69d65540bf29dd1b928051b",
+    "mtime": 1791936405.668342,
+    "ast_hash": "9296d820f2f208567190765490697b40",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/PropertyMap.jsx": {
-    "mtime": 1790695311.2034447,
-    "ast_hash": "0ba296025e7ebdc4267b2495f1ac3960",
+    "mtime": 1791936467.6924715,
+    "ast_hash": "21e229cd2c873a4f55e561e0d16303e5",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/PropertySlider.jsx": {
@@ -2005,8 +1930,8 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/TestimonialsSection.jsx": {
-    "mtime": 1790695311.2042875,
-    "ast_hash": "34eea75c3838b129f3b12b2c380e38db",
+    "mtime": 1791936500.7044406,
+    "ast_hash": "cbcc011ded3ce08a3d7d38a5dc2217d5",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema1/home/TopHeader.jsx": {
@@ -2025,8 +1950,8 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/Home.jsx": {
-    "mtime": 1790695311.2731414,
-    "ast_hash": "8a61de65b1c5344ae73fb1a29a48802d",
+    "mtime": 1792184933.741487,
+    "ast_hash": "f848520f63e6dfe5f70812b7490ca912",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/Layout.jsx": {
@@ -2040,13 +1965,13 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/home/ClientTestimonials.jsx": {
-    "mtime": 1790695311.2437558,
-    "ast_hash": "c2799bb6df6fd8590d3311058b8e5b29",
+    "mtime": 1792184748.2218904,
+    "ast_hash": "fbe9b4747293fa4bd756d62fc9f5fd4c",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/home/ExploreNeighborhoods.jsx": {
-    "mtime": 1790695311.258715,
-    "ast_hash": "f335b7ce4d46c934879f4707b602b2f6",
+    "mtime": 1792184744.1275673,
+    "ast_hash": "56782624a8f0ff00c428beb5afeeca01",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/home/FooterSection.jsx": {
@@ -2060,8 +1985,8 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/home/Hero.jsx": {
-    "mtime": 1790695311.262575,
-    "ast_hash": "49c90fceb115bddb512a4a522ee7f642",
+    "mtime": 1792184738.3989859,
+    "ast_hash": "365acc7dc6efebff8f3526a066f982be",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/home/Home.jsx": {
@@ -2070,13 +1995,13 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/home/MarketProperty.jsx": {
-    "mtime": 1790695311.250528,
-    "ast_hash": "9bb01b00ec420485535255c2e45834a7",
+    "mtime": 1792184744.1665936,
+    "ast_hash": "3e8f3d9a5ca40abedc655fc9723402d8",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/home/MeetOurAgents.jsx": {
-    "mtime": 1790695311.250528,
-    "ast_hash": "7287d1c289a4566004e0af1c8580f216",
+    "mtime": 1792185009.9552498,
+    "ast_hash": "0e718ef81f0eb98ae8fc913e6493e48d",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/home/Navbar.jsx": {
@@ -2085,8 +2010,8 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/home/PropertyGrid.jsx": {
-    "mtime": 1790695311.254203,
-    "ast_hash": "6431d575b69d65540bf29dd1b928051b",
+    "mtime": 1792184744.1681728,
+    "ast_hash": "3a8290d599fad9052d3c62bb9fbc5cfd",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/home/PropertySearchWidget.jsx": {
@@ -2110,8 +2035,8 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/home/WhyChooseUs.jsx": {
-    "mtime": 1790695311.262139,
-    "ast_hash": "e2f1bb79c46a4325d9c7edf7574fd412",
+    "mtime": 1792184744.169231,
+    "ast_hash": "8adebe76aefa6ad5f45fb2fafe8b30cb",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema2/index.js": {
@@ -2125,13 +2050,13 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema3/Home.jsx": {
-    "mtime": 1790695311.1348212,
-    "ast_hash": "027ce31138a575dddeb5bc70632873d4",
+    "mtime": 1792184933.760955,
+    "ast_hash": "00924cd22fa869474870f546ae1e3f86",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema3/Layout.jsx": {
-    "mtime": 1790695311.1323013,
-    "ast_hash": "0cc60bb5954229c31073606e0058b607",
+    "mtime": 1792184933.7780635,
+    "ast_hash": "2cffbe45a17c455a38ae45f07a23b229",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema3/SobreNosotros.jsx": {
@@ -2150,13 +2075,13 @@
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema4/Home.jsx": {
-    "mtime": 1790695311.1481633,
-    "ast_hash": "d75189de87e6e46a8c4b234ec2bc6be9",
+    "mtime": 1792184933.8001516,
+    "ast_hash": "8bbe996b7062a116c4da8e5af159394e",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema4/Layout.jsx": {
-    "mtime": 1790695311.1507623,
-    "ast_hash": "0cc60bb5954229c31073606e0058b607",
+    "mtime": 1792184933.8178105,
+    "ast_hash": "2cffbe45a17c455a38ae45f07a23b229",
     "semantic_hash": ""
   },
   "src/views/organizacion/temas/tema4/SobreNosotros.jsx": {
@@ -2210,8 +2135,8 @@
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio-info/components/guide/guide-steps.data.jsx": {
-    "mtime": 1790872502.9506257,
-    "ast_hash": "db569bca44fd0eb6c0f28d5f729e415b",
+    "mtime": 1791916828.486595,
+    "ast_hash": "c9f0d8d8e027fd42c483b384128f3407",
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio-info/components/hero/HeroBullets.jsx": {
@@ -2345,13 +2270,13 @@
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/hooks/useWizardProgress.js": {
-    "mtime": 1790846231.5268738,
-    "ast_hash": "bfba8b5c0b0b0f886b3570c0863c7325",
+    "mtime": 1792184544.1241994,
+    "ast_hash": "95743f12d975773506ad1d1cd6772f2c",
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/informacion/InfoIntro.jsx": {
-    "mtime": 1790845957.1415408,
-    "ast_hash": "382f6846e5ca400d43cd2e40e83faa22",
+    "mtime": 1791916828.4685552,
+    "ast_hash": "239b425107fdd8d659acc8860555db4b",
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/informacion/InfoPromoRow.jsx": {
@@ -2435,8 +2360,8 @@
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-1/ubicacion/LocationCascadeSelect.jsx": {
-    "mtime": 1790845409.1033397,
-    "ast_hash": "926af3d6b1f542bed4c9fd4ff01628d5",
+    "mtime": 1791913122.8078196,
+    "ast_hash": "ac198ffc6459d29c924e89a475022989",
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-1/ubicacion/LocationForm.jsx": {
@@ -2455,8 +2380,8 @@
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-1/ubicacion/useAddressMap.js": {
-    "mtime": 1790845831.8491802,
-    "ast_hash": "8de917ea8effafc7f7cb3ef63bcc37a6",
+    "mtime": 1791916828.5987573,
+    "ast_hash": "0d31f8f7f8b13efcdcae4f20a70efb75",
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-2/Detalles.jsx": {
@@ -2465,8 +2390,8 @@
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-2/components/Caracteristicas.jsx": {
-    "mtime": 1790845409.117463,
-    "ast_hash": "e2ec67428e3aa521db5b74577a16b16f",
+    "mtime": 1791917129.9691205,
+    "ast_hash": "6b7e691b8d99d717691de0233d57bfd5",
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-2/components/Dimensiones.jsx": {
@@ -2490,8 +2415,8 @@
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-2/components/Precio.jsx": {
-    "mtime": 1790845409.237118,
-    "ast_hash": "4ca70f13afa5214f95d499a434805d3f",
+    "mtime": 1792048147.7910984,
+    "ast_hash": "3ef3090c2efcb7f5d3509df02ef33516",
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-2/components/UbicacionFisica.jsx": {
@@ -2570,8 +2495,8 @@
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-3/components/GaleriaPreviewGrid.jsx": {
-    "mtime": 1790695311.7157786,
-    "ast_hash": "af8fee8cae6838b4b56dcbc8798c6d9f",
+    "mtime": 1792184738.407514,
+    "ast_hash": "7e1ab6012fb4b5873693a46bdef5343b",
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-3/components/InfoBannerBlue.jsx": {
@@ -2585,8 +2510,8 @@
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-3/components/PrincipalDropzone.jsx": {
-    "mtime": 1790695311.7272363,
-    "ast_hash": "3497bd9714c3a5d5964bbe79c03191cf",
+    "mtime": 1792184738.4085107,
+    "ast_hash": "33e0acf068779e7d2f7dbecd84526108",
     "semantic_hash": ""
   },
   "src/views/publicar-anuncio/paso-3/components/TipsList.jsx": {
@@ -2600,8 +2525,8 @@
     "semantic_hash": ""
   },
   "src/views/registro/Registro.jsx": {
-    "mtime": 1790884285.9623897,
-    "ast_hash": "0c380cfa19cb7bae2bafd859658f8870",
+    "mtime": 1792050613.0290918,
+    "ast_hash": "b3de9c9a3632c89871bd876c6afd7359",
     "semantic_hash": ""
   },
   "src/views/registro/components/LoginLink.jsx": {
@@ -2670,13 +2595,13 @@
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/SeleccionarZonaPage.jsx": {
-    "mtime": 1791531899.8716092,
-    "ast_hash": "849b258e98dad74bfce2fb3f58075f37",
+    "mtime": 1792176580.8261802,
+    "ast_hash": "14f904029d376cce34c89658cbe40ac5",
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/components/header/SelectedZoneCard.jsx": {
-    "mtime": 1790876075.8835592,
-    "ast_hash": "2a9762486db791b6d8155925c23d5d7e",
+    "mtime": 1792176543.4103725,
+    "ast_hash": "9ed5d3ca41db5c4236f8d064711e3543",
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/components/header/ZonaPageHeader.jsx": {
@@ -2685,18 +2610,18 @@
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/components/map/SelectZonaMap.jsx": {
-    "mtime": 1790860513.7835822,
-    "ast_hash": "ed72f0e4b5f06f9403ab495a1228c25c",
+    "mtime": 1792176513.785899,
+    "ast_hash": "3ad7d04f83415ea7911b55acf0f0faba",
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/components/map/geoman.js": {
-    "mtime": 1790856901.667061,
-    "ast_hash": "f75b422a20f0b828c5401af18bc89afa",
+    "mtime": 1792178152.5127392,
+    "ast_hash": "d8ed05abc28688039133469c427d51e8",
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/components/map/interactivity.js": {
-    "mtime": 1790857098.076311,
-    "ast_hash": "eaddd1b4553ace30185a91aaa23776eb",
+    "mtime": 1792223963.959516,
+    "ast_hash": "3c5eeb948a793aa38e2fbfc6132ac89c",
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/components/map/layers.js": {
@@ -2710,8 +2635,8 @@
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/components/map/overlays/DrawGuide.jsx": {
-    "mtime": 1790876476.5992286,
-    "ast_hash": "7c66fa6dd43fef3fbd7049fff437ff4c",
+    "mtime": 1792160533.0821164,
+    "ast_hash": "ff6d54369e8251e68824c88600a3e6b1",
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/components/map/overlays/DrawToolbar.jsx": {
@@ -2735,8 +2660,8 @@
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/components/map/overlays/VerInmueblesBar.jsx": {
-    "mtime": 1790856317.3091528,
-    "ast_hash": "87fc268a0a328d0817589aea41cd7628",
+    "mtime": 1792178573.8869126,
+    "ast_hash": "61a29748e56a9204a2547a853fc34c98",
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/components/map/polygon.js": {
@@ -2750,8 +2675,8 @@
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/components/map/useZonaMap.js": {
-    "mtime": 1791540051.6278093,
-    "ast_hash": "ebe6bded9117a4c057b8e9681e586bb4",
+    "mtime": 1792223955.2512145,
+    "ast_hash": "577399f4a6ab95919244353fc9323ed5",
     "semantic_hash": ""
   },
   "src/views/seleccionar-zona/hooks/useDeptNames.js": {
@@ -2770,8 +2695,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/MisAnuncios.jsx": {
-    "mtime": 1790866782.6553118,
-    "ast_hash": "7a2077840cb75c09267413e11baa45c4",
+    "mtime": 1792184585.6719077,
+    "ast_hash": "f4a4d6ac4a26df978921cfdd135f009e",
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/anuncio/Anuncio.jsx": {
@@ -2790,8 +2715,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/anuncio/components/CambiarOperacionModal.jsx": {
-    "mtime": 1791027343.2872238,
-    "ast_hash": "3f5665f794c86b0472f4a16eb930abb2",
+    "mtime": 1791917129.9864726,
+    "ast_hash": "11e5448c8809523ccefc13c3fad1dbb8",
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/anuncio/components/CardActionLink.jsx": {
@@ -2820,8 +2745,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/anuncio/components/DetallesCard.jsx": {
-    "mtime": 1791025108.7326324,
-    "ast_hash": "2969869d554bb318cecd44edf4719120",
+    "mtime": 1791917129.9998727,
+    "ast_hash": "83e7d8ee4d9dd2a1043512769266b5e6",
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/anuncio/components/FotosCard.jsx": {
@@ -2830,13 +2755,13 @@
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/anuncio/components/InfoCards.jsx": {
-    "mtime": 1791027307.3003829,
-    "ast_hash": "0a1ce63e7b648f2cbe3d4fedfc7edde6",
+    "mtime": 1791917130.020891,
+    "ast_hash": "c9dd2f61f1aac6d4d91341e9a99a5f4a",
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/anuncio/components/PrecioCard.jsx": {
-    "mtime": 1791027217.4270115,
-    "ast_hash": "19b64b07206e74a07f05a73359b0eae1",
+    "mtime": 1792048173.571996,
+    "ast_hash": "27a386b6e4f18970b94295b1c4947af6",
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/anuncio/components/StatsCard.jsx": {
@@ -2850,8 +2775,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/anuncio/components/useAnuncioDetalle.js": {
-    "mtime": 1790979714.6315107,
-    "ast_hash": "19d93eb7b67dfb03528ee1d680c04f8c",
+    "mtime": 1792184599.1668177,
+    "ast_hash": "3864cadecb27b60262bd76c0d1b6743e",
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/anuncio/components/useCardEdit.js": {
@@ -2875,8 +2800,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/components/AnuncioPhoto.jsx": {
-    "mtime": 1790847610.2909946,
-    "ast_hash": "0c4301f9dd5dc133f6d8ab2845f30426",
+    "mtime": 1792184738.410508,
+    "ast_hash": "b0b468a1788220f175250079693fe16e",
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/components/AnuncioStatus.jsx": {
@@ -2890,8 +2815,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/components/MisAnunciosContent.jsx": {
-    "mtime": 1790866336.296819,
-    "ast_hash": "daf1cc458a09c113354240a3f41117ec",
+    "mtime": 1791721685.538449,
+    "ast_hash": "6deeb06b6d2f83421121f6f4d60a5291",
     "semantic_hash": ""
   },
   "src/views/usuario/mis-anuncios/components/PublishAnuncioButton.jsx": {
@@ -2905,8 +2830,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/mis-favoritos/MisFavoritos.jsx": {
-    "mtime": 1790873983.8121557,
-    "ast_hash": "6483c864c983d172f3800ae86fda01f9",
+    "mtime": 1792184585.6719077,
+    "ast_hash": "e24f9f120cd24e2344634d9e70d5c566",
     "semantic_hash": ""
   },
   "src/views/usuario/mis-favoritos/components/FavoritoInfo.jsx": {
@@ -2915,8 +2840,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/mis-favoritos/components/FavoritoPhoto.jsx": {
-    "mtime": 1790848311.3253205,
-    "ast_hash": "b171ec8ba842d6b34e1812f7c2b838be",
+    "mtime": 1792184738.41351,
+    "ast_hash": "23ede8d1abce13c288bf33b655ed9196",
     "semantic_hash": ""
   },
   "src/views/usuario/mis-favoritos/components/FavoritoStatus.jsx": {
@@ -2935,8 +2860,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/tus-datos/acceso/Acceso.jsx": {
-    "mtime": 1791543645.5402853,
-    "ast_hash": "fa0be8a1195b6c370ce8a45b88f79dfa",
+    "mtime": 1792184585.6719077,
+    "ast_hash": "0d4dc006af1e2850333f011e2a1cf9b3",
     "semantic_hash": ""
   },
   "src/views/usuario/tus-datos/acceso/SeguridadAcceso.jsx": {
@@ -2950,8 +2875,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/tus-datos/acceso/components/EmailPanel.jsx": {
-    "mtime": 1791543701.68993,
-    "ast_hash": "875298e51c4f344b4a94e93410aea107",
+    "mtime": 1791916828.5589893,
+    "ast_hash": "862973e3540fc1f5b78bf13fe7e5eee1",
     "semantic_hash": ""
   },
   "src/views/usuario/tus-datos/acceso/components/PasswordPanel.jsx": {
@@ -2975,8 +2900,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/tus-datos/components/HeadPerfilAcceso.jsx": {
-    "mtime": 1790887177.6920488,
-    "ast_hash": "ce38c8a2c12c3a85d35bb6acc05c851e",
+    "mtime": 1791712128.6632245,
+    "ast_hash": "076fdb9aca61b7d3a9d0943b9ea986b2",
     "semantic_hash": ""
   },
   "src/views/usuario/tus-datos/components/SupportBlock.jsx": {
@@ -3020,8 +2945,8 @@
     "semantic_hash": ""
   },
   "src/views/usuario/tus-datos/perfil/components/RoomProfileCard.jsx": {
-    "mtime": 1791543323.2952845,
-    "ast_hash": "f1ac4ac3edfed7d27279913f255925e0",
+    "mtime": 1791917130.0647092,
+    "ast_hash": "36e068eab824da52591d2312bc5354f9",
     "semantic_hash": ""
   },
   "src/views/usuario/tus-datos/perfil/components/RoomSeekerForm.jsx": {
@@ -3040,8 +2965,8 @@
     "semantic_hash": ""
   },
   ".github/workflows/deploy-web.yml": {
-    "mtime": 1790761098.7162054,
-    "ast_hash": "3f97ebc629ca3b092e9662e5955d5488",
+    "mtime": 1791968481.607347,
+    "ast_hash": "2efee9a6a30cce79b90e2181dde34186",
     "semantic_hash": ""
   },
   "AGENTS.md": {
@@ -3055,8 +2980,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1790882657.4533222,
-    "ast_hash": "4658c38a67fe1d6fcf928bbc7782bf74",
+    "mtime": 1791828726.420424,
+    "ast_hash": "c801cdc9bbcb7d1a97f30610f5c46c68",
     "semantic_hash": ""
   },
   "REFACTOR-STATUS.md": {
@@ -3222,6 +3147,231 @@
   "src/views/lista-propiedades/card-anuncio/MediaToolbar.jsx": {
     "mtime": 1791548224.9161637,
     "ast_hash": "a847a6efdb36d324bc78a56567668726",
+    "semantic_hash": ""
+  },
+  "public/sw.js": {
+    "mtime": 1791570351.3122444,
+    "ast_hash": "22e7bf90fc170bb022b10af6ad76f076",
+    "semantic_hash": ""
+  },
+  "src/actions/busquedasGuardadas.js": {
+    "mtime": 1791569496.3350484,
+    "ast_hash": "864a8650a8f09108cc9b295e5cee8958",
+    "semantic_hash": ""
+  },
+  "src/actions/chat.js": {
+    "mtime": 1791836508.068239,
+    "ast_hash": "fe7482c3dcee680704dfe3254ac11ba8",
+    "semantic_hash": ""
+  },
+  "src/actions/descartados.js": {
+    "mtime": 1791712036.4903734,
+    "ast_hash": "86e253655130b2ecf0bb11d4b51a582d",
+    "semantic_hash": ""
+  },
+  "src/app/auth/google/callback/page.js": {
+    "mtime": 1792056480.225707,
+    "ast_hash": "e10af3e191846c93147f03a5ac4ab4ef",
+    "semantic_hash": ""
+  },
+  "src/app/busquedas/baja/[token]/page.js": {
+    "mtime": 1791576860.6004164,
+    "ast_hash": "9c24459946dfdf8ddf6d42bb303af74e",
+    "semantic_hash": ""
+  },
+  "src/app/dev/botones/Showcase.jsx": {
+    "mtime": 1791722554.0343046,
+    "ast_hash": "78149f382d7feb4ddb8d7dd9016c754b",
+    "semantic_hash": ""
+  },
+  "src/app/dev/botones/page.js": {
+    "mtime": 1791722500.6780114,
+    "ast_hash": "c397bcf528eac6b713fd420ffe9eb153",
+    "semantic_hash": ""
+  },
+  "src/app/usuario/chat/page.js": {
+    "mtime": 1791935154.7605207,
+    "ast_hash": "fb06275029e169d71d805bcf7d20a604",
+    "semantic_hash": ""
+  },
+  "src/app/usuario/descartados/page.js": {
+    "mtime": 1791712136.9747498,
+    "ast_hash": "c661cbf53a97feec137a4f3f94ba1ba6",
+    "semantic_hash": ""
+  },
+  "src/app/usuario/mis-busquedas/page.js": {
+    "mtime": 1791576860.5874605,
+    "ast_hash": "ca09476fa57146f39ae105647ff3660d",
+    "semantic_hash": ""
+  },
+  "src/app/usuario/tus-datos/descartados/page.js": {
+    "mtime": 1791712136.992442,
+    "ast_hash": "6c644cc18e1b0c9fb379462e1322e446",
+    "semantic_hash": ""
+  },
+  "src/app/usuario/tus-datos/mis-busquedas/page.js": {
+    "mtime": 1791576828.2897248,
+    "ast_hash": "736efbfab91580925efd0c83c792528e",
+    "semantic_hash": ""
+  },
+  "src/components/loading/Loading.jsx": {
+    "mtime": 1791722029.0168111,
+    "ast_hash": "398edea6f75ea0e03e0de4ab937984bc",
+    "semantic_hash": ""
+  },
+  "src/components/usuario/Avatar.jsx": {
+    "mtime": 1791795647.1767578,
+    "ast_hash": "4a1da1a4ebbcab35500a20f5fe4d9b7d",
+    "semantic_hash": ""
+  },
+  "src/hooks/chatStore.js": {
+    "mtime": 1791836513.3426907,
+    "ast_hash": "ecc13533ab0253b4584810485d8cfb60",
+    "semantic_hash": ""
+  },
+  "src/hooks/descartadosStore.js": {
+    "mtime": 1791712036.500893,
+    "ast_hash": "6e030639e6e4433dbfd9694348e2d343",
+    "semantic_hash": ""
+  },
+  "src/hooks/useDescartados.js": {
+    "mtime": 1791712036.5168123,
+    "ast_hash": "9aa1be047d5c84c4b89d448faef877c5",
+    "semantic_hash": ""
+  },
+  "src/lib/chatSocket.js": {
+    "mtime": 1791795873.2840674,
+    "ast_hash": "e4573fadbbf126e37862171c2b3ff04f",
+    "semantic_hash": ""
+  },
+  "src/lib/filtrosBusqueda.js": {
+    "mtime": 1791569496.3350484,
+    "ast_hash": "356137668aaab0c1f292c8916fb700f9",
+    "semantic_hash": ""
+  },
+  "src/lib/push.js": {
+    "mtime": 1791570351.3113446,
+    "ast_hash": "c2aa82866007e752e196d5bba3077087",
+    "semantic_hash": ""
+  },
+  "src/views/anuncio/foto-visor/components/contenido/VisorContenido.jsx": {
+    "mtime": 1791709817.4120493,
+    "ast_hash": "27ed0724a0f5babc8dd4d0d90764f28d",
+    "semantic_hash": ""
+  },
+  "src/views/anuncio/foto-visor/components/controles/FlechasSecuencia.jsx": {
+    "mtime": 1791709817.3954546,
+    "ast_hash": "9ff950b2083fa8f99428b708e1b36500",
+    "semantic_hash": ""
+  },
+  "src/views/anuncio/foto-visor/components/footer/VisorFooter.jsx": {
+    "mtime": 1791709817.4145296,
+    "ast_hash": "9f501efe53bd76647d43216d59934850",
+    "semantic_hash": ""
+  },
+  "src/views/anuncio/foto-visor/components/header/VisorHeader.jsx": {
+    "mtime": 1791710491.6555247,
+    "ast_hash": "9c2360c6f999eafe2690ab9f04a83e97",
+    "semantic_hash": ""
+  },
+  "src/views/anuncio/foto-visor/constants.js": {
+    "mtime": 1791709791.3875573,
+    "ast_hash": "740138d382d1984ed40d84405ad78bb8",
+    "semantic_hash": ""
+  },
+  "src/views/anuncio/foto-visor/hooks/useFotoVisor.js": {
+    "mtime": 1791709803.1958413,
+    "ast_hash": "5aca2f4e1f45c7aaddfcbb7e8623e638",
+    "semantic_hash": ""
+  },
+  "src/views/anuncio/foto-visor/hooks/useMapaVisor.js": {
+    "mtime": 1791709803.1958413,
+    "ast_hash": "47e06d036465ece4d13d43b63252e142",
+    "semantic_hash": ""
+  },
+  "src/views/anuncio/foto-visor/lib/formato.js": {
+    "mtime": 1791709791.4016542,
+    "ast_hash": "ecca9ec4117fbc70a9f5f62a589eb482",
+    "semantic_hash": ""
+  },
+  "src/views/anuncio/foto-visor/lib/modo.js": {
+    "mtime": 1791709791.4016542,
+    "ast_hash": "737f02f694cce406f3df451cb0bdfe2c",
+    "semantic_hash": ""
+  },
+  "src/views/chat/components/InputMensaje.jsx": {
+    "mtime": 1791835820.0654886,
+    "ast_hash": "8031e5ce92f2bdbf582b31ef2c83080c",
+    "semantic_hash": ""
+  },
+  "src/views/chat/components/ItemConversacion.jsx": {
+    "mtime": 1792183732.6962802,
+    "ast_hash": "3f262c2069c395c8dcce1cac5aeedb90",
+    "semantic_hash": ""
+  },
+  "src/views/chat/components/VentanaChat.jsx": {
+    "mtime": 1791935410.433649,
+    "ast_hash": "eaddb6afa09e08af3625feffd5c01084",
+    "semantic_hash": ""
+  },
+  "src/views/chat/lib/fechaChat.js": {
+    "mtime": 1791795647.2196352,
+    "ast_hash": "12d548b8fd6a9f3af1f564046a760579",
+    "semantic_hash": ""
+  },
+  "src/views/inicio/hooks/usePortada.js": {
+    "mtime": 1792135385.0970497,
+    "ast_hash": "389c645ce457e94ace815b3722349a30",
+    "semantic_hash": ""
+  },
+  "src/views/lista-propiedades/header-lista/ModalGuardarBusqueda.jsx": {
+    "mtime": 1791570351.309361,
+    "ast_hash": "e8bcc505edc63348c5c314277854f3a4",
+    "semantic_hash": ""
+  },
+  "src/views/seleccionar-zona/components/map/overlays/AvisoMapa.jsx": {
+    "mtime": 1792176501.0978377,
+    "ast_hash": "1252744038d1ae18bc0009d818bebc2f",
+    "semantic_hash": ""
+  },
+  "src/views/seleccionar-zona/components/map/zonaCard.js": {
+    "mtime": 1792223942.8301227,
+    "ast_hash": "77c6a7ea60565b6edd2304b3fff57f4e",
+    "semantic_hash": ""
+  },
+  "src/views/seleccionar-zona/lib/zonaPersistente.js": {
+    "mtime": 1792158036.2131908,
+    "ast_hash": "6d8de5f8bb1c2f5140469bf7f777a74b",
+    "semantic_hash": ""
+  },
+  "src/views/usuario/tus-datos/descartados/Descartados.jsx": {
+    "mtime": 1791712136.9843934,
+    "ast_hash": "fcb351028de3a443bdd32e9c7fe69d37",
+    "semantic_hash": ""
+  },
+  "src/views/usuario/tus-datos/descartados/TabDescartados.jsx": {
+    "mtime": 1791917130.0490499,
+    "ast_hash": "75ae3ca32b6768cf9bf67425dd6108c1",
+    "semantic_hash": ""
+  },
+  "src/views/usuario/tus-datos/mis-busquedas/MisBusquedas.jsx": {
+    "mtime": 1791576828.3536203,
+    "ast_hash": "0fa0e58f9c76f3bd213f4d09ed958bb5",
+    "semantic_hash": ""
+  },
+  "src/views/usuario/tus-datos/mis-busquedas/TabMisBusquedas.jsx": {
+    "mtime": 1791576860.5634866,
+    "ast_hash": "4e10aebaab350ea32b8490f6cbb24be0",
+    "semantic_hash": ""
+  },
+  "ERRORES_LINT.md": {
+    "mtime": 1792185736.697607,
+    "ast_hash": "0653de6800e862b4cdafa26fad88a55b",
+    "semantic_hash": ""
+  },
+  "public/propiedades/imagen_no_disponible.png": {
+    "mtime": 1792182751.8484027,
+    "ast_hash": "568434378484aad3a8743e0dd74c5778",
     "semantic_hash": ""
   }
 }

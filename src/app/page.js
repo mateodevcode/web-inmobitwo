@@ -9,8 +9,8 @@ import { OrgShell } from "@/views/organizacion/paginas/OrgShell.jsx";
 import HomeTemaSlot from "@/views/organizacion/paginas/HomeTemaSlot.jsx";
 
 const Cargando = () => (
-  <div className="flex min-h-screen items-center justify-center bg-primero text-segundo">
-    Cargando...
+  <div className="flex flex-col min-h-screen items-center justify-center bg-primero text-segundo">
+    <span>Cargando...</span>
   </div>
 );
 
