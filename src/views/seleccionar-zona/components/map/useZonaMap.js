@@ -52,6 +52,11 @@ export function useZonaMap({
 
   const selRef = useRef(null);
   const drawModeRef = useRef(false);
+  // Espejos de los filtros de conteo (operation/tipoInmueble llegan por props
+  // y el setup imperativo captura el primer render: los handlers leen el
+  // valor actual vía getCountFilters).
+  const opRef = useRef(operation);
+  const tipoRef = useRef(tipoInmueble);
   const drawLayerRef = useRef(null);
   const geomanSetupRef = useRef(false);
   const gmRef = useRef(null);
@@ -82,6 +87,8 @@ export function useZonaMap({
   useEffect(() => {
     selRef.current = selectedZone;
     drawModeRef.current = drawMode;
+    opRef.current = operation;
+    tipoRef.current = tipoInmueble;
   });
 
   // onPolygonChange cambia de identidad en cada render de la página (no es
@@ -158,6 +165,10 @@ export function useZonaMap({
         operation,
         tipoInmueble,
         onSelectZone,
+        getCountFilters: () => ({
+          operation: opRef.current,
+          inmueble: tipoRef.current,
+        }),
         setHovCode,
         popupRef,
         doRefresh,

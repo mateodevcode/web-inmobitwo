@@ -97,6 +97,51 @@ export async function fetchGeoCount(type, daneCode, operation, tipoInmuebleSlug)
   return res.data.total || 0;
 }
 
+// ─────────────────────────────────────────────
+// Conteos por lote para la card del hover (mapa SeleccionarZona): una sola
+// petición por nivel (todas las zonas del nivel de golpe). TTL en memoria +
+// promesa en vuelo compartida para no duplicar peticiones entre hovers.
+// ─────────────────────────────────────────────
+const BATCH_TTL = 5 * 60 * 1000;
+const batchCache = new Map();
+const batchInflight = new Map();
+
+const batchKey = ({ type, parentDaneCode = "", operation = "", inmueble = "" }) =>
+  `${type}:${parentDaneCode}:${operation}:${inmueble}`;
+
+export function getCachedGeoCountBatch(args) {
+  const hit = batchCache.get(batchKey(args));
+  return hit && Date.now() - hit.at < BATCH_TTL ? hit.counts : null;
+}
+
+export async function fetchGeoCountBatch(args) {
+  const key = batchKey(args);
+  const cached = getCachedGeoCountBatch(args);
+  if (cached) return cached;
+  if (batchInflight.has(key)) return batchInflight.get(key);
+
+  const { type, parentDaneCode = "", operation = "", inmueble = "" } = args;
+  const params = new URLSearchParams({ type });
+  if (parentDaneCode) params.set("parentDaneCode", parentDaneCode);
+  if (operation) params.set("operation", operation);
+  const expandido = expandTipoInmueble(inmueble);
+  if (expandido) params.set("inmueble", expandido);
+
+  const req = (async () => {
+    try {
+      const res = await apiBackend(`/api/geo-count/batch?${params.toString()}`);
+      if (!res.success) throw new Error(res.error || "Error en geo-count/batch");
+      const counts = res.data?.counts || {};
+      batchCache.set(key, { at: Date.now(), counts });
+      return counts;
+    } finally {
+      batchInflight.delete(key);
+    }
+  })();
+  batchInflight.set(key, req);
+  return req;
+}
+
 export async function fetchInmueblesEnPoligono(polygon, operation, tipoInmuebleSlug) {
   const inmueble = expandTipoInmueble(tipoInmuebleSlug);
   const body = {

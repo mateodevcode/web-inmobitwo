@@ -146,3 +146,14 @@ body {
 }
 
 /* Chincheta mapa inmuebles */
+
+/* Card del hover en el mapa SeleccionarZona (popup de MapLibre) */
+.zona-popup .maplibregl-popup-content {
+  padding: 8px 12px;
+  border-radius: 3px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+.zona-popup .maplibregl-popup-tip {
+  display: none;
+}

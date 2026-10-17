@@ -3,6 +3,8 @@ import { findFeature, featBounds } from "@/lib/geoUtils";
 import { currentDptoCode, currentMpioCode } from "./selInfo";
 import { sourceOff } from "./layers";
 import { zoomToBounds } from "@/components/map/mapUtils";
+import { zonaCardHTML } from "./zonaCard";
+import { fetchGeoCountBatch, getCachedGeoCountBatch } from "@/lib/geoApi";
 
 // ctx: {
 //   selRef, drawModeRef, rawRefs,
@@ -112,10 +114,42 @@ export function setupInteractivity(map, ctx) {
     }
   });
 
+  const LEVEL_BY_LAYER = {
+    "region-fill": "region",
+    "dpto-fill": "departamento",
+    "mpio-fill": "municipio",
+    "barrio-fill": "barrio",
+  };
+  let lastCode = null;
+
+  // Pinta la card del hover: primero "Cargando…", luego los conteos del
+  // lote (cacheado o fetch). Si el mouse ya se movió a otra zona, no pinta.
+  async function renderCard(popup, { level, code, name, parentCode }) {
+    const { operation = "", inmueble = "" } = ctx.getCountFilters();
+    const args = { type: level, parentDaneCode: parentCode, operation, inmueble };
+    const draw = (counts) => {
+      if (lastCode !== code || !popup.isOpen()) return;
+      const c = counts[code];
+      popup.setHTML(
+        zonaCardHTML({ name, level, total: c ? c.total : 0, children: c?.children }),
+      );
+    };
+    const cached = getCachedGeoCountBatch(args);
+    if (cached) return draw(cached);
+    popup.setHTML(zonaCardHTML({ name, level, total: null }));
+    try {
+      draw(await fetchGeoCountBatch(args));
+    } catch {
+      if (lastCode === code && popup.isOpen())
+        popup.setHTML(zonaCardHTML({ name, level }));
+    }
+  }
+
   map.on("mousemove", (e) => {
     if (ctx.drawModeRef.current) return; // no hover en modo dibujo
     const feats = safeQuery(e.point);
     if (!feats.length) {
+      lastCode = null;
       ctx.setHovCode(null);
       ctx.doRefresh(null);
       if (ctx.popupRef.current) {
@@ -141,21 +175,39 @@ export function setupInteractivity(map, ctx) {
       code = p.BAR_COD;
       name = p.NOMB_BARR;
     }
+    const level = LEVEL_BY_LAYER[f.layer?.id];
+    const parentCode =
+      level === "municipio"
+        ? p._dptoDane
+        : level === "barrio"
+          ? p._mpioDane
+          : "";
+
+    // Misma zona: solo seguir al mouse (no recrear la card ni re-fetchear).
+    if (code === lastCode && ctx.popupRef.current) {
+      ctx.popupRef.current.setLngLat([e.lngLat.lng, e.lngLat.lat]);
+      return;
+    }
+
+    lastCode = code;
     ctx.setHovCode(code);
     ctx.doRefresh(code);
     if (ctx.popupRef.current) ctx.popupRef.current.remove();
-    ctx.popupRef.current = new maplibregl.Popup({
+    const popup = new maplibregl.Popup({
       closeButton: false,
       closeOnClick: false,
       anchor: "top",
       offset: 10,
+      className: "zona-popup",
     })
       .setLngLat([e.lngLat.lng, e.lngLat.lat])
-      .setHTML(`<span class="text-sm font-poppins">${name}</span>`)
       .addTo(map);
+    ctx.popupRef.current = popup;
+    renderCard(popup, { level, code, name, parentCode });
   });
 
   map.on("mouseleave", () => {
+    lastCode = null;
     ctx.setHovCode(null);
     ctx.doRefresh(null);
     if (ctx.popupRef.current) {
