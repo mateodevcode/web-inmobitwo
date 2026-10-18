@@ -51,7 +51,7 @@ export function ZonaPageHeader({
       )}
 
       <button
-        className={`py-2 md:px-4 border-none bg-transparent text-segundo/50 cursor-pointer text-sm hover:text-tercero ${
+        className={`py-2 md:px-4 border-none bg-transparent text-decimo cursor-pointer text-sm hover:text-decimo/80 ${
           mobileSearchOpen ? "hidden md:block" : ""
         }`}
         onClick={onBack}

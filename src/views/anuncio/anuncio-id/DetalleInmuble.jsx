@@ -321,17 +321,44 @@ const DetalleInmuble = ({
           <h2 className="text-lg font-bold text-gray-900 mb-3 font-sans">
             Ubicación
           </h2>
-          <div className="text-sm text-gray-700 space-y-0.5 mb-3">
-            {inmueble.direccion && <p>{inmueble.direccion}</p>}
-            {inmueble.barrio && <p>Barrio {inmueble.barrio}</p>}
-            {inmueble.ciudad && (
-              <p>
-                {inmueble.ciudad}
-                {inmueble.departamento ? `, ${inmueble.departamento}` : ""}
+          {inmueble.ubicacion_aproximada ? (
+            <div className="text-sm text-gray-700 space-y-0.5 mb-3">
+              <p className="font-semibold text-gray-800">
+                Ubicación aproximada
               </p>
-            )}
-          </div>
-          <UbicacionMapa lat={inmueble.latitude} lng={inmueble.longitude} />
+              <p>
+                El vendedor no marcó la dirección exacta. Este anuncio solo
+                muestra una zona aproximada (± 500 m) en el mapa.
+              </p>
+              {inmueble.barrio && <p>Barrio {inmueble.barrio}</p>}
+              {inmueble.ciudad && (
+                <p>
+                  {inmueble.ciudad}
+                  {inmueble.departamento ? `, ${inmueble.departamento}` : ""}
+                </p>
+              )}
+              <p className="text-gray-500">
+                Para más información sobre su ubicación exacta, contacta al
+                vendedor.
+              </p>
+            </div>
+          ) : (
+            <div className="text-sm text-gray-700 space-y-0.5 mb-3">
+              {inmueble.direccion && <p>{inmueble.direccion}</p>}
+              {inmueble.barrio && <p>Barrio {inmueble.barrio}</p>}
+              {inmueble.ciudad && (
+                <p>
+                  {inmueble.ciudad}
+                  {inmueble.departamento ? `, ${inmueble.departamento}` : ""}
+                </p>
+              )}
+            </div>
+          )}
+          <UbicacionMapa
+            lat={inmueble.latitude}
+            lng={inmueble.longitude}
+            aproximado={inmueble.ubicacion_aproximada}
+          />
         </div>
       )}
 

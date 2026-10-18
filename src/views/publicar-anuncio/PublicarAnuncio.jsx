@@ -11,9 +11,11 @@ import { WizardSteps } from "./components/WizardSteps";
 import { HelpFab } from "./components/HelpFab";
 import { useWizardProgress } from "./hooks/useWizardProgress";
 import { useAppContext } from "@/context/AppContext";
+import PagoUbicacionOculta from "@/components/pagos/PagoUbicacionOculta";
 
 const PublicarAnuncio = () => {
-  const { contentNumber } = useAppContext();
+  const { contentNumber, pagoAnuncio, setPagoAnuncio, usuario } =
+    useAppContext();
   const {
     modalContinuar,
     anuncioGuardado,
@@ -36,6 +38,14 @@ const PublicarAnuncio = () => {
       )}
 
       <WizardSteps modalContinuar={modalContinuar} contentNumber={contentNumber} />
+
+      {/* Pago único: ocultar ubicación (aparece tras completar el paso 2) */}
+      <PagoUbicacionOculta
+        abierto={pagoAnuncio.abierto && Boolean(pagoAnuncio.propiedadId)}
+        propiedadId={pagoAnuncio.propiedadId}
+        prefillEmail={usuario?.email || ""}
+        onClose={() => setPagoAnuncio({ abierto: false, propiedadId: null })}
+      />
 
       <ModalHamburguesa />
       <HelpFab />

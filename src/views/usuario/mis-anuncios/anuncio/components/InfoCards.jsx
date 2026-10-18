@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { MdOutlineModeEdit } from "react-icons/md";
+import { EyeOff } from "lucide-react";
 import { DetalleCard } from "./DetalleCard";
 import { CardActionLink } from "./CardActionLink";
 import { useCardEdit } from "./useCardEdit";
 import { useCatalogos } from "./useCatalogos";
 import usePropiedades from "@/hooks/usePropiedades";
+import { useAppContext } from "@/context/AppContext";
 import { DescriptionEditor } from "@/views/publicar-anuncio/paso-2/descripcion/DescriptionEditor";
 import { stripTags } from "@/views/publicar-anuncio/paso-2/descripcion/editorConfig";
 import UbicacionMapa from "@/views/anuncio/UbicacionMapa";
@@ -184,9 +186,61 @@ export function DireccionCard({ propiedad }) {
               <UbicacionMapa lat={lat} lng={lng} zoom={17} />
             </div>
           )}
+          <OpcionesUbicacionOculta propiedad={propiedad} />
         </>
       )}
     </DetalleCard>
+  );
+}
+
+// ────────────────────────────────────────────────────────────────
+// Opción/distintivo "ocultar ubicación" en el panel del anuncio.
+// - ubicacion_oculta=true → distintivo, sin opción de revertir.
+// - ubicacion_oculta_solicitada=true pero sin pago → aviso + botón pagar.
+// - la casilla en sí NO modifica campos: solo abre el modal de pago.
+// ────────────────────────────────────────────────────────────────
+function OpcionesUbicacionOculta({ propiedad }) {
+  const { setPagoAnuncio } = useAppContext();
+  const oculta = Boolean(propiedad?.ubicacion_oculta);
+  const solicitada = Boolean(propiedad?.ubicacion_oculta_solicitada);
+
+  if (oculta) {
+    return (
+      <div className="mt-4 flex items-start gap-2 rounded-md border border-green-300 bg-green-50 p-3 text-sm text-green-800">
+        <EyeOff size={16} className="mt-0.5 shrink-0" />
+        <span>
+          <strong>Ubicación oculta al público.</strong> Los compradores solo ven
+          una zona aproximada (círculo). Esta opción es permanente.
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-4 rounded-md border border-gray-200 p-3">
+      {solicitada && (
+        <p className="mb-2 text-xs text-amber-700 font-semibold">
+          Tu ubicación exacta sigue visible
+        </p>
+      )}
+      <button
+        type="button"
+        onClick={() =>
+          setPagoAnuncio({
+            abierto: true,
+            propiedadId: String(propiedad?.id ?? ""),
+          })
+        }
+        className="flex items-center gap-2 text-sm font-semibold text-blue-700 hover:underline"
+      >
+        <EyeOff size={15} />
+        Ocultar ubicación exacta (pago único de $22.000 COP)
+      </button>
+      <p className="mt-1 text-xs text-gray-500">
+        Puedes pagarlo ahora o más tarde. Mientras el pago no esté confirmado,
+        la ubicación exacta seguirá visible para todos.
+      </p>
+    </div>
   );
 }
 

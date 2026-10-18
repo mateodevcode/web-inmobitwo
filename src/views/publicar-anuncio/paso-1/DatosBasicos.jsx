@@ -1,6 +1,7 @@
 import { useAppContext } from "@/context/AppContext";
 import useDatosBasicos from "@/hooks/useDatosBasicos";
 import LocationForm from "@/views/publicar-anuncio/paso-1/ubicacion/LocationForm";
+import CheckOcultarUbicacion from "@/views/publicar-anuncio/paso-1/ubicacion/CheckOcultarUbicacion";
 import Informacion from "@/views/publicar-anuncio/informacion/Informacion";
 import ContactForm from "@/views/publicar-anuncio/paso-1/contacto/ContactForm";
 import TipoInmueble from "./tipo/TipoInmueble";
@@ -55,6 +56,9 @@ const DatosBasicos = () => {
 
           {/* Form localizacion */}
           <LocationForm />
+
+          {/* Pago único: ocultar la ubicación exacta en el mapa */}
+          <CheckOcultarUbicacion />
 
           {/* Formulario de contacto */}
           {comprobarDireccion && <ContactForm />}

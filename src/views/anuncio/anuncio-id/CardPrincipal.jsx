@@ -83,18 +83,32 @@ const CardPrincipal = ({
                 `${inmueble.operacion || ""} · ${inmueble.tipo_inmueble || "Inmueble"} en ${inmueble.ciudad || ""}`}
             </h1>
             <div className="flex md:items-center items-start gap-2 md:flex-row flex-col mt-4">
-              <p className="text-segundo/60 md:text-base text-sm">
-                {inmueble.direccion} N {inmueble.numero_direccion}
-                {", "}
-                {inmueble.barrio ? inmueble.barrio : null}
-                {inmueble.barrio ? ", " : null}
-                {inmueble.ciudad}{" "}
-                {inmueble.departamento && `, ${inmueble.departamento}`}
-              </p>
+              {inmueble.ubicacion_aproximada ? (
+                <p className="text-segundo/60 md:text-base text-sm">
+                  Ubicación aproximada{inmueble.barrio ? ` · ${inmueble.barrio}` : ""}
+                  {inmueble.ciudad ? `, ${inmueble.ciudad}` : ""}
+                  {inmueble.departamento ? `, ${inmueble.departamento}` : ""}
+                  {" · "}
+                  <span className="font-semibold text-gray-700">
+                    el vendedor no comparte la dirección exacta
+                  </span>
+                </p>
+              ) : (
+                <p className="text-segundo/60 md:text-base text-sm">
+                  {inmueble.direccion} N {inmueble.numero_direccion}
+                  {", "}
+                  {inmueble.barrio ? inmueble.barrio : null}
+                  {inmueble.barrio ? ", " : null}
+                  {inmueble.ciudad}{" "}
+                  {inmueble.departamento && `, ${inmueble.departamento}`}
+                </p>
+              )}
               {inmueble.latitude && inmueble.longitude && (
                 <div className="flex items-center gap-1 text-decimo hover:underline cursor-pointer select-none md:text-base text-sm">
                   <FaMapMarkerAlt className="" />
-                  <span className="text-sm">Ver mapa</span>
+                  <span className="text-sm">
+                    {inmueble.ubicacion_aproximada ? "Ver mapa (zona aproximada)" : "Ver mapa"}
+                  </span>
                 </div>
               )}
             </div>

@@ -147,6 +147,12 @@ export const AppProvider = ({ children }) => {
   const [filtroSeleccionado, setFiltroSeleccionado] = useState("todo");
   const [openModalInformativo, setOpenModalInformativo] = useState(false);
 
+  // ─────────────────────────────────────────────
+  // PAGOS — ocultar ubicación ($22.000 COP por anuncio, Mercado Pago)
+  // pagoAnuncio = { abierto, propiedadId } (el modal PagoUbicacionOculta lo usa)
+  // ─────────────────────────────────────────────
+  const [pagoAnuncio, setPagoAnuncio] = useState({ abierto: false, propiedadId: null });
+
   // Se llama AL INICIO de cualquier petición
   const iniciarCarga = useCallback(() => {
     contadorPeticiones.current += 1;
@@ -275,6 +281,10 @@ export const AppProvider = ({ children }) => {
         // Filtros
         filtroSeleccionado,
         setFiltroSeleccionado,
+
+        // Pagos (ocultar ubicación)
+        pagoAnuncio,
+        setPagoAnuncio,
       }}
     >
       {children}

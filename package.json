@@ -12,6 +12,7 @@
     "@geoman-io/maplibre-geoman-free": "^0.8.4",
     "@gsap/react": "^2.1.2",
     "@headlessui/react": "^2.2.10",
+    "@mercadopago/sdk-react": "^1.0.7",
     "@tailwindcss/typography": "^0.5.20",
     "@tiptap/extension-link": "^3.31.3",
     "@tiptap/react": "^3.31.3",

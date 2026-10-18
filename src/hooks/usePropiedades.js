@@ -80,6 +80,9 @@ const CAMPOS_PROPIEDAD = [
   "zona",
   "how_to_contact",
   "telefono_contacto",
+  // Informativo: intención de pagar para ocultar la ubicación. Es el único
+  // campo de pago que viaja en crear/editar (el resto los maneja el backend).
+  "ubicacion_oculta_solicitada",
 ];
 
 // Normaliza coordenadas: si llegan como array o string de Postgres "{a,b}",
@@ -134,6 +137,7 @@ const usePropiedades = () => {
     terminarCarga,
     setContentNumber,
     setPropiedad,
+    setPagoAnuncio,
   } = useAppContext();
   const cargandoPropiedades = useRef(false);
   const cargandoPropiedadesInicio = useRef(false);
@@ -360,6 +364,12 @@ const usePropiedades = () => {
       if (success) {
         await guardarCaracteristicas(nuevaPropiedad?.id);
         toast.success(message);
+        // Pago "ocultar ubicación": si la casilla estaba marcada, se muestra la
+        // pantalla de pago sobre el paso 3 (que se alcanza igual: el flujo
+        // nunca queda bloqueado por un pago rechazado o pendiente).
+        if (formDataPropiedad.ubicacion_oculta_solicitada && nuevaPropiedad?.id) {
+          setPagoAnuncio({ abierto: true, propiedadId: String(nuevaPropiedad.id) });
+        }
         resetFormDataPropiedad();
         setOpenModalAgregarPropiedad(false);
         setContentNumber(2);
