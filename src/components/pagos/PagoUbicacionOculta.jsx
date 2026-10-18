@@ -3,9 +3,9 @@
 // Payment Brick de Mercado Pago (Colombia, es-CO) + estados del flujo.
 // El monto mostrado es solo visual: el cobro real lo fija el backend.
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { X, MapPin, ShieldCheck } from "lucide-react";
-import { Payment, initMercadoPago } from "@mercadopago/sdk-react";
+import { CardPayment, initMercadoPago } from "@mercadopago/sdk-react";
 import { MP_PUBLIC_KEY } from "@/config/config.js";
 import usePagoUbicacionOculta from "@/hooks/usePagoUbicacionOculta";
 
@@ -56,15 +56,45 @@ export default function PagoUbicacionOculta({
   const onBrickSubmit = useCallback(
     async (datosBrick) => {
       setEnProcesoBrick(true);
-      return await enviarPago(datosBrick);
+      // CardPayment entrega {selectedPaymentMethodId, selectedPaymentType,
+      // formData:{token, issuer_id, installments, payer:{...}}}. Normalizamos
+      // a la forma que espera enviarPago (Payment Brick plano).
+      const f = datosBrick?.formData ?? datosBrick ?? {};
+      return await enviarPago({
+        token: f.token,
+        payment_method_id: datosBrick?.selectedPaymentMethodId || f.payment_method_id,
+        installments: f.installments,
+        issuer_id: f.issuer_id,
+        payer: f.payer,
+      });
     },
     [enviarPago, setEnProcesoBrick],
   );
 
-  if (!abierto || !propiedadId) return null;
-
   const precio = config?.precio ?? 22000;
   const moneda = config?.moneda ?? "COP";
+
+  // El CardPayment del SDK re-mounta SIEMPRE que cambia la identidad de sus
+  // props (useEffect con [initialization, onError, ...]). Objetos/flechas
+  // creadas en el render provocaban un mount → unmount → mount que rompe los
+  // Secure Fields ("fields_setup_failed_after_3_tries"). Por eso, identidad
+  // estable en TODO lo que entra al brick.
+  const inicializacionBrick = useMemo(
+    () => ({
+      amount: precio, // solo visual; el backend cobra lo suyo
+      payer: prefillEmail ? { email: prefillEmail } : {},
+    }),
+    [precio, prefillEmail],
+  );
+  const onBrickError = useCallback((e) => {
+    console.error("CardPayment Brick error:", e);
+    setEnProcesoBrick(false);
+  }, [setEnProcesoBrick]);
+  const onBrickReady = useCallback(() => {
+    setEnProcesoBrick(false);
+  }, [setEnProcesoBrick]);
+
+  if (!abierto || !propiedadId) return null;
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 font-montserrat">
@@ -130,23 +160,12 @@ export default function PagoUbicacionOculta({
                 Reintentar pago
               </button>
             ) : (
-              <Payment
-                initialization={{
-                  amount: precio, // solo visual; el backend cobra lo suyo
-                  payer: prefillEmail ? { email: prefillEmail } : {},
-                }}
-                customization={{
-                  paymentMethods: {
-                    maxInstallments: config?.maxCuotas ?? 1,
-                  },
-                }}
+              <CardPayment
+                initialization={inicializacionBrick}
                 locale="es-CO"
                 onSubmit={onBrickSubmit}
-                onError={(e) => {
-                  console.error("Payment Brick error:", e);
-                  setEnProcesoBrick(false);
-                }}
-                onReady={() => setEnProcesoBrick(false)}
+                onError={onBrickError}
+                onReady={onBrickReady}
               />
             )}
           </div>
@@ -173,10 +192,10 @@ export default function PagoUbicacionOculta({
                 ? "Continuar"
                 : "Continuar sin ocultar por ahora (avanzar al paso 3)"}
             </button>
-            <p className="flex items-center gap-1.5 text-[11px] text-gray-500">
-              <ShieldCheck size={13} /> Pago procesado por Mercado Pago. No
-              guardamos datos de tarjeta.
-            </p>
+              <p className="flex items-center gap-1.5 text-[11px] text-gray-500">
+                <ShieldCheck size={13} /> Pago con tarjeta, procesado por
+                Mercado Pago. No guardamos datos de tarjeta.
+              </p>
           </div>
         )}
       </div>

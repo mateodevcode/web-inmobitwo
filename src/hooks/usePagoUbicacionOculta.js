@@ -2,7 +2,7 @@
 // Lógica compartida del pago "ocultar ubicación" ($22.000 COP, Mercado Pago).
 // El componente visual está en src/components/pagos/PagoUbicacionOculta.jsx.
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { apiBackend } from "@/actions/apiBackend";
 
 export const ESTADO_PAGO = {
@@ -21,7 +21,9 @@ export default function usePagoUbicacionOculta(propiedadId) {
   const [enProcesoBrick, setEnProcesoBrick] = useState(false);
 
   // GET /pagos/config — precio/moneda/enable
-  const cargarConfig = async () => {
+  // useCallback: identidad estable; PagoUbicacionOculta la usa en useState
+  // deps y sin esto se crea un bucle fetch→render→fetch.
+  const cargarConfig = useCallback(async () => {
     try {
       const { data } = await apiBackend("/pagos/config");
       return {
@@ -33,10 +35,15 @@ export default function usePagoUbicacionOculta(propiedadId) {
     } catch {
       return { habilitado: false, precio: 22000, moneda: "COP", maxCuotas: 1 };
     }
-  };
+  }, []);
 
   // Envía el pago a POST /pagos/ubicacion-oculta
-  const enviarPago = async (datosBrick) => {
+  const enviarPago = useCallback(async (datosBrick) => {
+    if (!propiedadId) {
+      setEstado(ESTADO_PAGO.ERROR);
+      setMensaje("Falta el id del anuncio para iniciar el pago.");
+      return null;
+    }
     setEstado(ESTADO_PAGO.ENVIANDO);
     setMensaje("");
 
@@ -103,10 +110,11 @@ export default function usePagoUbicacionOculta(propiedadId) {
     } finally {
       setEnProcesoBrick(false);
     }
-  };
+  }, [propiedadId]);
 
   // GET /pagos/ubicacion-oculta/:propiedadId/estado (polling)
-  const consultarEstado = async () => {
+  const consultarEstado = useCallback(async () => {
+    if (!propiedadId) return null;
     try {
       const res = await apiBackend(
         `/pagos/ubicacion-oculta/${propiedadId}/estado`,
@@ -126,7 +134,7 @@ export default function usePagoUbicacionOculta(propiedadId) {
     } catch {
       return null;
     }
-  };
+  }, [propiedadId]);
 
   return {
     estado,
