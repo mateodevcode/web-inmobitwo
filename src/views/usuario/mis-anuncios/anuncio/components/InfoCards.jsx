@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { EyeOff } from "lucide-react";
@@ -17,6 +17,8 @@ import {
   usePrecioSugerido,
 } from "./usePrecioSugerido";
 import { SugerenciaPrecio } from "./SugerenciaPrecio";
+import usePago from "@/hooks/usePago";
+import { PAGO_UBICACION_OCULTA } from "@/lib/pagos/productos";
 
 const inputCls =
   "border border-segundo/50 p-2.5 w-full text-segundo bg-white";
@@ -203,6 +205,26 @@ function OpcionesUbicacionOculta({ propiedad }) {
   const { setPagoAnuncio } = useAppContext();
   const oculta = Boolean(propiedad?.ubicacion_oculta);
   const solicitada = Boolean(propiedad?.ubicacion_oculta_solicitada);
+  const [precio, setPrecio] = useState(PAGO_UBICACION_OCULTA.precioDefault);
+  const { estado, cargarConfig, consultarEstado } = usePago(
+    PAGO_UBICACION_OCULTA,
+    propiedad?.id,
+  );
+
+  // Precio real del backend (nunca se hardcodea en la UI) + estado del último
+  // intento para mostrar "Pago en proceso" sin abrir el modal.
+  useEffect(() => {
+    let activo = true;
+    cargarConfig().then((c) => {
+      if (activo && c?.precio) setPrecio(c.precio);
+    });
+    if (!oculta) consultarEstado();
+    return () => {
+      activo = false;
+    };
+  }, [oculta, cargarConfig, consultarEstado]);
+
+  const enProceso = ["pending", "sin_confirmar"].includes(estado);
 
   if (oculta) {
     return (
@@ -223,6 +245,12 @@ function OpcionesUbicacionOculta({ propiedad }) {
           Tu ubicación exacta sigue visible
         </p>
       )}
+      {enProceso && (
+        <p className="mb-2 text-xs text-amber-700 font-semibold">
+          Pago en proceso de confirmación. La ubicación exacta seguirá visible
+          hasta que Mercado Pago lo confirme.
+        </p>
+      )}
       <button
         type="button"
         onClick={() =>
@@ -234,7 +262,9 @@ function OpcionesUbicacionOculta({ propiedad }) {
         className="flex items-center gap-2 text-sm font-semibold text-blue-700 hover:underline"
       >
         <EyeOff size={15} />
-        Ocultar ubicación exacta (pago único de $22.000 COP)
+        {`Ocultar ubicación exacta (pago único de $${precio.toLocaleString(
+          "es-CO",
+        )} COP)`}
       </button>
       <p className="mt-1 text-xs text-gray-500">
         Puedes pagarlo ahora o más tarde. Mientras el pago no esté confirmado,

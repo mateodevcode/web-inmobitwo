@@ -35,6 +35,7 @@ import {
   leerProgreso,
   PASO_DETALLES,
 } from "@/views/publicar-anuncio/anuncioProgreso";
+import { validarPaso1 } from "@/views/publicar-anuncio/hooks/validarPaso1";
 
 const useDatosBasicos = () => {
   const {
@@ -408,6 +409,20 @@ const useDatosBasicos = () => {
   // Al continuar: valida los teléfonos (10 dígitos empezando por 3). Si alguno
   // es inválido, bloquea el avance. Si todos son válidos, PATCH al usuario.
   const handleContinuarContacto = async () => {
+    // Volver atrás ya no se puede una vez avanzado: aquí cerramos el espectro
+    // de validación del paso 1 (antes, los faltantes reventaban al publicar
+    // en el paso 2 con un mensaje confuso).
+    const erroresPaso1 = validarPaso1(formDataPropiedad);
+    if (erroresPaso1.length > 0) {
+      toast.error(erroresPaso1[0], { position: "bottom-right" });
+      if (erroresPaso1.length > 1) {
+        toast.info(`Además faltan otros ${erroresPaso1.length - 1} datos del paso 1.`, {
+          position: "bottom-right",
+        });
+      }
+      return;
+    }
+
     const numeros = phones.map((p) => (p ?? "").trim()).filter(Boolean);
 
     if (numeros.length === 0) {

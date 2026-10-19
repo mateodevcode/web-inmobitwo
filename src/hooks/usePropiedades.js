@@ -730,8 +730,9 @@ const usePropiedades = () => {
   // --------------------------------
   // cargar propiedad
   // --------------------------------
-  const cargarPropiedad = async (anuncioId) => {
-    if (propiedadCache.has(cacheKey(anuncioId))) {
+  // force=true ignora la caché (p. ej. tras confirmar un pago).
+  const cargarPropiedad = async (anuncioId, { force = false } = {}) => {
+    if (!force && propiedadCache.has(cacheKey(anuncioId))) {
       setPropiedad(propiedadCache.get(cacheKey(anuncioId)));
       return;
     }

@@ -10,6 +10,7 @@ import { MapPin, ShieldCheck, EyeOff, CircleAlert } from "lucide-react";
 import { apiBackend } from "@/actions/apiBackend";
 import { MP_PUBLIC_KEY } from "@/config/config.js";
 import { useAppContext } from "@/context/AppContext";
+import { PAGO_UBICACION_OCULTA } from "@/lib/pagos/productos";
 
 const CheckOcultarUbicacion = () => {
   const { formDataPropiedad, setFormDataPropiedad } = useAppContext();
@@ -31,8 +32,9 @@ const CheckOcultarUbicacion = () => {
 
   const habilitado = Boolean(config?.habilitado && MP_PUBLIC_KEY);
   const marcado = Boolean(formDataPropiedad.ubicacion_oculta_solicitada);
-  const precio = config?.precio ?? 22000;
-  const moneda = config?.moneda ?? "COP";
+  const producto = config?.productos?.ubicacion_oculta;
+  const precio = producto?.precio ?? config?.precio ?? PAGO_UBICACION_OCULTA.precioDefault;
+  const moneda = producto?.moneda ?? config?.moneda ?? PAGO_UBICACION_OCULTA.monedaDefault;
 
   const toggle = () => {
     setFormDataPropiedad((prev) => ({

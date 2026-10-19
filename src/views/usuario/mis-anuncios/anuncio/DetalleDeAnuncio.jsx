@@ -14,10 +14,13 @@ import {
   DescripcionCard,
   ServiciosCard,
 } from "./components/InfoCards";
+import PagoUbicacionOculta from "@/components/pagos/PagoUbicacionOculta";
+import { useAppContext } from "@/context/AppContext";
 
 const DetalleDeAnuncio = () => {
   const { propiedad, cargandoGlobal, setLoading } = useAnuncioDetalle();
   const { cargarPropiedad } = usePropiedades();
+  const { pagoAnuncio, setPagoAnuncio, usuario } = useAppContext();
 
   if (cargandoGlobal) {
     return (
@@ -65,6 +68,17 @@ const DetalleDeAnuncio = () => {
       <DireccionCard propiedad={propiedad} />
       <DescripcionCard propiedad={propiedad} />
       <ServiciosCard propiedad={propiedad} />
+
+      <PagoUbicacionOculta
+        abierto={pagoAnuncio.abierto && Boolean(pagoAnuncio.propiedadId)}
+        propiedadId={pagoAnuncio.propiedadId}
+        prefillEmail={usuario?.email || ""}
+        onAprobado={() => cargarPropiedad(propiedad.id, { force: true })}
+        onClose={() => {
+          setPagoAnuncio({ abierto: false, propiedadId: null });
+          cargarPropiedad(propiedad.id, { force: true });
+        }}
+      />
     </div>
   );
 };

@@ -7,6 +7,7 @@ import Caracteristicas from "@/views/publicar-anuncio/paso-2/components/Caracter
 import Documentacion from "@/views/publicar-anuncio/paso-2/components/Documentacion";
 import Precio from "@/views/publicar-anuncio/paso-2/components/Precio";
 import TituloDescripcion from "@/views/publicar-anuncio/paso-2/descripcion/TituloDescripcion";
+import VolverPaso1 from "@/views/publicar-anuncio/paso-2/components/VolverPaso1";
 
 const Detalles = () => {
   return (
@@ -28,6 +29,8 @@ const Detalles = () => {
       <div className="w-full lg:w-1/2 h-full hidden lg:flex">
         <Informacion />
       </div>
+      {/* Barra inferior: volver al paso 1 sin estar atrapado en el paso 2 */}
+      <VolverPaso1 />
     </div>
   );
 };
