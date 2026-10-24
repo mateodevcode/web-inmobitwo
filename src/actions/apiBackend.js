@@ -57,7 +57,7 @@ export async function apiBackend(endpoint, metodo = "GET", datos = null) {
     }
 
     const data = await res.json();
-    return formatearRespuesta(data, res.status);
+    return formatearRespuesta(data, res.status, res.headers.get("Retry-After"));
   } catch (error) {
     return {
       success: false,
@@ -71,13 +71,16 @@ export async function apiBackend(endpoint, metodo = "GET", datos = null) {
 
 // ─────────────────────────────────────────────
 // Normaliza la respuesta siempre al mismo formato
+// retryAfter: segundos que el servidor pide esperar (header Retry-After, p.ej. 429)
 // ─────────────────────────────────────────────
-function formatearRespuesta(data, status) {
+function formatearRespuesta(data, status, retryAfter = null) {
+  const segundos = Number(retryAfter);
   return {
     success: data.success ?? false,
     message: data.message ?? null,
     data: data.data ?? null,
     error: data.error ?? null,
     status,
+    retryAfter: Number.isFinite(segundos) && segundos > 0 ? segundos : null,
   };
 }

@@ -30,6 +30,11 @@ let backoffMs = 1000;
 let paradaManual = false;
 let clientId = null;
 
+// Caché del token WS en memoria: se reutiliza en reconexiones mientras
+// siga vigente, para no agotar el cupo de /chat/token (429).
+let tokenCache = null; // { token, channel, wsUrl, expiraEnMs }
+const MARGEN_TOKEN_S = 30; // renovar 30 s antes de que expire
+
 const BACKOFF_MAX = 30000;
 
 const leerUsuarioId = () => {
@@ -47,6 +52,28 @@ const limpiarTimers = () => {
   if (renovacionTimer) clearTimeout(renovacionTimer);
   reintentoTimer = null;
   renovacionTimer = null;
+};
+
+// Devuelve el token cacheado si aún es válido (con margen de renovación);
+// si no, lo descarta y fuerza pedir uno nuevo.
+const tokenCacheVigente = () => {
+  if (!tokenCache) return null;
+  if (Date.now() >= tokenCache.expiraEnMs - MARGEN_TOKEN_S * 1000) {
+    tokenCache = null;
+    return null;
+  }
+  return tokenCache;
+};
+
+const guardarTokenCache = (data) => {
+  const expiresIn = Number(data.expiresIn) || 600;
+  tokenCache = {
+    token: data.token,
+    channel: data.channel,
+    wsUrl: data.wsUrl,
+    expiraEnMs: Date.now() + expiresIn * 1000,
+  };
+  return tokenCache;
 };
 
 const totalNoLeidos = (convs) =>
@@ -82,11 +109,18 @@ const programarRenovacion = (expiresIn) => {
   renovacionTimer = setTimeout(() => conectar(), ms);
 };
 
-const programarReintento = () => {
+// esperaForzadaMs: p.ej. el Retry-After de un 429; si viene, se respeta
+// en vez del backoff exponencial.
+const programarReintento = (esperaForzadaMs = null) => {
   if (paradaManual) return;
   const jitter = Math.random() * 1000;
-  const ms = Math.min(backoffMs + jitter, BACKOFF_MAX);
-  backoffMs = Math.min(backoffMs * 2, BACKOFF_MAX);
+  const ms =
+    esperaForzadaMs != null
+      ? esperaForzadaMs + jitter
+      : Math.min(backoffMs + jitter, BACKOFF_MAX);
+  if (esperaForzadaMs == null) {
+    backoffMs = Math.min(backoffMs * 2, BACKOFF_MAX);
+  }
   reintentoTimer = setTimeout(() => conectar(), ms);
 };
 
@@ -136,9 +170,22 @@ const conectar = async () => {
   detenerSocket();
   setEstadoConexion("conectando");
   try {
-    const res = await obtenerTokenChat();
-    if (!res?.success || !res.data?.token) throw new Error("sin token");
-    const { token, expiresIn, channel, wsUrl } = res.data;
+    // Reutiliza el token cacheado si sigue vigente; solo pide uno nuevo
+    // cuando no hay caché o está por expirar. Así las reconexiones no
+    // consumen el cupo de /chat/token.
+    let tokenData = tokenCacheVigente();
+    if (!tokenData) {
+      const res = await obtenerTokenChat();
+      if (res?.status === 429) {
+        // El servidor pide esperar: no reintentar antes, ni consumir cupo.
+        setEstadoConexion("desconectado");
+        programarReintento((res.retryAfter ?? 300) * 1000);
+        return;
+      }
+      if (!res?.success || !res.data?.token) throw new Error("sin token");
+      tokenData = guardarTokenCache(res.data);
+    }
+    const { token, channel, wsUrl, expiraEnMs } = tokenData;
     if (!clientId) {
       const rand =
         typeof crypto !== "undefined" && crypto.randomUUID
@@ -190,7 +237,8 @@ const conectar = async () => {
         // ya cerrado
       }
     };
-    programarRenovacion(expiresIn ?? 600);
+    // Renovar 30 s antes de que venza el token usado (fresco o cacheado).
+    programarRenovacion((expiraEnMs - Date.now()) / 1000);
   } catch {
     setEstadoConexion("desconectado");
     programarReintento();
@@ -224,6 +272,9 @@ export const detenerChatSocket = () => {
   paradaManual = true;
   limpiarTimers();
   detenerSocket();
+  // El caché es por sesión: al apagar (logout / cambio de usuario) no debe
+  // sobrevivir un token de otra cuenta.
+  tokenCache = null;
   setEstadoConexion("desconectado");
   if (typeof window !== "undefined") {
     window.removeEventListener("online", alVolverOnline);
