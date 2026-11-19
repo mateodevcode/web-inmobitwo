@@ -6,7 +6,7 @@ import { HiOutlineFlag } from "react-icons/hi2";
 import UbicacionMapa from "../UbicacionMapa";
 import { formatPrecioCompleto } from "@/utils/formatPrecio";
 import { useState, useEffect, useMemo } from "react";
-import DOMPurify from "dompurify";
+import { sanitizarHtml } from "@/lib/sanitizarHtml";
 import useScrollSentinel from "@/hooks/useScrollSentinel";
 import { apiBackend } from "@/actions/apiBackend";
 import { useRouter } from "next/navigation";
@@ -53,7 +53,7 @@ const DetalleInmuble = ({
   // renderiza formateada (mismo patrón que DescripcionAnuncio / InfoCards).
   // Seguro en SSR: este detalle solo se renderiza con datos del fetch cliente.
   const descripcionLimpia = useMemo(
-    () => (descripcionHtml ? DOMPurify.sanitize(descripcionHtml) : ""),
+    () => (descripcionHtml ? sanitizarHtml(descripcionHtml) : ""),
     [descripcionHtml],
   );
   const descripcionTexto = useMemo(

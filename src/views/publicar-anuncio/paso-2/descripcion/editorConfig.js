@@ -24,6 +24,8 @@ export const editorExtensions = [
   }),
   Link.configure({
     openOnClick: false,
+    // Solo http(s), mailto y tel: bloquea enlaces javascript:/data:
+    isAllowedUri: (url) => /^(https?:|mailto:|tel:)/i.test(url ?? ""),
     HTMLAttributes: {
       class: "text-blue-600 underline cursor-pointer",
     },

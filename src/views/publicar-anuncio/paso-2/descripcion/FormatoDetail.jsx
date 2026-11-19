@@ -1,4 +1,4 @@
-import DOMPurify from "dompurify";
+import { sanitizarHtml } from "@/lib/sanitizarHtml";
 import { FORMATO_ICONS, TONOS_REFINAR, stripHtml } from "./formatosMeta";
 
 export function FormatoDetail({
@@ -31,7 +31,7 @@ export function FormatoDetail({
           <div
             className="prose prose-sm max-w-none text-sm text-slate-700"
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(formato.descripcion),
+              __html: sanitizarHtml(formato.descripcion),
             }}
           />
         ) : (

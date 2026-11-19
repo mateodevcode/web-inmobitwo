@@ -1,3 +1,4 @@
+import { sanitizarHtml } from "@/lib/sanitizarHtml";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { MdOutlineModeEdit } from "react-icons/md";
@@ -279,7 +280,7 @@ export function DescripcionCard({ propiedad }) {
     useCardEdit(propiedad, ["description"]);
   // Se muestra formateada como la verá el visitante (el texto guarda HTML
   // del editor TipTap de creación). Vacía = sin texto real tras los tags.
-  const html = propiedad?.description || "";
+  const html = sanitizarHtml(propiedad?.description || "");
   const tieneTexto = stripTags(html).trim().length > 0;
 
   return (

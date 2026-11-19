@@ -1,3 +1,4 @@
+import { sanitizarHtml } from "@/lib/sanitizarHtml";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { useState } from "react";
 import { editorExtensions, stripTags } from "./editorConfig";
@@ -44,7 +45,7 @@ export function DescriptionEditor({
       ) : (
         <div
           className="prose prose-sm max-w-none p-4 min-h-80"
-          dangerouslySetInnerHTML={{ __html: value }}
+          dangerouslySetInnerHTML={{ __html: sanitizarHtml(value) }}
           style={{
             fontSize: "14px",
             lineHeight: "1.6",
