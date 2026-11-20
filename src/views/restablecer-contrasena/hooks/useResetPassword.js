@@ -4,7 +4,9 @@ import { toast } from "sonner";
 import { apiBackend } from "@/actions/apiBackend.js";
 import { validatePasswordRegistro } from "@/utils/validatePassword";
 
-export function useResetPassword(idReset, email) {
+// tokenReset: lo entrega /api/validar-codigo; es lo único que acepta el backend
+// para cambiar la contraseña (vale 10 min y un solo uso).
+export function useResetPassword(tokenReset, email) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [complete, setComplete] = useState(false);
@@ -23,7 +25,7 @@ export function useResetPassword(idReset, email) {
     try {
       const res = await apiBackend("/api/usuario/reset-password", "PATCH", {
         password,
-        id: idReset,
+        token: tokenReset,
       });
       if (res.success === true) {
         toast.success(res.message, { position: "top-right" });
