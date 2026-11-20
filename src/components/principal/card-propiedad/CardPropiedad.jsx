@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { BsGeoAlt, BsTelephone } from "react-icons/bs";
 import { CiShare2 } from "react-icons/ci";
 import { FaRegBuilding } from "react-icons/fa";
@@ -225,4 +226,6 @@ const CardPropiedad = ({ propiedades, ultimaCardRef, esLaUltima }) => {
   );
 };
 
-export default CardPropiedad;
+// memo: el feed se re-renderiza al cargar más o al mostrar el botón "Ver más";
+// las tarjetas ya pintadas no cambian (props estables: objeto del store y ref).
+export default memo(CardPropiedad);

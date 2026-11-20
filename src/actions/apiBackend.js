@@ -3,6 +3,9 @@ import { URL_BACKEND } from "@/config/config.js";
 import { obtenerTokenFresco } from "./refreshToken";
 import { buildLoginUrl, obtenerOrigenActual } from "@/utils/authRedirect.js";
 
+// Tiempo máximo por petición JSON (antes no había límite: la UI podía quedar cargando para siempre).
+const TIMEOUT_MS = 20_000;
+
 export async function apiBackend(endpoint, metodo = "GET", datos = null) {
   try {
     const url = `${URL_BACKEND}${endpoint}`;
@@ -26,6 +29,7 @@ export async function apiBackend(endpoint, metodo = "GET", datos = null) {
       method: metodo,
       headers,
       credentials: "include", // ← necesario para enviar/recibir cookies (refresh_token)
+      signal: AbortSignal.timeout(TIMEOUT_MS),
       body: metodo !== "GET" && datos !== null ? JSON.stringify(datos) : null,
     });
 
@@ -42,6 +46,7 @@ export async function apiBackend(endpoint, metodo = "GET", datos = null) {
             Authorization: `Bearer ${nuevoToken}`,
           },
           credentials: "include",
+          signal: AbortSignal.timeout(TIMEOUT_MS),
           body:
             metodo !== "GET" && datos !== null ? JSON.stringify(datos) : null,
         });
@@ -59,6 +64,16 @@ export async function apiBackend(endpoint, metodo = "GET", datos = null) {
     const data = await res.json();
     return formatearRespuesta(data, res.status, res.headers.get("Retry-After"));
   } catch (error) {
+    // Sin respuesta a tiempo: mensaje claro en vez de una espera infinita.
+    if (error?.name === "TimeoutError") {
+      return {
+        success: false,
+        message: "El servidor tardó demasiado en responder.",
+        error: "El servidor tardó demasiado en responder. Revisa tu conexión e inténtalo de nuevo.",
+        data: null,
+        status: 408,
+      };
+    }
     return {
       success: false,
       message: "No se pudo conectar con el servidor",

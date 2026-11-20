@@ -1,7 +1,7 @@
 "use client";
 // src/context/AppProvider.jsx
 // Igual que en Vite, salvo: 'use client' + guards anti-SSR (localStorage no existe en prerender).
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AppContext } from "@/context/AppContext.js";
 import { apiBackend } from "@/actions/apiBackend.js";
 import { getSessionId } from "@/utils/getSessionId.js";
@@ -58,7 +58,7 @@ export const AppProvider = ({ children }) => {
 
   const [loadingAuth, setLoadingAuth] = useState(false);
 
-  const guardarSesion = async (usuarioData, accessToken) => {
+  const guardarSesion = useCallback(async (usuarioData, accessToken) => {
     localStorage.setItem("usuario", JSON.stringify(usuarioData));
     localStorage.setItem("access_token", accessToken);
     setUsuario(usuarioData);
@@ -77,9 +77,9 @@ export const AppProvider = ({ children }) => {
         );
       }
     }
-  };
+  }, [consentimientoTracking]);
 
-  const cerrarSesion = async () => {
+  const cerrarSesion = useCallback(async () => {
     await apiBackend("/auth/logout", "POST");
     localStorage.removeItem("usuario");
     localStorage.removeItem("access_token");
@@ -89,7 +89,7 @@ export const AppProvider = ({ children }) => {
     clearDescartadosStore();
     detenerChatSocket();
     clearChatStore();
-  };
+  }, []);
 
   const estaAutenticado = !!usuario;
   const esSuperAdmin = usuario?.rol === "superadmin";
@@ -103,7 +103,7 @@ export const AppProvider = ({ children }) => {
     FORM_DATA_USUARIO_INICIAL,
   );
 
-  const resetFormDataUsuario = () => setFormDataUsuario(formDataUsuarioInicial);
+  const resetFormDataUsuario = useCallback(() => setFormDataUsuario(formDataUsuarioInicial), [formDataUsuarioInicial]);
 
   // ─────────────────────────────────────────────
   // PROPIEDADES (el feed vive en hooks/feedStore; aquí solo lo CRUD de edición)
@@ -172,121 +172,126 @@ export const AppProvider = ({ children }) => {
   // ─────────────────────────────────────────────
   // (estado declarado arriba, junto a AUTH)
 
-  const aceptarTracking = () => {
+  const aceptarTracking = useCallback(() => {
     localStorage.setItem("consentimiento_tracking", "true");
     setConsentimientoTracking(true);
-  };
+  }, []);
 
-  const rechazarTracking = () => {
+  const rechazarTracking = useCallback(() => {
     localStorage.setItem("consentimiento_tracking", "false");
     setConsentimientoTracking(false);
-  };
+  }, []);
+
+  // Valor memoizado: sin esto el objeto cambia en cada render del proveedor y
+  // re-renderiza a todos los consumidores. Los setters de useState son estables.
+  const valor = useMemo(
+    () => ({
+      // Auth
+      usuario,
+      setUsuario,
+      authListo,
+      loadingAuth,
+      setLoadingAuth,
+      estaAutenticado,
+      esSuperAdmin,
+      guardarSesion,
+      cerrarSesion,
+
+      // Formulario usuario
+      formDataUsuario,
+      setFormDataUsuario,
+      resetFormDataUsuario,
+
+      // Propiedades
+      formDataPropiedad,
+      setFormDataPropiedad,
+      propiedadAEliminar,
+      setPropiedadAEliminar,
+      eliminandoPropiedad,
+      setEliminandoPropiedad,
+      propiedad,
+      setPropiedad,
+
+      // Search
+      search,
+      setSearch,
+
+      // modales
+      openModalUser,
+      setOpenModalUser,
+      openModalAgregarPropiedad,
+      setOpenModalAgregarPropiedad,
+      openModalConfirmarEliminarPropiedad,
+      setOpenModalConfirmarEliminarPropiedad,
+      openModalHamburguesa,
+      setOpenModalHamburguesa,
+      openModalCambiarPassword,
+      setOpenModalCambiarPassword,
+      openModalSidebar,
+      setOpenModalSidebar,
+      openModalActividades,
+      setOpenModalActividades,
+      openModalContactoLead,
+      setOpenModalContactoLead,
+      openModalUserPropiedadId,
+      setModalUserPropiedadId,
+      openModalInformativo,
+      setOpenModalInformativo,
+
+      // Organizaciones
+      organizaciones,
+      setOrganizaciones,
+
+      // Carga global
+      cargandoGlobal,
+      iniciarCarga,
+      terminarCarga,
+
+      // publicar anuncio
+      contentNumber,
+      setContentNumber,
+      featuresSel,
+      setFeaturesSel,
+      comprobarDireccion,
+      setComprobarDireccion,
+      confirmedLocation,
+      setConfirmedLocation,
+
+      // Tracking / consentimiento
+      consentimientoTracking,
+      aceptarTracking,
+      rechazarTracking,
+
+      // Leads
+      leads,
+      setLeads,
+      loadingLeads,
+      setLoadingLeads,
+
+      // Logs de tracking
+      logsTracking,
+      setLogsTracking,
+      loadingLogsTracking,
+      setLoadingLogsTracking,
+      leadPendienteContacto,
+      setLeadPendienteContacto,
+
+      // Filtros
+      filtroSeleccionado,
+      setFiltroSeleccionado,
+
+      // Pagos (ocultar ubicación)
+      pagoAnuncio,
+      setPagoAnuncio,
+    }),
+    [usuario, authListo, loadingAuth, estaAutenticado, esSuperAdmin, guardarSesion, cerrarSesion, formDataUsuario, resetFormDataUsuario, formDataPropiedad, propiedadAEliminar, eliminandoPropiedad, propiedad, search, openModalUser, openModalAgregarPropiedad, openModalConfirmarEliminarPropiedad, openModalHamburguesa, openModalCambiarPassword, openModalSidebar, openModalActividades, openModalContactoLead, openModalUserPropiedadId, openModalInformativo, organizaciones, cargandoGlobal, iniciarCarga, terminarCarga, contentNumber, featuresSel, comprobarDireccion, confirmedLocation, consentimientoTracking, aceptarTracking, rechazarTracking, leads, loadingLeads, logsTracking, loadingLogsTracking, leadPendienteContacto, filtroSeleccionado, pagoAnuncio],
+  );
 
   // ─────────────────────────────────────────────
   // VALOR DEL CONTEXTO
   // ─────────────────────────────────────────────
   return (
-    <AppContext.Provider
-      value={{
-        // Auth
-        usuario,
-        setUsuario,
-        authListo,
-        loadingAuth,
-        setLoadingAuth,
-        estaAutenticado,
-        esSuperAdmin,
-        guardarSesion,
-        cerrarSesion,
-
-        // Formulario usuario
-        formDataUsuario,
-        setFormDataUsuario,
-        resetFormDataUsuario,
-
-        // Propiedades
-        formDataPropiedad,
-        setFormDataPropiedad,
-        propiedadAEliminar,
-        setPropiedadAEliminar,
-        eliminandoPropiedad,
-        setEliminandoPropiedad,
-        propiedad,
-        setPropiedad,
-
-        // Search
-        search,
-        setSearch,
-
-        // modales
-        openModalUser,
-        setOpenModalUser,
-        openModalAgregarPropiedad,
-        setOpenModalAgregarPropiedad,
-        openModalConfirmarEliminarPropiedad,
-        setOpenModalConfirmarEliminarPropiedad,
-        openModalHamburguesa,
-        setOpenModalHamburguesa,
-        openModalCambiarPassword,
-        setOpenModalCambiarPassword,
-        openModalSidebar,
-        setOpenModalSidebar,
-        openModalActividades,
-        setOpenModalActividades,
-        openModalContactoLead,
-        setOpenModalContactoLead,
-        openModalUserPropiedadId,
-        setModalUserPropiedadId,
-        openModalInformativo,
-        setOpenModalInformativo,
-
-        // Organizaciones
-        organizaciones,
-        setOrganizaciones,
-
-        // Carga global
-        cargandoGlobal,
-        iniciarCarga,
-        terminarCarga,
-
-        // publicar anuncio
-        contentNumber,
-        setContentNumber,
-        featuresSel,
-        setFeaturesSel,
-        comprobarDireccion,
-        setComprobarDireccion,
-        confirmedLocation,
-        setConfirmedLocation,
-
-        // Tracking / consentimiento
-        consentimientoTracking,
-        aceptarTracking,
-        rechazarTracking,
-
-        // Leads
-        leads,
-        setLeads,
-        loadingLeads,
-        setLoadingLeads,
-
-        // Logs de tracking
-        logsTracking,
-        setLogsTracking,
-        loadingLogsTracking,
-        setLoadingLogsTracking,
-        leadPendienteContacto,
-        setLeadPendienteContacto,
-
-        // Filtros
-        filtroSeleccionado,
-        setFiltroSeleccionado,
-
-        // Pagos (ocultar ubicación)
-        pagoAnuncio,
-        setPagoAnuncio,
-      }}
-    >
+    <AppContext.Provider value={valor}>
       {children}
     </AppContext.Provider>
   );

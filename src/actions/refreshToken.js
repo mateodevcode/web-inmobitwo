@@ -7,6 +7,7 @@ async function renovarToken() {
     const res = await fetch(`${URL_BACKEND}/auth/refresh`, {
       method: "POST",
       credentials: "include",
+      signal: AbortSignal.timeout(15_000),
     });
     if (!res.ok) return false;
     const data = await res.json();

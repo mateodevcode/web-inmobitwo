@@ -1,4 +1,5 @@
 import PropertyImage from "@/components/common/PropertyImage";
+import { avisoDisponibilidad } from "@/utils/disponibilidad.js";
 import { BiNotepad } from "react-icons/bi";
 import { PiChats } from "react-icons/pi";
 import { BsCameraFill } from "react-icons/bs";
@@ -87,12 +88,31 @@ const DetalleInmuble = ({
   // de control de la barra sticky en todo el flujo.
   const sentinelRef = useScrollSentinel(setMostrarBarraSticky);
 
+  // Vendido, arrendado, pausado o vencido (lo marca la inmobiliaria en el CRM).
+  const aviso = avisoDisponibilidad(inmueble);
+
   const caracteristicas = inmueble.caracteristicas || {};
   const categorias = Object.keys(caracteristicas);
 
   return (
     <div className="min-w-0 bg-white font-poppins">
       <div ref={sentinelRef} />
+
+      {aviso && (
+        <div
+          role="status"
+          className={`px-6 py-4 border-b font-sans ${
+            aviso.tono === "cerrado"
+              ? "bg-gray-900 text-white border-gray-900"
+              : aviso.tono === "pausa"
+                ? "bg-amber-50 text-amber-900 border-amber-200"
+                : "bg-sky-50 text-sky-900 border-sky-200"
+          }`}
+        >
+          <p className="text-sm font-bold uppercase tracking-wide">{aviso.titulo}</p>
+          <p className="text-sm mt-0.5">{aviso.texto}</p>
+        </div>
+      )}
 
       <div className="bg-orange-50 w-full h-16 flex items-center px-6 text-decimo gap-2 hover:underline cursor-pointer select-none">
         <BiNotepad className="text-lg" />
