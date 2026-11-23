@@ -5,6 +5,7 @@
 // socket-core no guarda historial ni avisa al reiniciar: tras cada
 // reconexión (o al volver a la pestaña) se recupera por REST.
 
+import { obtenerToken, obtenerUsuarioId } from "@/actions/sesion.js";
 import {
   obtenerTokenChat,
   listarConversaciones,
@@ -37,15 +38,7 @@ const MARGEN_TOKEN_S = 30; // renovar 30 s antes de que expire
 
 const BACKOFF_MAX = 30000;
 
-const leerUsuarioId = () => {
-  try {
-    const raw = localStorage.getItem("usuario");
-    const id = raw ? JSON.parse(raw)?.id : null;
-    return id != null ? Number(id) : null;
-  } catch {
-    return null;
-  }
-};
+const leerUsuarioId = () => obtenerUsuarioId();
 
 const limpiarTimers = () => {
   if (reintentoTimer) clearTimeout(reintentoTimer);
@@ -163,7 +156,7 @@ const atenderMensaje = (evento) => {
 
 const conectar = async () => {
   if (paradaManual) return;
-  if (!localStorage.getItem("access_token")) return;
+  if (!obtenerToken()) return;
   const usuarioId = leerUsuarioId();
   if (usuarioId == null) return;
 

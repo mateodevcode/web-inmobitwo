@@ -1,6 +1,7 @@
 // src/api/apiBackendFormData.js
 import { URL_BACKEND } from "@/config/config.js";
 import { obtenerTokenFresco } from "./refreshToken";
+import { borrarSesionLocal, obtenerToken } from "./sesion";
 import { buildLoginUrl, obtenerOrigenActual } from "@/utils/authRedirect.js";
 
 // Subidas de fotos y planos: más margen que las peticiones JSON.
@@ -9,7 +10,7 @@ const TIMEOUT_MS = 120_000;
 export async function apiBackendFormData(endpoint, formData, method = "POST") {
   try {
     const url = `${URL_BACKEND}${endpoint}`;
-    const token = localStorage.getItem("access_token");
+    const token = obtenerToken();
 
     const res = await fetch(url, {
       method,
@@ -26,7 +27,7 @@ export async function apiBackendFormData(endpoint, formData, method = "POST") {
     if (res.status === 401 && token) {
       const renovado = await obtenerTokenFresco();
       if (renovado) {
-        const nuevoToken = localStorage.getItem("access_token");
+        const nuevoToken = obtenerToken();
         const reintento = await fetch(url, {
           method,
           headers: {
@@ -40,8 +41,7 @@ export async function apiBackendFormData(endpoint, formData, method = "POST") {
         const data = await reintento.json();
         return formatearRespuesta(data, reintento.status);
       } else {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("usuario");
+        borrarSesionLocal();
         // Sesión expirada: a /login conservando la página para volver tras el login.
         window.location.href = buildLoginUrl(obtenerOrigenActual());
         return { success: false, error: "Sesión expirada.", data: null };

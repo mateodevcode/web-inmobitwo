@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 import { useAppContext } from "@/context/AppContext.js";
 import { getSessionId } from "@/utils/getSessionId.js";
 import { URL_BACKEND } from "@/config/config.js";
+import { obtenerToken } from "@/actions/sesion.js";
 import { debeReintentar, RETRASO_REINTENTO_MS } from "@/utils/reintentoRed.js";
 
 // Umbral de la spec (§3 min_visible_seconds). Debe coincidir con el backend;
@@ -47,12 +48,7 @@ const resolverSource = (utm) => {
 // Política (paso8 punto 5): 503/429 o cualquier HTTP de error → sin reintento;
 // fallo de red → 1 reintento tras 5 s. Nada se muestra al usuario.
 const postSilencioso = (ruta, datos, intentosPrevios = 0) => {
-  let token = null;
-  try {
-    token = localStorage.getItem("access_token");
-  } catch {
-    token = null;
-  }
+  const token = obtenerToken();
   const headers = {
     "Content-Type": "application/json",
     ...(token && { Authorization: `Bearer ${token}` }),
@@ -139,12 +135,7 @@ const useVistaDetalle = (propiedadId) => {
     function pedirToken(reintento = 0) {
       if (cancelado || enviadoRef.current === propiedadId) return;
       pidiendoToken = true;
-      let access = null;
-      try {
-        access = localStorage.getItem("access_token");
-      } catch {
-        access = null;
-      }
+      const access = obtenerToken();
       let promesa;
       try {
         promesa = fetch(`${URL_BACKEND}/propiedades/${propiedadId}/view-token`, {

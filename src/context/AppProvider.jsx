@@ -14,6 +14,18 @@ import { setFavoritosStore } from "@/hooks/favoritosStore";
 import { clearDescartadosStore } from "@/hooks/descartadosStore";
 import { detenerChatSocket } from "@/lib/chatSocket.js";
 import { clearChatStore } from "@/hooks/chatStore.js";
+import { obtenerTokenFresco } from "@/actions/refreshToken.js";
+import {
+  borrarSesionLocal,
+  guardarToken,
+  guardarUsuarioSesion,
+  haySesionPrevia,
+  limpiarClavesAntiguas,
+  marcarSesionActiva,
+} from "@/actions/sesion.js";
+
+// Campos del usuario que devuelve el login; /auth/me los pide igual.
+const CAMPOS_ME = "id,name,email,rol,image_url,email_verificado,telefono";
 
 const leerLocal = (clave) => {
   if (typeof window === "undefined") return null;
@@ -26,8 +38,9 @@ const leerLocal = (clave) => {
 
 export const AppProvider = ({ children }) => {
   // ─────────────────────────────────────────────
-  // AUTH — inicia en null (igual que en el servidor) y se hidrata desde
-  // localStorage tras montar. Sin esto, cada rama `usuario ? A : B`
+  // AUTH — inicia en null (igual que en el servidor) y se recupera tras montar
+  // con la cookie httpOnly del refresh + /auth/me (token y usuario solo en
+  // memoria, auditoría N-12/N-13; ver actions/sesion.js). Sin esto, cada rama `usuario ? A : B`
   // diverge entre SSR y cliente y rompe la hidratación en toda la app.
   // Los guards esperan a `authListo` antes de decidir/redirigir.
   // ─────────────────────────────────────────────
@@ -36,31 +49,52 @@ export const AppProvider = ({ children }) => {
   // Declarado arriba: el efecto de hidratación lo usa y no puede ir después.
   const [consentimientoTracking, setConsentimientoTracking] = useState(null); // null = aún no ha decidido
 
-  // Hidratación post-montaje (localStorage → estado): sincronización con un
-  // sistema externo, el caso legítimo de setState en efecto.
+  // Hidratación post-montaje: sincronización con un sistema externo (cookie de
+  // sesión y localStorage), el caso legítimo de setState en efecto.
   useEffect(() => {
-    /* eslint-disable react-hooks/set-state-in-effect -- hidratación localStorage */
-    try {
-      const guardado = leerLocal("usuario");
-      if (guardado) setUsuario(JSON.parse(guardado));
-    } catch {
-      /* storage corrupto: se queda sin sesión */
-    }
+    let vivo = true;
+    /* eslint-disable react-hooks/set-state-in-effect -- hidratación post-montaje */
     try {
       const consent = leerLocal("consentimiento_tracking");
       if (consent) setConsentimientoTracking(JSON.parse(consent));
     } catch {
       /* se queda en null = aún no ha decidido */
     }
-    setAuthListo(true);
     /* eslint-enable react-hooks/set-state-in-effect */
+    const previa = haySesionPrevia();
+    limpiarClavesAntiguas();
+    (async () => {
+      try {
+        // Solo quien inició sesión en este navegador pide el refresh.
+        if (!previa || !(await obtenerTokenFresco())) {
+          borrarSesionLocal();
+          return;
+        }
+        const res = await apiBackend(`/auth/me?fields=${CAMPOS_ME}`);
+        if (!vivo) return;
+        if (res.success && res.data) {
+          guardarUsuarioSesion(res.data);
+          setUsuario(res.data);
+        } else {
+          borrarSesionLocal();
+        }
+      } catch {
+        borrarSesionLocal();
+      } finally {
+        if (vivo) setAuthListo(true);
+      }
+    })();
+    return () => {
+      vivo = false;
+    };
   }, []);
 
   const [loadingAuth, setLoadingAuth] = useState(false);
 
   const guardarSesion = useCallback(async (usuarioData, accessToken) => {
-    localStorage.setItem("usuario", JSON.stringify(usuarioData));
-    localStorage.setItem("access_token", accessToken);
+    guardarToken(accessToken);
+    guardarUsuarioSesion(usuarioData);
+    marcarSesionActiva();
     setUsuario(usuarioData);
 
     if (consentimientoTracking === true) {
@@ -81,8 +115,7 @@ export const AppProvider = ({ children }) => {
 
   const cerrarSesion = useCallback(async () => {
     await apiBackend("/auth/logout", "POST");
-    localStorage.removeItem("usuario");
-    localStorage.removeItem("access_token");
+    borrarSesionLocal();
     setUsuario(null);
     feedActions.reset();
     setFavoritosStore([]);

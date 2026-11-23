@@ -1,6 +1,7 @@
 // src/api/apiBackend.js
 import { URL_BACKEND } from "@/config/config.js";
 import { obtenerTokenFresco } from "./refreshToken";
+import { borrarSesionLocal, obtenerToken } from "./sesion";
 import { buildLoginUrl, obtenerOrigenActual } from "@/utils/authRedirect.js";
 
 // Tiempo máximo por petición JSON (antes no había límite: la UI podía quedar cargando para siempre).
@@ -9,8 +10,8 @@ const TIMEOUT_MS = 20_000;
 export async function apiBackend(endpoint, metodo = "GET", datos = null) {
   try {
     const url = `${URL_BACKEND}${endpoint}`;
-    // Leer access token del localStorage
-    const token = localStorage.getItem("access_token");
+    // Token de acceso en memoria (actions/sesion.js)
+    const token = obtenerToken();
 
     // ────────────────────────────────────────────────────────────
     // NUEVO: mandamos siempre el host actual del navegador.
@@ -37,7 +38,7 @@ export async function apiBackend(endpoint, metodo = "GET", datos = null) {
     if (res.status === 401 && token) {
       const renovado = await obtenerTokenFresco();
       if (renovado) {
-        const nuevoToken = localStorage.getItem("access_token");
+        const nuevoToken = obtenerToken();
         const reintento = await fetch(url, {
           method: metodo,
           headers: {
@@ -53,8 +54,7 @@ export async function apiBackend(endpoint, metodo = "GET", datos = null) {
         const data = await reintento.json();
         return formatearRespuesta(data, reintento.status);
       } else {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("usuario");
+        borrarSesionLocal();
         // Sesión expirada: a /login conservando la página para volver tras el login.
         window.location.href = buildLoginUrl(obtenerOrigenActual());
         return { success: false, error: "Sesión expirada.", data: null };

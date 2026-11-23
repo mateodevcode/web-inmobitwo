@@ -129,13 +129,7 @@ const useUsuarios = () => {
         // Sincroniza la sesión (header/avatar usan `usuario`, no el form).
         // El backend devuelve el usuario actualizado en `data`.
         if (usuarioActualizado && typeof usuarioActualizado === "object") {
-          try {
-            const sesionActualizada = { ...(usuario || {}), ...usuarioActualizado };
-            setUsuario?.(sesionActualizada);
-            localStorage.setItem("usuario", JSON.stringify(sesionActualizada));
-          } catch {
-            /* storage no disponible: la sesión en memoria ya quedó actualizada */
-          }
+          setUsuario?.({ ...(usuario || {}), ...usuarioActualizado });
         }
       } else {
         console.warn("⚠️ Error:", error);

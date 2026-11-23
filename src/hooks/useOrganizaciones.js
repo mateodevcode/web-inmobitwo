@@ -3,20 +3,14 @@ import { useCallback } from "react";
 import { toast } from "sonner";
 import { apiBackend } from "@/actions/apiBackend.js";
 import { useAppContext } from "@/context/AppContext.js";
+import { obtenerUsuarioId } from "@/actions/sesion.js";
 
 // Caché a nivel de módulo para /organizaciones/mias: aunque cargarMisOrganizaciones
 // se dispare desde varias vistas a la vez (sidebar + página + wizard), solo se hace
 // 1 request y el resto lee caché/promise compartida. Keyed por usuario logueado.
 let misOrgCache = { key: null, promise: null, data: null };
 
-const misOrgCacheKey = () => {
-  try {
-    const usuario = JSON.parse(localStorage.getItem("usuario") || "null");
-    return usuario?.id ?? "anon";
-  } catch {
-    return "anon";
-  }
-};
+const misOrgCacheKey = () => obtenerUsuarioId() ?? "anon";
 
 const invalidarMisOrgCache = () => {
   misOrgCache = { key: null, promise: null, data: null };
