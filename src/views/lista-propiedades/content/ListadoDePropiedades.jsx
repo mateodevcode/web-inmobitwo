@@ -40,7 +40,7 @@ const TYPE_LABELS = {
 };
 
 function getFiltroLabel(locationInfo, typeSlug, isCustomPolygon) {
-  if (isCustomPolygon) return "Zona personalizada";
+  if (isCustomPolygon) return locationInfo?.nombre || "Zona personalizada";
   const typeLabel = TYPE_LABELS[typeSlug] || typeSlug || "Inmuebles";
   const locName =
     locationInfo?.city_name ||

@@ -38,11 +38,6 @@ export function placeCloseMarker(map, closeMarkerRef, coord, onDelete) {
   closeMarkerRef.current = marker;
 }
 
-export function clearPropMarkers(propMarkersRef) {
-  propMarkersRef.current.forEach((m) => m.remove());
-  propMarkersRef.current = [];
-}
-
 // ctx: { gmRef, drawLayerRef, closeMarkerRef, setDrawArmed, setHasDrawLayer, onPolygonChange }
 export function handleDeletePolygon(ctx) {
   try {

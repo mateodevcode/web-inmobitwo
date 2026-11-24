@@ -7,6 +7,7 @@ import HeadListaPropiedades from "./header-lista/HeadListaPropiedades";
 import { useLocationInfo } from "@/hooks/useLocationInfo";
 import { useSlugParser } from "@/hooks/useSlugParser";
 import { apiBackend } from "@/actions/apiBackend";
+import { fetchInmueblesEnZonas } from "@/lib/geoApi";
 import { MAPPING_OPERACIONES, MAPPING_TIPOS } from "@/data/mappings_busqueda";
 import SidebarListaPropiedades from "./sidebar/SidebarListaPropiedades";
 import BarraNavegacionTauri from "../../components/barra-navegacion/BarraNavegacionTauri";
@@ -21,6 +22,7 @@ const ListaPropiedades = () => {
     firstSegment,
     isSingleSegment,
     isCustomPolygon,
+    isMultizona,
   } = useSlugParser();
   const searchParams = useSearchParams();
   const [polygonProps, setPolygonProps] = useState(null);
@@ -54,6 +56,32 @@ const ListaPropiedades = () => {
         if (!cancelled) {
           setPolygonProps(null);
           setPolygonMissing(false);
+        }
+        return;
+      }
+      // Varias zonas del mapa: ?z=municipio:11001,barrio:...
+      if (isMultizona) {
+        const z = searchParams.get("z");
+        if (!z) {
+          if (!cancelled) {
+            setPolygonProps(null);
+            setPolygonMissing(true);
+          }
+          return;
+        }
+        try {
+          const data = await fetchInmueblesEnZonas(
+            z,
+            MAPPING_OPERACIONES[operationSlug] || operationSlug,
+            typeSlug,
+          );
+          if (cancelled) return;
+          setPolygonMissing(false);
+          setPolygonProps(data);
+        } catch {
+          if (cancelled) return;
+          setPolygonProps(null);
+          setPolygonMissing(true);
         }
         return;
       }
@@ -103,10 +131,15 @@ const ListaPropiedades = () => {
     return () => {
       cancelled = true;
     };
-  }, [isCustomPolygon, searchParams, operationSlug, typeSlug]);
+  }, [isCustomPolygon, isMultizona, searchParams, operationSlug, typeSlug]);
 
   const effectiveLocationInfo = isCustomPolygon
-    ? { tipo: "custom_polygon", total_matching: polygonProps?.total || 0 }
+    ? {
+        tipo: "custom_polygon",
+        total_matching: polygonProps?.total || 0,
+        // Nombre a mostrar: las zonas elegidas o "Zona personalizada".
+        nombre: isMultizona ? searchParams.get("n") || "Varias zonas" : null,
+      }
     : locationInfo;
 
   return (

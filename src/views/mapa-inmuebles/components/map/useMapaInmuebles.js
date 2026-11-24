@@ -1,67 +1,143 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import * as maplibregl from "maplibre-gl";
-import Supercluster from "supercluster";
-import { fetchInmueblesEnBbox } from "@/lib/geoApi";
+import { fetchMapaInmuebles, fetchPropiedadResumen } from "@/lib/geoApi";
 import { apiBackend } from "@/actions/apiBackend.js";
 import { useSelectZona } from "@/hooks/useSelectZona";
 import { createOsmMap } from "@/components/map/mapUtils";
 import { pintarMiUbicacion } from "@/components/map/MapControls";
-import { clearMarkers, renderMarkers } from "./markers";
+import { marcarVisto } from "@/components/map/vistos";
+import { CapaChinchetas } from "./markers";
 import { renderBoundary } from "./boundary";
+import {
+  expandirBbox,
+  necesitaPedir,
+  prepararDatos,
+  itemsParaVista,
+  zoomAlAbrirGrupo,
+} from "./datosMapa";
+
+// Espera tras dejar de mover el mapa antes de pedir datos nuevos (solo si la
+// vista sale del área ya cargada; si no, se repinta sin red).
+const DEBOUNCE_MS = 250;
 
 function slugify(text) {
   if (!text) return "";
   return text
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
 
+const bboxDeMapa = (map) => {
+  const b = map.getBounds();
+  return {
+    minLng: b.getWest(),
+    minLat: b.getSouth(),
+    maxLng: b.getEast(),
+    maxLat: b.getNorth(),
+  };
+};
+
 export function useMapaInmuebles({ lat, lng, zoom, operation, tipoInmueble, boundary, autoMarcarUbicacion = false }) {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
-  const clusterIndexRef = useRef(new Supercluster({ radius: 60, maxZoom: 16 }));
+  const capaRef = useRef(null);
+  const datosRef = useRef(null);
   const debounceRef = useRef(null);
-  const markersRef = useRef([]);
+  const peticionRef = useRef(0);
+  const enVueloRef = useRef(null); // área/filtros de la petición en curso
   const opRef = useRef(operation);
   const tipoRef = useRef(tipoInmueble);
   const loadedRef = useRef(false);
 
-  const [inmuebles, setInmuebles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [totalVisible, setTotalVisible] = useState(null);
   const [selectedInmueble, setSelectedInmueble] = useState(null);
   const [mapReady, setMapReady] = useState(false);
   const [mapInstance, setMapInstance] = useState(null);
 
   useEffect(() => {
     opRef.current = operation;
-  }, [operation]);
-  useEffect(() => {
     tipoRef.current = tipoInmueble;
-  }, [tipoInmueble]);
+  }, [operation, tipoInmueble]);
 
-  const loadInmuebles = useCallback(async () => {
+  const filtrosKey = () => `${opRef.current || ""}|${tipoRef.current || ""}`;
+
+  // Pinta lo que hay en caché para la vista actual (sin red).
+  const pintar = useCallback(() => {
+    const map = mapInstanceRef.current;
+    if (!map || !capaRef.current) return;
+    const { items, totalVisible: total } = itemsParaVista(
+      datosRef.current,
+      bboxDeMapa(map),
+      map.getZoom(),
+    );
+    capaRef.current.render(items);
+    if (datosRef.current) setTotalVisible(total);
+  }, []);
+
+  // Pide al backend solo si la vista no está cubierta por lo ya cargado.
+  const cargarSiHaceFalta = useCallback(async () => {
     const map = mapInstanceRef.current;
     if (!map) return;
+    const vista = bboxDeMapa(map);
+    const zoomActual = map.getZoom();
+    const key = filtrosKey();
+    if (!necesitaPedir(datosRef.current, vista, zoomActual, key)) return;
+    // Ya hay una petición en vuelo que servirá para esta vista (p. ej. la
+    // carga inicial y el efecto de filtros a la vez): no duplicarla.
+    if (!necesitaPedir(enVueloRef.current, vista, zoomActual, key)) return;
+
+    const idPeticion = ++peticionRef.current;
+    const bbox = expandirBbox(vista);
+    enVueloRef.current = {
+      bbox,
+      zoom: Math.floor(zoomActual),
+      filtrosKey: key,
+      modo: zoomActual >= 15 ? "puntos" : "grupos", // conservador hasta saberlo
+    };
     setLoading(true);
     try {
-      const b = map.getBounds();
-      const data = await fetchInmueblesEnBbox({
-        minLat: b.getSouth(),
-        minLng: b.getWest(),
-        maxLat: b.getNorth(),
-        maxLng: b.getEast(),
+      const respuesta = await fetchMapaInmuebles({
+        ...bbox,
+        zoom: zoomActual,
         operation: opRef.current,
         tipoInmueble: tipoRef.current,
       });
-      setInmuebles(data);
+      if (idPeticion !== peticionRef.current) return; // llegó una más nueva
+      datosRef.current = prepararDatos(respuesta, { bbox, zoom: zoomActual, filtrosKey: key });
+      pintar();
     } catch (e) {
-      console.error("[MapaInmuebles] Error cargando inmuebles:", e);
+      if (idPeticion === peticionRef.current) {
+        console.error("[MapaInmuebles] Error cargando inmuebles:", e);
+      }
     } finally {
-      setLoading(false);
+      if (idPeticion === peticionRef.current) {
+        enVueloRef.current = null;
+        setLoading(false);
+      }
     }
+  }, [pintar]);
+
+  const abrirInmueble = useCallback((punto) => {
+    marcarVisto(punto.id);
+    capaRef.current?.seleccionar(punto.id);
+    // La card aparece con los datos completos (resumen cacheado por id).
+    fetchPropiedadResumen(punto.id).then((resumen) => {
+      if (capaRef.current?.seleccionadoId !== punto.id) return; // eligió otro
+      setSelectedInmueble({
+        ...(resumen || {}),
+        ...punto,
+        precio: punto.precio ?? resumen?.precio,
+        operacion_slug: punto.op || resumen?.operacion_slug,
+      });
+    });
+  }, []);
+
+  const cerrarInmueble = useCallback(() => {
+    capaRef.current?.seleccionar(null);
+    setSelectedInmueble(null);
   }, []);
 
   // 1. Crear mapa (debe ir PRIMERO)
@@ -74,11 +150,30 @@ export function useMapaInmuebles({ lat, lng, zoom, operation, tipoInmueble, boun
     });
     mapInstanceRef.current = map;
 
+    const capa = new CapaChinchetas(map, {
+      onClickPunto: abrirInmueble,
+      onClickGrupo: (item) => {
+        map.flyTo({
+          center: [item.lng, item.lat],
+          zoom: zoomAlAbrirGrupo(datosRef.current, item, map.getZoom()),
+          duration: 600,
+        });
+      },
+    });
+    capaRef.current = capa;
+
+    const onMoveEnd = () => {
+      pintar();
+      clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(cargarSiHaceFalta, DEBOUNCE_MS);
+    };
+    // Clic en el mapa vacío: cierra la card.
+    const onClickMapa = () => cerrarInmueble();
+
     const tryInit = () => {
       if (map !== mapInstanceRef.current) return; // mapa destruido por StrictMode
       if (loadedRef.current) return;
       if (!map.isStyleLoaded()) return;
-      if (!map.loaded()) return;
       loadedRef.current = true;
       setMapReady(true);
       setMapInstance(map);
@@ -89,57 +184,36 @@ export function useMapaInmuebles({ lat, lng, zoom, operation, tipoInmueble, boun
         pintarMiUbicacion(map, [Number(lng), Number(lat)]);
       }
 
-      map.on("moveend", () => {
-        clearTimeout(debounceRef.current);
-        debounceRef.current = setTimeout(loadInmuebles, 400);
-      });
-
-      loadInmuebles();
+      map.on("moveend", onMoveEnd);
+      map.on("click", onClickMapa);
+      cargarSiHaceFalta();
     };
 
     map.on("load", tryInit); // camino normal
     map.on("idle", tryInit); // fallback si load tarda
 
     return () => {
+      clearTimeout(debounceRef.current);
+      // Contador, no un nodo: incrementarlo descarta las respuestas en vuelo.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      peticionRef.current++;
+      enVueloRef.current = null;
       loadedRef.current = false;
+      capa.destruir();
+      capaRef.current = null;
+      datosRef.current = null;
       map.remove();
       mapInstanceRef.current = null;
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const doRenderMarkers = () => {
-    renderMarkers({
-      map: mapInstanceRef.current,
-      markersRef,
-      clusterIndexRef,
-      selectedInmueble,
-      onSelect: setSelectedInmueble,
-    });
-  };
-
-  // 2. Reconstruir indice + render cuando cambian inmuebles
+  // 2. Cambio de filtros (operación/tipo): recargar sin recrear el mapa.
   useEffect(() => {
-    const index = new Supercluster({ radius: 60, maxZoom: 16 });
-    const points = inmuebles
-      .filter((p) => p.lat && p.lng)
-      .map((p) => ({
-        type: "Feature",
-        properties: p,
-        geometry: { type: "Point", coordinates: [p.lng, p.lat] },
-      }));
-    if (points.length > 0) index.load(points);
-    clusterIndexRef.current = index;
-    doRenderMarkers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inmuebles]);
+    if (!mapReady) return;
+    cargarSiHaceFalta();
+  }, [operation, tipoInmueble, mapReady, cargarSiHaceFalta]);
 
-  // 3. Re-render cuando cambia el seleccionado
-  useEffect(() => {
-    doRenderMarkers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedInmueble]);
-
-  // 4. Renderizar borde de zona (region/depto/ciudad)
+  // 3. Renderizar borde de zona (region/depto/ciudad)
   useEffect(() => {
     const map = mapInstanceRef.current;
     if (!map || !boundary || !map.isStyleLoaded()) return;
@@ -196,8 +270,9 @@ export function useMapaInmuebles({ lat, lng, zoom, operation, tipoInmueble, boun
     map: mapInstance,
     loading,
     mapReady,
+    totalVisible,
     selectedInmueble,
-    setSelectedInmueble,
+    setSelectedInmueble: (v) => (v ? setSelectedInmueble(v) : cerrarInmueble()),
     flyToZone,
   };
 }

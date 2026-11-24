@@ -29,7 +29,7 @@ const BreadcrumbUbicacion = ({ locationInfo }) => {
         </Link>
         <MdOutlineKeyboardArrowRight />
         <div className="relative">
-          <div className="text-black">Zona personalizada</div>
+          <div className="text-black">{locationInfo.nombre || "Zona personalizada"}</div>
           <div className="absolute top-6 text-black">
             {locationInfo.total_matching?.toLocaleString() || ""}
           </div>

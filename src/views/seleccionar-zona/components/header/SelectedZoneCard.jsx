@@ -1,43 +1,77 @@
 import { TfiMapAlt } from "react-icons/tfi";
-import { PiTrashSimple } from "react-icons/pi";
+import { FiX } from "react-icons/fi";
+import { claveZona, MAX_ZONAS } from "../../lib/zonasSeleccion";
 
+const ETIQUETA_TIPO = {
+  region: "Región",
+  departamento: "Depto.",
+  municipio: "Municipio",
+  barrio: "Barrio",
+};
+
+// Zonas marcadas en el mapa (varias): chips con "x", total de inmuebles de
+// todas juntas y "Ver inmuebles". En móvil va abajo para no tapar el mapa.
 export function SelectedZoneCard({
   drawMode,
-  selectedZone,
+  zonas,
   propertyCount,
   loading,
+  onRemove,
   onClear,
   onVerInmuebles,
 }) {
-  if (drawMode || !selectedZone) return null;
+  if (drawMode || !zonas?.length) return null;
 
   // Sin resultados el botón queda en tono bajo pero sigue clicable
   // para mostrar el aviso (igual que en modo dibujo).
   const sinResultados = !loading && !propertyCount;
+  const n = zonas.length;
 
   return (
-    <div className="absolute top-22 md:top-24 left-5 bg-white rounded shadow-lg p-4 min-w-90 z-1000 font-poppins min-h-44 flex flex-col justify-between">
-      <div>
-        <div className="text-xl font-semibold text-segundo m-0 mb-3 flex items-center gap-3 font-montserrat">
-          <TfiMapAlt className="text-2xl" />
-          <h3>Zona seleccionada</h3>
+    <div className="absolute left-2 right-2 bottom-16 md:bottom-auto md:right-auto md:top-24 md:left-5 md:w-96 bg-white rounded-lg shadow-xl p-4 z-1000 font-poppins flex flex-col gap-3">
+      <div className="flex items-center justify-between gap-3">
+        <div className="text-base md:text-lg font-semibold text-segundo flex items-center gap-2 font-montserrat">
+          <TfiMapAlt className="text-xl" />
+          <h3>
+            {n === 1 ? "1 zona seleccionada" : `${n} zonas seleccionadas`}
+          </h3>
         </div>
-        <div className="flex items-center gap-2 px-2 py-2.5 mb-3">
-          <span className="flex-1 text-base text-gray-800">
-            {selectedZone.name}
-          </span>
-          <span className="text-sm text-gray-500 font-medium">
-            {propertyCount.toLocaleString()}
-          </span>
-          <button
-            className="bg-none border-none cursor-pointer text-lg p-0 leading-none hover:opacity-100 font-poppins font-semibold text-decimo hover:text-decimo/80"
-            onClick={onClear}
-            title="Volver a seleccionar"
-          >
-            <PiTrashSimple />
-          </button>
-        </div>
+        <button
+          className="text-xs text-decimo hover:text-decimo/80 cursor-pointer font-semibold shrink-0"
+          onClick={onClear}
+        >
+          Quitar todas
+        </button>
       </div>
+
+      <ul className="flex flex-wrap gap-2 max-h-32 overflow-y-auto" aria-label="Zonas seleccionadas">
+        {zonas.map((z) => (
+          <li
+            key={claveZona(z)}
+            className="flex items-center gap-1.5 bg-noveno/10 text-[#72243e] border border-noveno/40 rounded-full pl-3 pr-1 py-1 text-sm"
+          >
+            <span className="text-[10px] uppercase tracking-wide opacity-70">
+              {ETIQUETA_TIPO[z.type]}
+            </span>
+            <span className="font-medium">{z.name}</span>
+            <button
+              className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-noveno hover:text-white cursor-pointer transition-colors"
+              onClick={() => onRemove(claveZona(z))}
+              aria-label={`Quitar ${z.name}`}
+              title={`Quitar ${z.name}`}
+            >
+              <FiX size={12} />
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <p className="text-xs text-gray-500 -mt-1">
+        {n >= MAX_ZONAS
+          ? `Máximo ${MAX_ZONAS} zonas.`
+          : "Haz clic en el mapa para añadir o quitar zonas."}
+      </p>
+
       <button
         className={`w-full py-3 px-5 text-white border-none rounded-md text-sm font-semibold cursor-pointer transition-colors ${
           sinResultados ? "bg-tercero/80" : "bg-tercero hover:bg-tercero/80"
@@ -45,7 +79,9 @@ export function SelectedZoneCard({
         onClick={onVerInmuebles}
         disabled={loading}
       >
-        Ver {propertyCount.toLocaleString()} inmuebles
+        {loading
+          ? "Contando inmuebles…"
+          : `Ver ${propertyCount.toLocaleString("es-CO")} ${propertyCount === 1 ? "inmueble" : "inmuebles"}`}
       </button>
     </div>
   );

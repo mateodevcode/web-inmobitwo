@@ -3,7 +3,7 @@ import { useState } from "react";
 import { TfiMapAlt } from "react-icons/tfi";
 import { useSlugParser } from "@/hooks/useSlugParser";
 import { getSelectedId, getTabs } from "@/data/tabs_busqueda";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const TYPE_LABELS = {
   apartamento: { singular: "apartamento", plural: "apartamentos" },
@@ -51,7 +51,8 @@ const EncabezadoBusqueda = ({ locationInfo }) => {
   const router = useRouter();
   const [hovered, setHovered] = useState(null);
 
-  const { operationSlug, typeSlug, citySlug, geoSegment } = useSlugParser();
+  const searchParams = useSearchParams();
+  const { operationSlug, typeSlug, citySlug, geoSegment, isCustomPolygon } = useSlugParser();
   const selectedId = getSelectedId(operationSlug, typeSlug);
   const tabs = getTabs(operationSlug);
 
@@ -60,7 +61,10 @@ const EncabezadoBusqueda = ({ locationInfo }) => {
     const newPath = geoSegment
       ? `/${tab.urlSegment}/${geoSegment}`
       : `/${tab.urlSegment}`;
-    router.push(newPath);
+    // Las búsquedas por área viven en la query (?z=… zonas, ?polyKey=…
+    // dibujo): sin ella, la otra pestaña quedaba sin zona.
+    const query = isCustomPolygon ? searchParams.toString() : "";
+    router.push(query ? `${newPath}?${query}` : newPath);
   };
 
   return (
@@ -72,7 +76,7 @@ const EncabezadoBusqueda = ({ locationInfo }) => {
             {getTypeLabel(typeSlug, locationInfo?.total_matching || 0)}
           </span>{" "}
           {locationInfo?.tipo === "custom_polygon" ? (
-            <span className="mr-2">en Zona personalizada</span>
+            <span className="mr-2">en {locationInfo?.nombre || "Zona personalizada"}</span>
           ) : locationInfo?.tipo === "region" ? (
             <span>en {locationInfo?.region_name}</span>
           ) : locationInfo?.tipo === "departamento" ? (

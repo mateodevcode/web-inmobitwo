@@ -13,8 +13,9 @@ import { MapWidgets } from "./overlays/MapWidgets";
 import { useZonaMap } from "./useZonaMap";
 
 export default function SelectZonaMap({
-  selectedZone,
-  onSelectZone,
+  zonas,
+  onToggleZona,
+  zonaFoco,
   operation,
   tipoInmueble,
   drawMode,
@@ -26,6 +27,7 @@ export default function SelectZonaMap({
   onVerInmuebles,
   initialPolygon = null,
   avisoSinResultados = null,
+  enCliente = true,
 }) {
   const {
     containerRef,
@@ -40,8 +42,9 @@ export default function SelectZonaMap({
     doStartDrawing,
     doCancelDrawing,
   } = useZonaMap({
-    selectedZone,
-    onSelectZone,
+    zonas,
+    onToggleZona,
+    zonaFoco,
     operation,
     tipoInmueble,
     drawMode,
@@ -86,7 +89,7 @@ export default function SelectZonaMap({
 
       <MapWidgets map={map} mapReady={mapReady} drawMode={drawMode} />
 
-      {!drawMode && <MapHintBanner />}
+      {enCliente && !drawMode && !zonas?.length && <MapHintBanner />}
 
       {selectedInmueble && (
         <PropertyCard

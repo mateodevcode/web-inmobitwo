@@ -41,6 +41,9 @@ export function useSlugParser() {
     geoSegment,
     firstSegment,
     isSingleSegment,
-    isCustomPolygon: geoSegment === "zona-personalizada",
+    // Listados por área (no por una ubicación con URL propia): polígono
+    // dibujado (/zona-personalizada) o varias zonas del mapa (/zonas?z=...).
+    isCustomPolygon: geoSegment === "zona-personalizada" || geoSegment === "zonas",
+    isMultizona: geoSegment === "zonas",
   };
 }
