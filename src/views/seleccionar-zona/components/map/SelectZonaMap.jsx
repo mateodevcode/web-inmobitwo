@@ -87,7 +87,12 @@ export default function SelectZonaMap({
         onVerInmuebles={onVerInmuebles}
       />
 
-      <MapWidgets map={map} mapReady={mapReady} drawMode={drawMode} />
+      <MapWidgets
+        map={map}
+        mapReady={mapReady}
+        drawMode={drawMode}
+        hayZonas={enCliente && !!zonas?.length}
+      />
 
       {enCliente && !drawMode && !zonas?.length && <MapHintBanner />}
 

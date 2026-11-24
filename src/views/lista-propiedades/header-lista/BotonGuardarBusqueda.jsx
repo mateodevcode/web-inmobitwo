@@ -16,32 +16,34 @@ const BotonGuardarBusqueda = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { operationSlug, typeSlug, citySlug, deptSlug, isCustomPolygon } = useSlugParser();
+  const { operationSlug, typeSlug, citySlug, deptSlug, isCustomPolygon, isMultizona } = useSlugParser();
+  // Se puede guardar todo salvo la zona dibujada a mano (polígono libre).
+  const esDibujo = isCustomPolygon && !isMultizona;
   const { estaAutenticado, authListo } = useAppContext();
 
   const [guardada, setGuardada] = useState(false);
   const [abierto, setAbierto] = useState(false);
 
-  const filtros = buildFiltrosApi({ operationSlug, typeSlug, citySlug, deptSlug, searchParams });
+  const filtros = buildFiltrosApi({ operationSlug, typeSlug, citySlug, deptSlug, searchParams, isMultizona });
   const filtrosKey = JSON.stringify(filtros);
   const urlOriginal = searchParams?.toString() ? `${pathname}?${searchParams.toString()}` : pathname;
 
   useEffect(() => {
-    if (!authListo || !estaAutenticado || isCustomPolygon) return;
+    if (!authListo || !estaAutenticado || esDibujo) return;
     let cancel = false;
     verificarBusqueda(filtros).then((r) => {
       if (!cancel && r?.success) setGuardada(!!r.data?.guardada);
     });
     return () => { cancel = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authListo, estaAutenticado, filtrosKey, isCustomPolygon]);
+  }, [authListo, estaAutenticado, filtrosKey, esDibujo]);
 
   // Derivado en render (sin setState en efecto): solo se muestra como
   // guardada si hay sesión y no es zona dibujada.
 
   const onClick = () => {
-    if (isCustomPolygon) {
-      toast.info("Guardar búsquedas por zona dibujada o por varias zonas aún no está disponible.", { position: "bottom-right" });
+    if (esDibujo) {
+      toast.info("Guardar búsquedas por zona dibujada aún no está disponible.", { position: "bottom-right" });
       return;
     }
     if (!estaAutenticado) {
@@ -52,7 +54,7 @@ const BotonGuardarBusqueda = () => {
     setAbierto(true);
   };
 
-  const mostrarGuardada = guardada && estaAutenticado && !isCustomPolygon;
+  const mostrarGuardada = guardada && estaAutenticado && !esDibujo;
 
   return (
     <div className="bg-septimo w-full md:w-[25%] h-full rounded-sm hidden md:flex items-center justify-center flex-col gap-4">
@@ -84,6 +86,7 @@ const BotonGuardarBusqueda = () => {
           filtros={filtros}
           urlOriginal={urlOriginal}
           pathname={pathname}
+          zonasNombre={isMultizona ? searchParams.get("n") : null}
           onClose={() => setAbierto(false)}
           onGuardada={() => { setGuardada(true); setAbierto(false); }}
         />

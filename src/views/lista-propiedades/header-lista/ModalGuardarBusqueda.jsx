@@ -5,14 +5,16 @@ import { toast } from "sonner";
 import { crearBusqueda } from "@/actions/busquedasGuardadas";
 import { suscribirPush, PUSH_HABILITADO } from "@/lib/push";
 
-function nombreAutomatico(pathname = "") {
-  const partes = pathname.split("/").filter(Boolean).map((s) => s.replace(/-/g, " "));
+// zonasNombre: con varias zonas el segmento es "zonas"; se usan sus nombres.
+function nombreAutomatico(pathname = "", zonasNombre = null) {
+  let partes = pathname.split("/").filter(Boolean).map((s) => s.replace(/-/g, " "));
+  if (zonasNombre && partes[1] === "zonas") partes = [partes[0], zonasNombre];
   const txt = partes.join(" · ");
   return txt.charAt(0).toUpperCase() + txt.slice(1);
 }
 
-export default function ModalGuardarBusqueda({ filtros, urlOriginal, pathname, onClose, onGuardada }) {
-  const [nombre, setNombre] = useState(nombreAutomatico(pathname));
+export default function ModalGuardarBusqueda({ filtros, urlOriginal, pathname, zonasNombre, onClose, onGuardada }) {
+  const [nombre, setNombre] = useState(nombreAutomatico(pathname, zonasNombre));
   const [frecuencia, setFrecuencia] = useState("diaria");
   const [canalEmail, setCanalEmail] = useState(true);
   const [canalPush, setCanalPush] = useState(false);

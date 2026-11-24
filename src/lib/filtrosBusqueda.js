@@ -10,13 +10,20 @@ export const CLAVES_FILTROS_URL = [
   "anunciante", "multimedia", "hab", "banos", "estado", "caract",
 ];
 
-export function buildFiltrosApi({ operationSlug, typeSlug, citySlug, deptSlug, searchParams }) {
+// Con varias zonas del mapa (/[op-tipo]/zonas?z=…) la ubicación va en
+// `zonas` y no hay depto/ciudad (el segmento "zonas" no es un slug).
+export function buildFiltrosApi({ operationSlug, typeSlug, citySlug, deptSlug, searchParams, isMultizona = false }) {
   const operationDb = MAPPING_OPERACIONES[operationSlug] || operationSlug;
   const typeDb = MAPPING_TIPOS[typeSlug] || typeSlug;
   const f = {};
   if (operationDb) f.operation = operationDb;
-  if (deptSlug) f.dept = deptSlug;
-  if (citySlug) f.city = citySlug;
+  if (isMultizona) {
+    const zonas = searchParams?.get("z");
+    if (zonas) f.zonas = zonas;
+  } else {
+    if (deptSlug) f.dept = deptSlug;
+    if (citySlug) f.city = citySlug;
+  }
   const tipos = searchParams?.get("tipos");
   if (tipos) f.tipos = tipos;
   else if (typeDb) f.type = typeDb;

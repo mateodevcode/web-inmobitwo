@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { apiBackend } from "@/actions/apiBackend.js";
+import { fetchGeoJSONZonas } from "@/lib/geoApi";
 import { drawGeometry } from "@/lib/geoUtils";
 import { createOsmMap } from "./mapUtils";
 
@@ -25,7 +26,8 @@ function endpointFor(locationInfo) {
   return "";
 }
 
-export function useMiniMapa(mapRef, locationInfo, polyKey) {
+// zonas: "tipo:codigo,…" de los resultados de varias zonas (?z=), o null.
+export function useMiniMapa(mapRef, locationInfo, polyKey, zonas = null) {
   const instanceRef = useRef(null);
 
   useEffect(() => {
@@ -39,6 +41,20 @@ export function useMiniMapa(mapRef, locationInfo, polyKey) {
 
       instance.on("load", async () => {
         const { tipo } = locationInfo;
+
+        // Varias zonas del mapa: se pintan todas juntas y se encuadran.
+        if (tipo === "custom_polygon" && zonas) {
+          try {
+            const fc = await fetchGeoJSONZonas(zonas);
+            const geometries = (fc?.features || []).map((f) => f.geometry).filter(Boolean);
+            if (geometries.length && instanceRef.current === instance) {
+              drawGeometry(instance, { type: "GeometryCollection", geometries });
+            }
+          } catch {
+            // sin geometrías: se muestra el mapa vacío
+          }
+          return;
+        }
 
         if (tipo === "custom_polygon") {
           const geojsonStr = polyKey
@@ -81,5 +97,5 @@ export function useMiniMapa(mapRef, locationInfo, polyKey) {
         instanceRef.current = null;
       }
     };
-  }, [mapRef, locationInfo, polyKey]);
+  }, [mapRef, locationInfo, polyKey, zonas]);
 }
