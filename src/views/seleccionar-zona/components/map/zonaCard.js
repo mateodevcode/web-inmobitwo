@@ -20,7 +20,7 @@ const esc = (s) =>
       ],
   );
 
-export function zonaCardHTML({ name, level, total, children }) {
+export function zonaCardHTML({ name, level, total, children, seleccionada }) {
   let countLine = "";
   if (total === null) {
     countLine = `<p class="text-xs opacity-60">Cargando…</p>`;
@@ -32,5 +32,10 @@ export function zonaCardHTML({ name, level, total, children }) {
     labels && children
       ? `<p class="text-xs opacity-60">${nf.format(children)} ${labels[children === 1 ? 0 : 1]} dentro</p>`
       : "";
-  return `<div class="font-poppins text-segundo min-w-[150px]"><p class="text-sm font-semibold">${esc(name)}</p>${countLine}${subLine}</div>`;
+  // Pista de la acción del clic (marcar varias zonas).
+  const accion =
+    seleccionada === undefined
+      ? ""
+      : `<p class="text-xs mt-1 text-tercero">${seleccionada ? "Clic para quitar" : "Clic para añadir"}</p>`;
+  return `<div class="font-poppins text-segundo min-w-[150px]"><p class="text-sm font-semibold">${esc(name)}</p>${countLine}${subLine}${accion}</div>`;
 }

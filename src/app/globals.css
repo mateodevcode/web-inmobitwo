@@ -94,58 +94,119 @@ body {
   }
 }
 
-/* Chincheta mapa inmuebles */
-
-.price-pin {
+/* ── Chinchetas del mapa (components/map/mapPins.js) ───────────────────
+   .it-grupo  burbuja-chincheta con casita + cantidad (zoom bajo/medio)
+   .it-pin    chincheta con precio (zoom alto); .is-selected / .is-visto
+   Ambas apuntan con su puntita a la ubicación (Marker anchor "bottom"). */
+.it-grupo,
+.it-pin {
+  --pin-color: #e6007a;
   position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  background: #e6007a;
-  border: 2px solid fff;
-  border-radius: 5px;
-  padding: 0 10px;
-  font-size: 12px;
+  gap: 4px;
+  font-family: var(--font-poppins, inherit);
   font-weight: 700;
-  color: #fff;
+  line-height: 1;
   white-space: nowrap;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  transition: transform 0.15s ease;
+  border: 0;
+  margin-bottom: 7px; /* deja sitio a la puntita */
   transform-origin: bottom center;
+  transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  animation: it-pin-entra 0.18s ease-out;
 }
-
-/* La "puntita" del pin, apuntando hacia abajo */
-.price-pin::after {
+.it-grupo::after,
+.it-pin::after {
   content: "";
   position: absolute;
-  bottom: -7px;
   left: 50%;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
   transform: translateX(-50%) rotate(45deg);
-  width: 11px;
-  height: 11px;
-  background: #e6007a;
-  border-right: 2px solid #fff;
-  border-bottom: 2px solid #fff;
   border-radius: 0 0 2px 0;
 }
-
-.price-pin:hover {
-  transform: scale(1.12);
-  z-index: 1000 !important; /* para que quede por encima de sus vecinos al agrandarse */
+/* El contenedor es el elemento del Marker (MapLibre lo mueve con transform
+   inline): las animaciones van en el hijo y el z-index en el contenedor. */
+.it-marker { line-height: 0; }
+.it-marker:hover { z-index: 1000 !important; }
+.it-marker.is-top { z-index: 1001 !important; }
+.it-grupo:hover,
+.it-pin:hover {
+  transform: scale(1.1);
+}
+.it-grupo:focus-visible,
+.it-pin:focus-visible {
+  outline: 2px solid #1944c5;
+  outline-offset: 2px;
 }
 
-/* Estado seleccionado — relleno rosa sólido, mismo patrón que tus polígonos */
-.price-pin.selected {
+/* Grupo: blanco con borde rosa, crece con la cantidad */
+.it-grupo {
+  background: #fff;
+  color: #72243e;
+  border: 2px solid var(--pin-color);
+  border-radius: 999px;
+  padding: 5px 11px 5px 9px;
+  font-size: 13px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
+}
+.it-grupo::after {
+  background: #fff;
+  border-right: 2px solid var(--pin-color);
+  border-bottom: 2px solid var(--pin-color);
+}
+.it-grupo__icono {
+  width: 14px;
+  height: 14px;
+  fill: var(--pin-color);
+  flex-shrink: 0;
+}
+.it-grupo--s { font-size: 12px; padding: 4px 9px 4px 7px; }
+.it-grupo--l { font-size: 14px; padding: 6px 13px 6px 10px; }
+.it-grupo--xl { font-size: 15px; padding: 7px 15px 7px 12px; }
+.it-grupo--l .it-grupo__icono,
+.it-grupo--xl .it-grupo__icono { width: 16px; height: 16px; }
+.it-grupo:hover { background: #fdf0f6; }
+
+/* Precio: rosa sólido */
+.it-pin {
+  background: var(--pin-color);
+  color: #fff;
+  border-radius: 6px;
+  padding: 5px 9px;
+  font-size: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+}
+.it-pin::after {
+  background: var(--pin-color);
+}
+/* Ya visto: gris, para saber qué se revisó */
+.it-pin.is-visto {
+  --pin-color: #8a8a93;
+}
+/* Seleccionado: invertido y por encima de los vecinos */
+.it-pin.is-selected {
   background: #fff;
   color: #e6007a;
+  outline: 2px solid #e6007a;
+  outline-offset: -2px;
+  transform: scale(1.12);
 }
-.price-pin.selected::after {
+.it-pin.is-selected::after {
   background: #fff;
-  border-color: #fff;
+  border-right: 2px solid #e6007a;
+  border-bottom: 2px solid #e6007a;
 }
 
-/* Chincheta mapa inmuebles */
+@keyframes it-pin-entra {
+  from { opacity: 0; transform: translateY(4px) scale(0.85); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .it-grupo, .it-pin { animation: none; transition: none; }
+}
 
 /* Card del hover en el mapa SeleccionarZona (popup de MapLibre) */
 .zona-popup .maplibregl-popup-content {

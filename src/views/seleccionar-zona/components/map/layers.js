@@ -1,19 +1,31 @@
 import { fetchStatesGeoJSON, fetchCitiesGeoJSON, fetchBarrios } from "@/lib/geoApi";
-import { makeFill, makeLine, setLineOpacity, HOVER_DARK, HOVER_DARK_PINK } from "./mapStyles";
-import { withState } from "./selInfo";
+import { makeFill, makeLine, setLineOpacity, HOVER_DARK, HOVER_DARK_PINK, ID_POR_FUENTE } from "./mapStyles";
+
+// Por mapa: qué FeatureCollection tiene cada fuente (para no repetir setData)
+// y qué feature-states aplicamos (para cambiar solo la diferencia).
+const datosPorMapa = new WeakMap();
+const estadosPorMapa = new WeakMap();
+const hoverPorMapa = new WeakMap();
+
+const registro = (wm, map) => {
+  if (!wm.has(map)) wm.set(map, {});
+  return wm.get(map);
+};
 
 export function sourceData(map, id, data) {
   if (!map) return;
-  if (map.getSource(id)) {
-    map.getSource(id).setData(data);
-    return;
-  }
+  const datos = registro(datosPorMapa, map);
   try {
-    map.addSource(id, { type: "geojson", data });
-    const hoverColor =
-      id === "region" || id === "dpto" ? HOVER_DARK : HOVER_DARK_PINK;
-    map.addLayer(makeFill(id));
-    map.addLayer(makeLine(id, hoverColor));
+    if (!map.getSource(id)) {
+      map.addSource(id, { type: "geojson", data, promoteId: ID_POR_FUENTE[id] });
+      datos[id] = data;
+    } else if (datos[id] !== data) {
+      map.getSource(id).setData(data);
+      datos[id] = data;
+    }
+    const hoverColor = id === "region" || id === "dpto" ? HOVER_DARK : HOVER_DARK_PINK;
+    if (!map.getLayer(`${id}-fill`)) map.addLayer(makeFill(id));
+    if (!map.getLayer(`${id}-line`)) map.addLayer(makeLine(id, hoverColor));
   } catch (e) {
     console.error(`[Zona] error al crear capa ${id}:`, e.message);
   }
@@ -33,6 +45,47 @@ export function sourceOff(map, id) {
   try {
     if (map.getSource(id)) map.removeSource(id);
   } catch {}
+  delete registro(datosPorMapa, map)[id];
+  delete registro(estadosPorMapa, map)[id];
+  const hov = hoverPorMapa.get(map);
+  if (hov?.fuente === id) hoverPorMapa.delete(map);
+}
+
+// Aplica sel/anc a una fuente cambiando solo los polígonos que cambian.
+function aplicarEstados(map, id, sel, anc) {
+  if (!map.getSource(id)) return;
+  const estados = registro(estadosPorMapa, map);
+  const previo = estados[id] || { sel: new Set(), anc: new Set() };
+  const cambiar = (code, estado) => {
+    try {
+      map.setFeatureState({ source: id, id: code }, estado);
+    } catch {}
+  };
+  for (const c of previo.sel) if (!sel.has(c)) cambiar(c, { sel: false });
+  for (const c of previo.anc) if (!anc.has(c)) cambiar(c, { anc: false });
+  for (const c of sel) if (!previo.sel.has(c)) cambiar(c, { sel: true });
+  for (const c of anc) if (!previo.anc.has(c)) cambiar(c, { anc: true });
+  estados[id] = { sel: new Set(sel), anc: new Set(anc) };
+}
+
+// Resalta el polígono bajo el mouse (fuente + código); null lo apaga.
+export function setHover(map, fuente, code) {
+  if (!map) return;
+  const previo = hoverPorMapa.get(map);
+  if (previo?.fuente === fuente && previo?.code === code) return;
+  if (previo && map.getSource(previo.fuente)) {
+    try {
+      map.setFeatureState({ source: previo.fuente, id: previo.code }, { hover: false });
+    } catch {}
+  }
+  if (fuente && code != null && map.getSource(fuente)) {
+    try {
+      map.setFeatureState({ source: fuente, id: code }, { hover: true });
+    } catch {}
+    hoverPorMapa.set(map, { fuente, code });
+  } else {
+    hoverPorMapa.delete(map);
+  }
 }
 
 // capas solo-stroke para modo dibujo (geoman)
@@ -117,64 +170,26 @@ export function maybeLoadDrawBarrios(map, dptoCode, mpioCode) {
     .catch(() => {});
 }
 
-// refrescar todas las capas segun seleccion + hover
-// rawRefs: { region, dpto, mpio, barrio } (refs a FeatureCollections)
-// selInfo: { region, dpto, mpio, barrio, regionRole, dptoRole, mpioRole }
-export function refreshLayers(map, rawRefs, selInfo, hov) {
-  if (!map || !map.isStyleLoaded()) return;
-  const { region, dpto, mpio, barrio, regionRole, dptoRole, mpioRole } = selInfo;
-
-  if (rawRefs.region.current) {
-    const data = {
-      ...rawRefs.region.current,
-      features: withState(
-        rawRefs.region.current.features,
-        "slug",
-        region,
-        regionRole,
-        hov,
-      ),
-    };
-    sourceData(map, "region", data);
-  }
-  if (rawRefs.dpto.current) {
-    const data = {
-      ...rawRefs.dpto.current,
-      features: withState(
-        rawRefs.dpto.current.features,
-        "DPTO_CCDGO",
-        dpto,
-        dptoRole,
-        hov,
-      ),
-    };
-    sourceData(map, "dpto", data);
-  }
-  if (rawRefs.mpio.current) {
-    const data = {
-      ...rawRefs.mpio.current,
-      features: withState(
-        rawRefs.mpio.current.features,
-        "MPIO_CCNCT",
-        mpio,
-        mpioRole,
-        hov,
-      ),
-    };
-    sourceData(map, "mpio", data);
-  }
-  if (rawRefs.barrio.current) {
-    const data = {
-      ...rawRefs.barrio.current,
-      features: withState(
-        rawRefs.barrio.current.features,
-        "BAR_COD",
-        barrio,
-        "selected",
-        hov,
-      ),
-    };
-    sourceData(map, "barrio", data);
+// Sincroniza las capas de selección con los datos cargados y la selección
+// actual. rawRefs: { region, dpto, mpio, barrio } (refs a FeatureCollections)
+// estado: estadoMapa(zonas) de lib/zonasSeleccion.js
+const VACIO = new Set();
+export function refreshLayers(map, rawRefs, estado) {
+  // Sin la guarda isStyleLoaded(): también es false mientras cargan teselas
+  // (p. ej. en pleno vuelo a una zona) y el repintado se perdía. Solo se
+  // llama después del evento "load" del mapa.
+  if (!map) return;
+  const { seleccion, ancestro } = estado;
+  const niveles = [
+    ["region", rawRefs.region, seleccion.region, VACIO],
+    ["dpto", rawRefs.dpto, seleccion.departamento, ancestro.departamento],
+    ["mpio", rawRefs.mpio, seleccion.municipio, ancestro.municipio],
+    ["barrio", rawRefs.barrio, seleccion.barrio, VACIO],
+  ];
+  for (const [id, ref, sel, anc] of niveles) {
+    if (!ref.current) continue;
+    sourceData(map, id, ref.current);
+    aplicarEstados(map, id, sel, anc);
   }
 }
 

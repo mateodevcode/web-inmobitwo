@@ -1,11 +1,16 @@
 import { useState, useRef, useEffect } from "react";
-import * as maplibregl from "maplibre-gl";
 import { apiBackend } from "@/actions/apiBackend.js";
-import { createPricePin } from "@/components/map/mapPins";
 import { fetchRegionsGeoJSON, fetchStatesGeoJSON } from "@/lib/geoApi";
 import { findFeature, featBounds, collectionBounds } from "@/lib/geoUtils";
-import { getSelInfo } from "./selInfo";
 import { createOsmMap, zoomToBounds } from "@/components/map/mapUtils";
+import { marcarVisto } from "@/components/map/vistos";
+import { CapaChinchetas } from "@/views/mapa-inmuebles/components/map/markers";
+import {
+  prepararDatos,
+  itemsParaVista,
+  zoomAlAbrirGrupo,
+} from "@/views/mapa-inmuebles/components/map/datosMapa";
+import { estadoMapa } from "../../lib/zonasSeleccion";
 import {
   refreshLayers,
   loadDrawBoundaries,
@@ -16,18 +21,19 @@ import {
   removeSelectLayers,
   sourceOff,
 } from "./layers";
-import { setLineOpacity } from "./mapStyles";
-import {
-  removeCloseMarker,
-  clearPropMarkers,
-  handleDeletePolygon,
-} from "./polygon";
+import { removeCloseMarker, handleDeletePolygon } from "./polygon";
 import { setupGeoman, handleStartDrawing, restaurarPoligono } from "./geoman";
 import { setupInteractivity } from "./interactivity";
 
+const bboxDeMapa = (map) => {
+  const b = map.getBounds();
+  return { minLng: b.getWest(), minLat: b.getSouth(), maxLng: b.getEast(), maxLat: b.getNorth() };
+};
+
 export function useZonaMap({
-  selectedZone,
-  onSelectZone,
+  zonas,
+  onToggleZona,
+  zonaFoco,
   operation,
   tipoInmueble,
   drawMode,
@@ -50,17 +56,18 @@ export function useZonaMap({
     barrio: barrioRawRef,
   };
 
-  const selRef = useRef(null);
+  const zonasRef = useRef(zonas);
   const drawModeRef = useRef(false);
-  // Espejos de los filtros de conteo (operation/tipoInmueble llegan por props
-  // y el setup imperativo captura el primer render: los handlers leen el
-  // valor actual vía getCountFilters).
+  // Espejos de los filtros de conteo (el setup imperativo captura el primer
+  // render: los handlers leen el valor actual vía getCountFilters).
   const opRef = useRef(operation);
   const tipoRef = useRef(tipoInmueble);
+  const onToggleRef = useRef(onToggleZona);
   const drawLayerRef = useRef(null);
   const geomanSetupRef = useRef(false);
   const gmRef = useRef(null);
-  const propMarkersRef = useRef([]);
+  const capaPinesRef = useRef(null);
+  const datosPinesRef = useRef(null);
   const closeMarkerRef = useRef(null);
   // Polígono inicial restaurado una sola vez (persistencia localStorage).
   const restauradoRef = useRef(false);
@@ -72,29 +79,23 @@ export function useZonaMap({
   const [loading, setLoading] = useState(false);
   const [mapReady, setMapReady] = useState(false);
   const [mapInstance, setMapInstance] = useState(null);
-  const [hovCode, setHovCode] = useState(null);
   const [selectedInmueble, setSelectedInmueble] = useState(null);
   const [drawArmed, setDrawArmed] = useState(false);
   // Espejo en estado del drawLayerRef imperativo (para render condicional).
-  // Se sincroniza en cada punto que muta el ref (ver abajo).
   const [hasDrawLayer, setHasDrawLayer] = useState(false);
-  // Tick para re-pintar marcadores cuando el estilo termina de cargar
-  // después de que los datos ya llegaron (carrera restore vs style).
-  const [styleTick, setStyleTick] = useState(0);
 
   // Mirrors para los handlers imperativos del mapa (eventos maplibre/geoman
   // fuera del ciclo React). Se sincronizan tras cada render.
   useEffect(() => {
-    selRef.current = selectedZone;
+    zonasRef.current = zonas;
     drawModeRef.current = drawMode;
     opRef.current = operation;
     tipoRef.current = tipoInmueble;
+    onToggleRef.current = onToggleZona;
   });
 
-  // onPolygonChange cambia de identidad en cada render de la página (no es
-  // useCallback). Los setups imperativos (geoman, restauración) capturan la
-  // primera versión y el restore llamaría a un closure obsoleto: por eso los
-  // anuncios del polígono restaurado no se cargaban. Espejo estable:
+  // onPolygonChange cambia de identidad en cada render de la página: los
+  // setups imperativos (geoman, restauración) usan este espejo estable.
   const onPolygonChangeRef = useRef(onPolygonChange);
   useEffect(() => {
     onPolygonChangeRef.current = onPolygonChange;
@@ -103,16 +104,11 @@ export function useZonaMap({
     onPolygonChangeRef.current?.(geojson);
   };
 
-  const doRefresh = (hov) => {
+  const doRefresh = () => {
     // No repintar capas de selección en modo dibujo: cierra la carrera de
     // fetches de municipios/barrios que queden en vuelo al cambiar de modo.
     if (drawModeRef.current) return;
-    refreshLayers(
-      mapRef.current,
-      rawRefs,
-      getSelInfo(selRef.current),
-      hov !== undefined ? hov : hovCode,
-    );
+    refreshLayers(mapRef.current, rawRefs, estadoMapa(zonasRef.current || []));
   };
 
   const doLoadMunicipios = (code) =>
@@ -142,6 +138,36 @@ export function useZonaMap({
     setDrawArmed(false);
   };
 
+  const cargarLimitesBase = (map) => {
+    setLoading(true);
+    return fetchRegionsGeoJSON()
+      .then((regData) => {
+        regionRawRef.current = regData;
+        doRefresh();
+        return fetchStatesGeoJSON();
+      })
+      .then((data) => {
+        dptoRawRef.current = data;
+        doRefresh();
+        // Encuadre inicial solo si no hay zonas: con zonas restauradas el
+        // efecto de foco ya llevó el mapa a ellas.
+        if (!zonasRef.current?.length) {
+          const b = collectionBounds(data);
+          if (b) map.fitBounds(b, { padding: 10, duration: 0 });
+        }
+      })
+      .catch((e) => console.error("[Zona] error cargando datos:", e))
+      .finally(() => setLoading(false));
+  };
+
+  // Chinchetas de los anuncios dentro del polígono dibujado (agrupadas).
+  const pintarPines = () => {
+    const map = mapRef.current;
+    if (!map || !capaPinesRef.current) return;
+    const { items } = itemsParaVista(datosPinesRef.current, bboxDeMapa(map), map.getZoom());
+    capaPinesRef.current.render(items);
+  };
+
   // ──── crear mapa ────
   useEffect(() => {
     if (mapRef.current) return;
@@ -152,127 +178,118 @@ export function useZonaMap({
     });
     mapRef.current = map;
 
+    capaPinesRef.current = new CapaChinchetas(map, {
+      onClickPunto: (p) => {
+        marcarVisto(p.id);
+        capaPinesRef.current?.seleccionar(p.id);
+        setSelectedInmueble(p);
+      },
+      onClickGrupo: (item) =>
+        map.flyTo({
+          center: [item.lng, item.lat],
+          zoom: zoomAlAbrirGrupo(datosPinesRef.current, item, map.getZoom()),
+          duration: 600,
+        }),
+    });
+    map.on("moveend", pintarPines);
+
     map.on("load", () => {
       setMapReady(true);
       setMapInstance(map);
-      // Si los datos llegaron antes que el estilo, este tick hace que el
-      // efecto de marcadores se repita y los pinte.
-      setStyleTick((t) => t + 1);
       setupInteractivity(map, {
-        selRef,
+        zonasRef,
         drawModeRef,
         rawRefs,
-        operation,
-        tipoInmueble,
-        onSelectZone,
+        onToggleZona: (z) => onToggleRef.current?.(z),
         getCountFilters: () => ({
           operation: opRef.current,
           inmueble: tipoRef.current,
         }),
-        setHovCode,
         popupRef,
-        doRefresh,
         doLoadMunicipios,
         doLoadBarrios,
       });
 
-      if (!drawModeRef.current) {
-        setLoading(true);
-        fetchRegionsGeoJSON()
-          .then((regData) => {
-            regionRawRef.current = regData;
-            refreshLayers(map, rawRefs, getSelInfo(selRef.current), null);
-            return fetchStatesGeoJSON();
-          })
-          .then((data) => {
-            dptoRawRef.current = data;
-            refreshLayers(map, rawRefs, getSelInfo(selRef.current), null);
-            const b = collectionBounds(data);
-            if (b) map.fitBounds(b, { padding: 10 });
-          })
-          .catch((e) => console.error("[Zona] error cargando datos:", e))
-          .finally(() => setLoading(false));
-      }
+      if (!drawModeRef.current) cargarLimitesBase(map);
     });
 
     map.on("error", (e) => console.error("[Zona] error mapa:", e.error || e));
 
     return () => {
+      capaPinesRef.current?.destruir();
+      capaPinesRef.current = null;
       map.remove();
       mapRef.current = null;
       setMapInstance(null);
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ──── refrescar al cambiar la seleccion ────
+  // ──── repintar al cambiar la selección (solo feature-state, sin setData) ────
   useEffect(() => {
     if (!mapReady) return;
     doRefresh();
-
-    const map = mapRef.current;
-    if (!map || !selectedZone) return;
-
-    async function doZoom() {
-      // hacer zoom a la zona seleccionada via GeoJSON
-      let feat = null;
-      if (selectedZone.type === "region") {
-        feat = findFeature(regionRawRef.current, "slug", selectedZone.slug);
-      } else if (selectedZone.type === "departamento") {
-        feat = findFeature(
-          dptoRawRef.current,
-          "DPTO_CCDGO",
-          selectedZone.daneCode,
-        );
-      } else if (selectedZone.type === "municipio") {
-        feat = findFeature(
-          mpioRawRef.current,
-          "MPIO_CCNCT",
-          selectedZone.daneCode,
-        );
-      } else if (selectedZone.type === "barrio") {
-        feat = findFeature(
-          barrioRawRef.current,
-          "BAR_COD",
-          selectedZone.daneCode,
-        );
-      }
-      if (feat) {
-        zoomToBounds(
-          map,
-          featBounds(feat),
-          selectedZone.type === "barrio" ? 60 : 40,
-        );
-        return;
-      }
-      // fallback: geocodificar el nombre y hacer flyTo (busqueda desde input)
-      try {
-        const address = `${selectedZone.name}, Colombia`;
-        const res = await apiBackend(
-          `/api/geocode?address=${encodeURIComponent(address)}`,
-          "GET",
-        );
-        if (res.success && res.data) {
-          const zoomLevel =
-            selectedZone.type === "region"
-              ? 7
-              : selectedZone.type === "departamento"
-                ? 9
-                : selectedZone.type === "barrio"
-                  ? 15
-                  : 13;
-          map.flyTo({
-            center: [res.data.longitude, res.data.latitude],
-            zoom: zoomLevel,
-            duration: 1500,
-          });
-        }
-      } catch (e) {
-        console.error("[Zona] error geocodificando zona:", e);
-      }
-    }
-    doZoom();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedZone, mapReady]);
+  }, [zonas, mapReady]);
+
+  // ──── llevar el mapa a una zona pedida desde fuera (buscador, restaurar) ────
+  useEffect(() => {
+    const map = mapRef.current;
+    const zona = zonaFoco?.zona;
+    if (!mapReady || !map || !zona) return;
+
+    let vivo = true;
+    // La card del hover de la zona anterior no debe quedarse pegada.
+    if (popupRef.current) {
+      popupRef.current.remove();
+      popupRef.current = null;
+    }
+
+    const buscarPoligono = () => {
+      if (zona.type === "region") return findFeature(regionRawRef.current, "slug", zona.slug);
+      if (zona.type === "departamento")
+        return findFeature(dptoRawRef.current, "DPTO_CCDGO", zona.daneCode);
+      if (zona.type === "municipio")
+        return findFeature(mpioRawRef.current, "MPIO_CCNCT", zona.daneCode);
+      if (zona.type === "barrio") return findFeature(barrioRawRef.current, "BAR_COD", zona.daneCode);
+      return null;
+    };
+
+    // Último recurso (polígono no disponible): geocodificar el nombre.
+    const volarPorNombre = () =>
+      apiBackend(`/api/geocode?address=${encodeURIComponent(`${zona.name}, Colombia`)}`, "GET")
+        .then((res) => {
+          if (!vivo || !res.success || !res.data) return;
+          const zoomLevel =
+            zona.type === "region" ? 7 : zona.type === "departamento" ? 9 : zona.type === "barrio" ? 15 : 12;
+          map.flyTo({ center: [res.data.longitude, res.data.latitude], zoom: zoomLevel, duration: 1200 });
+        })
+        .catch((e) => console.error("[Zona] error geocodificando zona:", e));
+
+    const encuadrar = () => {
+      if (!vivo) return;
+      const feat = buscarPoligono();
+      if (feat) zoomToBounds(map, featBounds(feat), zona.type === "barrio" ? 60 : 40);
+      else volarPorNombre();
+    };
+
+    // Mostrar el siguiente nivel para seguir eligiendo alrededor. Para un
+    // municipio, primero sus vecinos del departamento (caché): así se
+    // encuadra su polígono exacto sin depender del geocodificador.
+    if (zona.type === "departamento" && zona.daneCode) doLoadMunicipios(zona.daneCode);
+    if (zona.type === "municipio" && zona.daneCode && zona.dptoDaneCode && !buscarPoligono()) {
+      doLoadMunicipios(zona.dptoDaneCode).then(() => {
+        encuadrar();
+        if (vivo) doLoadBarrios(zona.daneCode, zona.dptoDaneCode);
+      });
+    } else {
+      if (zona.type === "municipio" && zona.daneCode) doLoadBarrios(zona.daneCode, zona.dptoDaneCode);
+      encuadrar();
+    }
+    return () => {
+      vivo = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [zonaFoco, mapReady]);
 
   // ──── efecto: reaccionar a cambios de drawMode ────
   useEffect(() => {
@@ -280,25 +297,22 @@ export function useZonaMap({
     if (!map || !map.isStyleLoaded() || !mapReady) return;
 
     if (drawMode) {
-      // Reset total al entrar a dibujo (simetría con salir de dibujo):
-      // capas, subdivisiones cargadas, marcadores, popup y hover.
-      // El zoom se conserva donde estaba el cliente.
+      // Reset total al entrar a dibujo: capas, subdivisiones cargadas,
+      // popup y hover. El zoom se conserva donde estaba el cliente.
       removeSelectLayers(map);
       clearDrawLayers(map);
       mpioRawRef.current = null;
       barrioRawRef.current = null;
-      clearPropMarkers(propMarkersRef);
       if (popupRef.current) {
         popupRef.current.remove();
         popupRef.current = null;
       }
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setHovCode(null);
 
       loadDrawBoundaries(map, setLoading);
 
       // Reset imperativo del modo dibujo (Geoman es imperativo; no hay evento
       // previo donde hacerlo porque drawMode llega por props).
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDrawArmed(false);
 
       if (!gmRef.current) {
@@ -353,9 +367,7 @@ export function useZonaMap({
             : [];
           if (features.length) {
             const f = features[0];
-            const mpioCode = f.properties.MPIO_CCNCT;
-            const dptoCode = f.properties.DPTO_CCDGO;
-            maybeLoadDrawBarrios(map, dptoCode, mpioCode);
+            maybeLoadDrawBarrios(map, f.properties.DPTO_CCDGO, f.properties.MPIO_CCNCT);
           } else {
             maybeLoadDrawBarrios(map, "11", "11001");
           }
@@ -363,10 +375,10 @@ export function useZonaMap({
           sourceOff(map, "barrio");
         }
       };
-      map.on("zoom", onZoom);
+      map.on("zoomend", onZoom);
       onZoom();
 
-      return () => map.off("zoom", onZoom);
+      return () => map.off("zoomend", onZoom);
     } else {
       try {
         gmRef.current?.disableDraw();
@@ -382,86 +394,33 @@ export function useZonaMap({
       clearDrawLayers(map);
 
       if (!regionRawRef.current || !dptoRawRef.current) {
-        setLoading(true);
-        fetchRegionsGeoJSON()
-          .then((regData) => {
-            regionRawRef.current = regData;
-            return fetchStatesGeoJSON();
-          })
-          .then((data) => {
-            dptoRawRef.current = data;
-            doRefresh();
-            const b = collectionBounds(data);
-            if (b) map.fitBounds(b, { padding: 10 });
-          })
-          .catch((e) => console.error("[Zona] error cargando datos:", e))
-          .finally(() => setLoading(false));
+        cargarLimitesBase(map);
       } else {
         doRefresh();
       }
     }
   }, [drawMode, mapReady]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ──── reintentar marcadores cuando el estilo termine de cargar ────
-  // Si los datos llegaron antes que el estilo (restore), el efecto de
-  // marcadores sale temprano y nada lo repetía. Este efecto espera al
-  // primer `idle` (estilo + tiles asentados) y dispara la repetición.
+  // ──── chinchetas del polígono dibujado ────
+  // Índice agrupado una vez por resultado; al mover el mapa solo se
+  // reconcilian las chinchetas visibles (moveend → pintarPines).
   useEffect(() => {
-    const map = mapRef.current;
-    if (!map || !mapReady) return;
-    if (map.isStyleLoaded()) return;
-    let vivo = true;
-    const avisar = () => {
-      if (vivo) setStyleTick((t) => t + 1);
-    };
-    map.once("idle", avisar);
-    return () => {
-      vivo = false;
-      try {
-        map.off("idle", avisar);
-      } catch {}
-    };
-  }, [mapReady, styleTick, polygonProperties]);
-  // OJO: depende también de mapReady. Al restaurar un dibujo guardado, el
-  // fetch puede resolverse ANTES de que el estilo cargue: sin mapReady en
-  // deps, el efecto salía temprano por !isStyleLoaded() y no se repetía
-  // (las chinchetas nunca aparecían aunque el conteo sí llegaba).
-  useEffect(() => {
-    const map = mapRef.current;
-    clearPropMarkers(propMarkersRef);
-    const listo =
-      map &&
-      mapReady &&
-      map.isStyleLoaded() &&
-      drawMode &&
-      (polygonProperties?.length ?? 0) > 0;
-    console.log(
-      `[Zona] pines: props=${polygonProperties?.length ?? 0} draw=${drawMode} ready=${mapReady} style=${map?.isStyleLoaded?.()} pinta=${!!listo}`,
-    );
-    if (!listo) {
-      return;
-    }
+    const puntos =
+      drawMode && polygonProperties?.length
+        ? polygonProperties
+            .filter((p) => p.longitude != null && p.latitude != null)
+            .map((p) => ({ ...p, lat: Number(p.latitude), lng: Number(p.longitude) }))
+        : [];
+    datosPinesRef.current = puntos.length
+      ? prepararDatos({ modo: "puntos", puntos }, { bbox: null, zoom: 0, filtrosKey: "" })
+      : null;
+    if (mapReady) pintarPines();
+  }, [polygonProperties, drawMode, mapReady]);
 
-    polygonProperties.forEach((p) => {
-      try {
-        if (p.longitude == null || p.latitude == null) return;
-        const isSelected = selectedInmueble?.id === p.id;
-        const el = createPricePin(p, isSelected);
-        el.addEventListener("click", (ev) => {
-          ev.stopPropagation();
-          setSelectedInmueble(p);
-        });
-        const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
-          .setLngLat([p.longitude, p.latitude])
-          .addTo(map);
-        propMarkersRef.current.push(marker);
-      } catch (e) {
-        console.warn("[Zona] pin ignorado (dato inválido):", p?.id, e?.message);
-      }
-    });
-
-    return () => clearPropMarkers(propMarkersRef);
-  }, [polygonProperties, drawMode, selectedInmueble, mapReady, styleTick]);
+  const cerrarInmueble = () => {
+    capaPinesRef.current?.seleccionar(null);
+    setSelectedInmueble(null);
+  };
 
   return {
     containerRef,
@@ -471,7 +430,7 @@ export function useZonaMap({
     mapReady,
     drawArmed,
     selectedInmueble,
-    setSelectedInmueble,
+    setSelectedInmueble: (v) => (v ? setSelectedInmueble(v) : cerrarInmueble()),
     doRefresh,
     doDeletePolygon,
     doStartDrawing,

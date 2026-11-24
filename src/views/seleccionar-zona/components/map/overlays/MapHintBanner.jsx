@@ -45,7 +45,7 @@ export default function MapHintBanner() {
     >
       <div className="flex items-center gap-3 bg-[#1a1a1a]/90 text-white text-sm px-5 py-3 rounded shadow-lg md:whitespace-nowrap w-80 md:w-full">
         <span>
-          Haz zoom en el mapa para seleccionar las zonas que te interesan
+          Haz clic en el mapa para marcar una o varias zonas
         </span>
         <button
           onClick={handleClose}

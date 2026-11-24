@@ -16,6 +16,7 @@ export default function MapaInmuebles({
     map,
     loading,
     mapReady,
+    totalVisible,
     selectedInmueble,
     setSelectedInmueble,
     flyToZone,
@@ -36,6 +37,7 @@ export default function MapaInmuebles({
         map={map}
         mapReady={mapReady}
         loading={loading}
+        totalVisible={totalVisible}
         selectedInmueble={selectedInmueble}
         onCloseCard={() => setSelectedInmueble(null)}
         operation={operation}

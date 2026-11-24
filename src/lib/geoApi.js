@@ -162,18 +162,69 @@ export async function fetchInmueblesEnPoligono(polygon, operation, tipoInmuebleS
   return { total: 0, propiedades: [] };
 }
 
-export async function fetchInmueblesEnBbox({ minLat, minLng, maxLat, maxLng, operation, tipoInmueble }) {
-  const params = new URLSearchParams({ minLat, minLng, maxLat, maxLng });
+// ─────────────────────────────────────────────
+// Varias zonas a la vez (mapa "Seleccionar en mapa"). `zonas` en formato
+// "municipio:11001,barrio:110010101" (ver views/seleccionar-zona/lib/zonasSeleccion).
+// ─────────────────────────────────────────────
+const conteoZonasCache = new Map();
+
+export async function fetchConteoZonas(zonas, operation, tipoInmuebleSlug) {
+  const tipoInmueble = expandTipoInmueble(tipoInmuebleSlug) || undefined;
+  const clave = `${zonas}|${operation}|${tipoInmueble}`;
+  const hit = conteoZonasCache.get(clave);
+  if (hit && Date.now() - hit.at < BATCH_TTL) return hit.total;
+  const res = await apiBackend("/api/zonas/conteo", "POST", {
+    zonas,
+    operation: operation || undefined,
+    tipoInmueble,
+  });
+  if (!res.success) throw new Error(res.error || "Error contando inmuebles");
+  const total = res.data?.total ?? 0;
+  conteoZonasCache.set(clave, { at: Date.now(), total });
+  return total;
+}
+
+export async function fetchInmueblesEnZonas(zonas, operation, tipoInmuebleSlug) {
+  const res = await apiBackend("/api/inmuebles-en-zonas", "POST", {
+    zonas,
+    operation: operation || undefined,
+    tipoInmueble: expandTipoInmueble(tipoInmuebleSlug) || undefined,
+  });
+  if (!res.success) throw new Error(res.error || "Error cargando inmuebles");
+  return res.data || { total: 0, propiedades: [] };
+}
+
+// Datos livianos del mapa de chinchetas: puntos (pocos) o grupos hechos en
+// el servidor (muchos). Ver backend /propiedades/mapa.
+export async function fetchMapaInmuebles({ minLat, minLng, maxLat, maxLng, zoom, operation, tipoInmueble }) {
+  const r = (n) => Number(n).toFixed(5);
+  const params = new URLSearchParams({
+    minLat: r(minLat),
+    minLng: r(minLng),
+    maxLat: r(maxLat),
+    maxLng: r(maxLng),
+    zoom: String(Math.floor(zoom)),
+  });
   if (operation) params.set("operation", operation.toLowerCase());
   if (tipoInmueble) params.set("tipoInmueble", expandTipoInmueble(tipoInmueble));
 
-  const res = await apiBackend(`/propiedades/inmuebles-en-bbox?${params.toString()}`);
-  if (!res.success) throw new Error(res.error || "Error cargando inmuebles");
-  return res.data || [];
+  const res = await apiBackend(`/propiedades/mapa?${params.toString()}`);
+  if (!res.success) throw new Error(res.error || "Error cargando el mapa");
+  return res.data || { modo: "puntos", total: 0, puntos: [] };
 }
 
-export async function fetchPropiedadResumen(id) {
-  const res = await apiBackend(`/propiedades/${id}/resumen`);
-  if (!res.success) return null;
-  return res.data;
+// Resumen de la card del mapa. Cacheado por id (con la promesa en vuelo
+// compartida): el mapa y la galería de la card lo piden a la vez.
+const resumenCache = new Map();
+export function fetchPropiedadResumen(id) {
+  if (resumenCache.has(id)) return resumenCache.get(id);
+  const req = apiBackend(`/propiedades/${id}/resumen`)
+    .then((res) => (res.success ? res.data : null))
+    .catch(() => null)
+    .then((data) => {
+      if (!data) resumenCache.delete(id); // reintentar en el próximo clic
+      return data;
+    });
+  resumenCache.set(id, req);
+  return req;
 }

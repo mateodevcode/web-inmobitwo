@@ -41,7 +41,7 @@ const BotonGuardarBusqueda = () => {
 
   const onClick = () => {
     if (isCustomPolygon) {
-      toast.info("Guardar búsquedas por zona dibujada aún no está disponible.", { position: "bottom-right" });
+      toast.info("Guardar búsquedas por zona dibujada o por varias zonas aún no está disponible.", { position: "bottom-right" });
       return;
     }
     if (!estaAutenticado) {

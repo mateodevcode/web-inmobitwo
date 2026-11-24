@@ -4,12 +4,18 @@
 //   2) "dibujar" (?draw=true): polígono a mano con geoman → zona personalizada.
 // Cuando el usuario diga "mapa principal", se refiere a este componente.
 //
+// Selección múltiple: se pueden marcar varias zonas (clic = añadir/quitar,
+// lo más concreto gana: ver lib/zonasSeleccion.js). Con una sola zona se va
+// a su URL de siempre; con varias, a /[op-tipo]/zonas?z=... .
+//
 // Persistencia: la "zona activa" (último dibujo o última selección) se
 // guarda en localStorage (lib/zonaPersistente.js) y se precarga al volver
 // (atrás desde la ficha, "Seleccionar en Mapa", recarga). Se borra al
 // borrar el polígono, al limpiar la zona o al armar una nueva.
 import { useEffect, useState, useRef } from "react";
-import { useSelectZona } from "@/hooks/useSelectZona";
+import { useSeleccionZonas } from "./hooks/useSeleccionZonas";
+import { useEnCliente } from "@/hooks/useEnCliente";
+import { zonasAParam, resumenZonas } from "./lib/zonasSeleccion";
 import { buildSearchUrl } from "./utils/urlBuilder";
 import SelectZonaMap from "./components/map/SelectZonaMap";
 import BarraNavegacionTauri from "@/components/barra-navegacion/BarraNavegacionTauri";
@@ -44,31 +50,10 @@ export default function SeleccionarZonaPage() {
 
   const drawFromUrl = searchParams.get("draw") === "true";
 
-  const {
-    selectedZone,
-    setSelectedZone: selectZoneBase,
-    clearZone: clearZoneBase,
-    propertyCount,
-    loading,
-  } = useSelectZona();
-
-  // Persistencia: guardar la selección nueva y borrar lo guardado al limpiar.
-  const clearZone = () => {
-    limpiarZonaGuardada();
-    clearZoneBase();
-  };
-  const selectZone = (zone, op, tipo) => {
-    if (zone) {
-      guardarZona({
-        kind: "seleccion",
-        operation: op ?? operation,
-        tipoInmueble: tipo ?? tipoInmueble,
-        zone,
-      });
-    }
-    selectZoneBase(zone, op, tipo);
-  };
   const deptNames = useDeptNames();
+  // Lo restaurado de localStorage solo se pinta tras hidratar (el servidor
+  // no lo conoce): si no, React avisa de HTML distinto.
+  const enCliente = useEnCliente();
   // Restauración perezosa (sin efecto): si hay zona guardada compatible con
   // la operación+tipo de la URL, el mapa arranca con ella precargada.
   const [zonaRestaurada] = useState(() => {
@@ -78,6 +63,43 @@ export default function SeleccionarZonaPage() {
       ? guardada
       : null;
   });
+  // Lo guardado antes de la multiselección traía una sola `zone`.
+  const [zonasIniciales] = useState(() =>
+    zonaRestaurada?.kind === "seleccion" && !drawFromUrl
+      ? (zonaRestaurada.zonas ?? (zonaRestaurada.zone ? [zonaRestaurada.zone] : []))
+      : [],
+  );
+  const {
+    zonas,
+    total: propertyCount,
+    cargando: loading,
+    alternar,
+    agregar,
+    quitar,
+    limpiar,
+  } = useSeleccionZonas({ operation, tipoInmueble, iniciales: zonasIniciales });
+  // Zona a la que llevar el mapa (buscador o restauración). Objeto nuevo en
+  // cada petición para que el mapa vuelva a enfocar aunque sea la misma.
+  const [zonaFoco, setZonaFoco] = useState(() =>
+    zonasIniciales.length ? { zona: zonasIniciales[zonasIniciales.length - 1] } : null,
+  );
+
+  // Persistencia: cada cambio de la selección se guarda; vacía se borra.
+  const zonasParam = zonasAParam(zonas);
+  useEffect(() => {
+    if (drawMode) return;
+    if (zonas.length) {
+      guardarZona({ kind: "seleccion", operation, tipoInmueble, zonas });
+    } else if (leerZonaGuardada()?.kind === "seleccion") {
+      limpiarZonaGuardada();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [zonasParam]);
+
+  const clearZone = () => {
+    limpiarZonaGuardada();
+    limpiar();
+  };
   const [drawMode, setDrawMode] = useState(
     () =>
       drawFromUrl ||
@@ -132,27 +154,25 @@ export default function SeleccionarZonaPage() {
     }
   };
 
-  const handleSelectZone = (zone, op, tipo) => {
-    // Invariante: nunca "zona seleccionada" + "modo dibujo" a la vez.
-    // Si se elige una zona (p. ej. desde el buscador del header) estando
-    // en modo dibujo, primero se sale del modo dibujo.
+  // Buscador del header: añade la zona (no la quita si ya estaba) y lleva
+  // el mapa a ella. Invariante: nunca "zonas" + "modo dibujo" a la vez.
+  const handleSelectZone = (zone) => {
+    if (!zone) return;
     if (drawMode) {
       handleToggleDrawMode(false);
     }
-    selectZone(zone, op, tipo);
+    agregar(zone);
+    setZonaFoco({ zona: zone });
   };
 
-  // Restaurar la zona guardada al entrar (una sola vez por montaje).
-  // Es sincronización con un sistema externo (localStorage → estado),
-  // el caso legítimo para setState en efecto.
+  // Clic en el mapa: marca o desmarca (el mapa ya se encarga del zoom).
+  const handleToggleZona = (zone) => {
+    if (drawMode) return;
+    alternar(zone);
+  };
+
+  // Restaurar el modo dibujo guardado al entrar (una sola vez por montaje).
   useEffect(() => {
-    if (
-      zonaRestaurada?.kind === "seleccion" &&
-      zonaRestaurada.zone &&
-      !drawFromUrl
-    ) {
-      selectZone(zonaRestaurada.zone, operation, tipoInmueble);
-    }
     if (zonaRestaurada?.kind === "dibujo" && !drawFromUrl) {
       router.replace(`${pathname}?draw=true`);
     }
@@ -191,11 +211,17 @@ export default function SeleccionarZonaPage() {
       avisarSinResultados("Prueba con otra zona cercana.");
       return;
     }
-    const url = buildSearchUrl(
-      { ...selectedZone, operation, tipoInmueble },
-      deptNames,
-    );
-    if (url) router.push(url);
+    // Una zona: su URL de siempre (SEO, breadcrumb). Varias: búsqueda multizona.
+    if (zonas.length === 1) {
+      const url = buildSearchUrl(
+        { ...zonas[0], operation, tipoInmueble },
+        deptNames,
+      );
+      if (url) router.push(url);
+      return;
+    }
+    const params = new URLSearchParams({ z: zonasParam, n: resumenZonas(zonas) });
+    router.push(`/${operation}-${tipoInmueble}/zonas?${params.toString()}`);
   };
 
   return (
@@ -213,8 +239,9 @@ export default function SeleccionarZonaPage() {
 
       <div className="flex-1 relative">
         <SelectZonaMap
-          selectedZone={selectedZone}
-          onSelectZone={handleSelectZone}
+          zonas={zonas}
+          onToggleZona={handleToggleZona}
+          zonaFoco={zonaFoco}
           operation={operation}
           tipoInmueble={tipoInmueble}
           drawMode={drawMode}
@@ -226,14 +253,16 @@ export default function SeleccionarZonaPage() {
           onVerInmuebles={handleVerInmuebles}
           initialPolygon={initialPolygon}
           avisoSinResultados={avisoSinResultados}
+          enCliente={enCliente}
         />
       </div>
 
       <SelectedZoneCard
         drawMode={drawMode}
-        selectedZone={selectedZone}
+        zonas={enCliente ? zonas : []}
         propertyCount={propertyCount}
         loading={loading}
+        onRemove={quitar}
         onClear={clearZone}
         onVerInmuebles={handleVerInmuebles}
       />
