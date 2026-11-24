@@ -184,6 +184,16 @@ export async function fetchConteoZonas(zonas, operation, tipoInmuebleSlug) {
   return total;
 }
 
+// Polígonos de las zonas elegidas (minimapa de resultados). Los límites no
+// cambian: misma caché de memoria + sessionStorage que el resto de GeoJSON.
+export async function fetchGeoJSONZonas(zonas) {
+  return fetchGeoCacheado(`zonas:${zonas}`, async () => {
+    const res = await apiBackend("/api/zonas/geojson", "POST", { zonas });
+    if (!res.success) throw new Error(res.error || "Error cargando zonas");
+    return res.data;
+  });
+}
+
 export async function fetchInmueblesEnZonas(zonas, operation, tipoInmuebleSlug) {
   const res = await apiBackend("/api/inmuebles-en-zonas", "POST", {
     zonas,

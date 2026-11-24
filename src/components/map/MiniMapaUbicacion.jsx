@@ -15,7 +15,9 @@ export default function MiniMapaUbicacion({
   const searchParams = useSearchParams();
   const polyKey = searchParams.get("polyKey");
 
-  useMiniMapa(mapRef, locationInfo, polyKey);
+  const zonas = searchParams.get("z");
+
+  useMiniMapa(mapRef, locationInfo, polyKey, zonas);
 
   const handleVerEnMapa = () => {
     if (locationInfo?.tipo === "custom_polygon") {
